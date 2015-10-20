@@ -43,6 +43,8 @@ class barbican::db (
   $database_max_overflow   = 20,
 ) {
 
+  include ::barbican::params
+
   $database_connection_real = pick($::barbican::database_connection, $database_connection)
   $database_idle_timeout_real = pick($::barbican::database_idle_timeout, $database_idle_timeout)
   $database_min_pool_size_real = pick($::barbican::database_min_pool_size, $database_min_pool_size)
@@ -62,7 +64,8 @@ class barbican::db (
         require 'mysql::bindings::python'
       }
       /^postgresql:\/\//: {
-        $backend_package = $::barbican::params::psycopg_package_name
+        $backend_package = false
+        require 'postgresql::lib::python'
       }
       /^sqlite:\/\//: {
         $backend_package = $::barbican::params::sqlite_package_name
