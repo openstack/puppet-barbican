@@ -19,7 +19,6 @@ describe 'barbican::keystone::auth' do
     it { is_expected.to contain_keystone_user('barbican').with(
       :ensure   => 'present',
       :password => 'barbican_password',
-      :tenant   => 'foobar'
     ) }
 
     it { is_expected.to contain_keystone_user_role('barbican@foobar').with(
