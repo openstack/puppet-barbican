@@ -84,13 +84,13 @@ describe 'barbican::logging' do
      :default_log_levels, :fatal_deprecations,
      :instance_format, :instance_uuid_format,
      :log_date_format, ].each { |param|
-        it { is_expected.to contain_barbican_config("DEFAULT/#{param}").with_ensure('absent') }
+        it { is_expected.to contain_barbican_config("DEFAULT/#{param}").with_value('<SERVICE DEFAULT>') }
       }
   end
 
   context 'on Debian platforms' do
     let :facts do
-      { :osfamily => 'Debian' }
+      @default_facts.merge({ :osfamily => 'Debian' })
     end
 
     it_configures 'barbican-logging'
@@ -98,7 +98,7 @@ describe 'barbican::logging' do
 
   context 'on RedHat platforms' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      @default_facts.merge({ :osfamily => 'RedHat' })
     end
 
     it_configures 'barbican-logging'

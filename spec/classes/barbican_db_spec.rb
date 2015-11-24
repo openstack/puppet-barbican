@@ -8,10 +8,10 @@ describe 'barbican::db' do
 
       it { is_expected.to contain_class('barbican::params') }
       it { is_expected.to contain_barbican_config('database/connection').with_value('sqlite:////var/lib/barbican/barbican.sqlite') }
-      it { is_expected.to contain_barbican_config('database/idle_timeout').with_value('3600') }
-      it { is_expected.to contain_barbican_config('database/min_pool_size').with_value('1') }
-      it { is_expected.to contain_barbican_config('database/max_retries').with_value('10') }
-      it { is_expected.to contain_barbican_config('database/retry_interval').with_value('10') }
+      it { is_expected.to contain_barbican_config('database/idle_timeout').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_barbican_config('database/min_pool_size').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_barbican_config('database/max_retries').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_barbican_config('database/retry_interval').with_value('<SERVICE DEFAULT>') }
 
     end
 
@@ -58,10 +58,10 @@ describe 'barbican::db' do
 
   context 'on Debian platforms' do
     let :facts do
-      { :osfamily => 'Debian',
+      @default_facts.merge({ :osfamily => 'Debian',
         :operatingsystem => 'Debian',
         :operatingsystemrelease => 'jessie',
-      }
+      })
     end
 
     it_configures 'barbican::db'
@@ -84,9 +84,9 @@ describe 'barbican::db' do
 
   context 'on Redhat platforms' do
     let :facts do
-      { :osfamily => 'RedHat',
+      @default_facts.merge({ :osfamily => 'RedHat',
         :operatingsystemrelease => '7.1',
-      }
+      })
     end
 
     it_configures 'barbican::db'
