@@ -26,13 +26,12 @@ describe 'barbican::keystone::auth' do
       :roles   => ['admin']
     )}
 
-    it { is_expected.to contain_keystone_service('barbican').with(
+    it { is_expected.to contain_keystone_service('barbican::key-manager').with(
       :ensure      => 'present',
-      :type        => 'key-manager',
       :description => 'Key management Service'
     ) }
 
-    it { is_expected.to contain_keystone_endpoint('RegionOne/barbican').with(
+    it { is_expected.to contain_keystone_endpoint('RegionOne/barbican::key-manager').with(
       :ensure       => 'present',
       :public_url   => 'http://127.0.0.1:9311',
       :admin_url    => 'http://127.0.0.1:9311',
@@ -48,7 +47,7 @@ describe 'barbican::keystone::auth' do
         :admin_url    => 'http://10.10.10.12:81' }
     end
 
-    it { is_expected.to contain_keystone_endpoint('RegionOne/barbican').with(
+    it { is_expected.to contain_keystone_endpoint('RegionOne/barbican::key-manager').with(
       :ensure       => 'present',
       :public_url   => 'https://10.10.10.10:80',
       :internal_url => 'http://10.10.10.11:81',
@@ -64,8 +63,8 @@ describe 'barbican::keystone::auth' do
 
     it { is_expected.to contain_keystone_user('barbicany') }
     it { is_expected.to contain_keystone_user_role('barbicany@services') }
-    it { is_expected.to contain_keystone_service('barbicany') }
-    it { is_expected.to contain_keystone_endpoint('RegionOne/barbicany') }
+    it { is_expected.to contain_keystone_service('barbicany::key-manager') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/barbicany::key-manager') }
   end
 
   describe 'when overriding service name' do
@@ -77,8 +76,8 @@ describe 'barbican::keystone::auth' do
 
     it { is_expected.to contain_keystone_user('barbican') }
     it { is_expected.to contain_keystone_user_role('barbican@services') }
-    it { is_expected.to contain_keystone_service('barbican_service') }
-    it { is_expected.to contain_keystone_endpoint('RegionOne/barbican_service') }
+    it { is_expected.to contain_keystone_service('barbican_service::key-manager') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/barbican_service::key-manager') }
   end
 
   describe 'when disabling user configuration' do
@@ -92,9 +91,8 @@ describe 'barbican::keystone::auth' do
 
     it { is_expected.not_to contain_keystone_user('barbican') }
     it { is_expected.to contain_keystone_user_role('barbican@services') }
-    it { is_expected.to contain_keystone_service('barbican').with(
+    it { is_expected.to contain_keystone_service('barbican::key-manager').with(
       :ensure      => 'present',
-      :type        => 'key-manager',
       :description => 'Key management Service'
     ) }
 
@@ -112,9 +110,8 @@ describe 'barbican::keystone::auth' do
 
     it { is_expected.not_to contain_keystone_user('barbican') }
     it { is_expected.not_to contain_keystone_user_role('barbican@services') }
-    it { is_expected.to contain_keystone_service('barbican').with(
+    it { is_expected.to contain_keystone_service('barbican::key-manager').with(
       :ensure      => 'present',
-      :type        => 'key-manager',
       :description => 'Key management Service'
     ) }
 
