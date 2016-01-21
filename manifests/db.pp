@@ -54,13 +54,17 @@ class barbican::db (
   $database_max_overflow_real = pick($::barbican::database_max_overflow, $database_max_overflow)
 
   validate_re($database_connection_real,
-    '(sqlite|mysql|postgresql):\/\/(\S+:\S+@\S+\/\S+)?')
+    '^(sqlite|mysql(\+pymysql)?|postgresql):\/\/(\S+:\S+@\S+\/\S+)?')
 
   case $database_connection_real {
-    /^mysql:\/\//: {
-      $backend_package = false
+    /^mysql(\+pymysql)?:\/\//: {
       require 'mysql::bindings'
       require 'mysql::bindings::python'
+      if $database_connection_real =~ /^mysql\+pymysql/ {
+        $backend_package = $::barbican::params::pymysql_package_name
+      } else {
+        $backend_package = false
+      }
     }
     /^postgresql:\/\//: {
       $backend_package = false
