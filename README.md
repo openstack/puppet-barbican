@@ -14,7 +14,7 @@ barbican
 Overview
 --------
 
-The barbican module is a part of [OpenStack](https://github.com/openstack), an effort by the Openstack infrastructure team to provide continuous integration testing and code review for Openstack and Openstack community projects not part of the core software.  The module its self is used to flexibly configure and manage the Key management service for Openstack.
+The barbican module is a part of [OpenStack](https://github.com/openstack), an effort by the OpenStack infrastructure team to provide continuous integration testing and code review for OpenStack and OpenStack community projects not part of the core software.  The module its self is used to flexibly configure and manage the Key management service for OpenStack.
 
 Module Description
 ------------------
@@ -26,7 +26,7 @@ Setup
 
 **What the barbican module affects**
 
-* [Barbican](https://wiki.openstack.org/wiki/Barbican), the Key management service for Openstack.
+* [Barbican](https://wiki.openstack.org/wiki/Barbican), the Key management service for OpenStack.
 
 ### Installing barbican
 
