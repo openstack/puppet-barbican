@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'barbican::logging' do
+describe 'barbican::api::logging' do
 
   let :params do
     {
