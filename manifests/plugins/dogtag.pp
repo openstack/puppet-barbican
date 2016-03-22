@@ -52,7 +52,6 @@ class barbican::plugins::dogtag (
   $dogtag_plugin_plugin_working_dir = $::os_service_default,
 ) {
 
-  include ::barbican::api
   include ::barbican::params
 
   if $dogtag_plugin_nss_password == undef {
@@ -62,8 +61,8 @@ class barbican::plugins::dogtag (
   package {'dogtag-client':
     ensure => $dogtag_plugin_ensure_package,
     name   => $::barbican::params::dogtag_client_package,
-    tag    => ['openstack', 'dogtag-client-package']
-  } -> Service['barbican-api']
+    tag    => ['openstack', 'barbican-package']
+  }
 
   barbican_config {
     'dogtag_plugin/pem_path':           value => $dogtag_plugin_pem_path;
@@ -75,4 +74,6 @@ class barbican::plugins::dogtag (
     'dogtag_plugin/ca_expiration_time': value => $dogtag_plugin_ca_expiration_time;
     'dogtag_plugin/plugin_working_dir': value => $dogtag_plugin_plugin_working_dir;
   }
+
+  Package['dogtag-client'] -> Barbican_config<||>
 }

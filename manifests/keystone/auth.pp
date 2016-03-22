@@ -68,9 +68,9 @@ class barbican::keystone::auth (
   $real_service_name    = pick($service_name, $auth_name)
 
   if $configure_user_role {
-    Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'barbican-server' |>
+    Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'barbican-api' |>
   }
-  Keystone_endpoint["${region}/${real_service_name}::${service_name}"]  ~> Service <| name == 'barbican-server' |>
+  Keystone_endpoint["${region}/${real_service_name}::${service_type}"]  ~> Service <| name == 'barbican-api' |>
 
   keystone::resource::service_identity { 'barbican':
     configure_user      => $configure_user,

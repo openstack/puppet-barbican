@@ -21,6 +21,7 @@ describe 'barbican::plugins::dogtag' do
       :dogtag_plugin_simple_cmc_profile   => '<SERVICE DEFAULT>',
       :dogtag_plugin_ca_expiration_time   => '<SERVICE DEFAULT>',
       :dogtag_plugin_plugin_working_dir   => '<SERVICE DEFAULT>',
+      :keystone_password                  => 'password',
     }
   end
 
@@ -49,9 +50,9 @@ describe 'barbican::plugins::dogtag' do
         param_set
       end
 
-      it { is_expected.to contain_package('python-barbicanclient').with(
+      it { is_expected.to contain_package('dogtag-client').with(
         'ensure' => param_hash[:dogtag_plugin_ensure_package],
-        'tag'    => 'openstack',
+        'tag'    => ['openstack', 'barbican-package'],
       ) }
 
       it 'is_expected.to set dogtag parameters' do

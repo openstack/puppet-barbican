@@ -5,6 +5,7 @@ describe 'barbican::api class' do
       include ::openstack_integration
       include ::openstack_integration::repos
       include ::openstack_integration::mysql
+      include ::openstack_integration::keystone
 
       case $::osfamily {
         'Debian': {
@@ -13,6 +14,10 @@ describe 'barbican::api class' do
         'RedHat': {
           # Barbican resources
           include ::barbican
+
+          class { '::barbican::keystone::auth':
+            password => 'a_big_secret',
+          }
 
           class { '::barbican::api::logging':
             verbose => true,
@@ -24,9 +29,20 @@ describe 'barbican::api class' do
           class { '::barbican::keystone::notification':
           }
 
+          class { '::barbican::db::mysql':
+            password => 'a_big_secret',
+          }
+
+          class { '::barbican::db':
+            database_connection => 'mysql+pymysql://barbican:a_big_secret@127.0.0.1/barbican?charset=utf8',
+          }
+
           class { '::barbican::api':
-            enabled_certificate_plugins => ['simple_certificate','dogtag'],
-            host_href                   => 'http://localhost:9311'
+            host_href                         => 'http://localhost:9311',
+            auth_type                         => 'keystone',
+            keystone_password                 => 'a_big_secret',
+            enabled_certificate_plugins       => ['snakeoil_ca'],
+            db_auto_create                    => false,
           }
         }
       }
@@ -35,13 +51,13 @@ describe 'barbican::api class' do
     it 'should work with no errors' do
       # Run it twice and test for idempotency
       apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, :catch_changes  => true)
     end
 
     if os[:family].casecmp('RedHat') == 0
       describe 'store a secret' do
         it 'should store a secret' do
-          shell('barbican -N --os-project-id 12345 --endpoint http://localhost:9311 secret store --payload "my big bad secret"') do |r|
+          shell('barbican --os-username barbican --os-password a_big_secret --os-tenant-name services --os-auth-url http://127.0.0.1:5000/v2.0 --endpoint http://localhost:9311 secret store --payload "my big bad secret" --os-identity-api-version 2') do |r|
             expect(r.stdout).to match(/ACTIVE/)
           end
         end
@@ -49,7 +65,7 @@ describe 'barbican::api class' do
 
       describe 'generate a secret' do
         it 'should generate a secret' do
-          shell('barbican -N --os-project-id 12345 --endpoint http://localhost:9311 secret order create key --name foo') do |r|
+          shell('barbican --os-username barbican --os-password a_big_secret --os-tenant-name services --os-auth-url http://127.0.0.1:5000/v2.0 --endpoint http://localhost:9311 secret order create key --name foo --os-identity-api-version 2') do |r|
             expect(r.stdout).to match(/Order href/)
           end
         end
