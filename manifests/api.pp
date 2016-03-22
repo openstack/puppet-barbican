@@ -27,16 +27,24 @@
 #   Defaults to http://`hostname`:<bind_port>
 #   TODO: needs to be set
 #
+# [*max_allowed_secret_in_bytes*]
+#   (optional) Maximum allowed secret size to be stored.
+#   Defaults to $::os_service_default
+#
+# [*max_allowed_request_size_in_bytes*]
+#   (optional) Maximum request size against the barbican API.
+#   Defaults to $::os_service_default
+#
 # [*rpc_backend*]
 #   (optional) The rpc backend implementation to use, can be:
 #     rabbit (for rabbitmq)
 #     qpid (for qpid)
 #     zmq (for zeromq)
-#   Defaults to 'rabbit'
+#   Defaults to $::os_service_default
 #
 # [*rabbit_host*]
 #   (optional) Location of rabbitmq installation.
-#   Defaults to 'localhost'
+#   Defaults to $::os_service_default
 #
 # [*rabbit_hosts*]
 #   (optional) List of clustered rabbit servers.
@@ -87,31 +95,31 @@
 #
 # [*enable_queue*]
 #   (optional) Enable asynchronous queuing
-#   Defaults to False
+#   Defaults to $::os_service_default
 #
 # [*queue_namespace*]
 #   (optional) Namespace for the queue
-#   Defaults to barbican
+#   Defaults to $::os_service_default
 #
 # [*queue_topic*]
 #   (optional) Topic for the queue
-#   Defaults to barbican.workers
+#   Defaults to $::os_service_default
 #
 # [*queue_version*]
 #   (optional) Version for the task API
-#   Defaults to 1.1
+#   Defaults to $::os_service_default
 #
 # [*queue_server_name*]
 #   (optional) Server name for RPC service
-#   Defaults to 'barbican.queue'
+#   Defaults to $::os_service_default
 #
 # [*retry_scheduler_initial_delay_seconds*]
 #   (optional) Seconds (float) to wait before starting retry scheduler
-#   Defaults to 10.0
+#   Defaults to $::os_service_default
 #
 # [*retry_scheduler_periodic_interval_max_seconds*]
 #   (optional) Seconds (float) to wait between starting retry scheduler
-#   Defaults to 10.0
+#   Defaults to $::os_service_default
 #
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
@@ -151,40 +159,40 @@
 #   Defaults to true.
 #
 class barbican::api (
-  $ensure_package                     = 'present',
-  $client_package_ensure              = 'present',
-  $bind_host                          = '0.0.0.0',
-  $bind_port                          = '9311',
-  $host_href                          = undef,
-  $rpc_backend                        = $::os_service_default,
-  $rabbit_host                        = $::os_service_default,
-  $rabbit_hosts                       = $::os_service_default,
-  $rabbit_password                    = $::os_service_default,
-  $rabbit_port                        = $::os_service_default,
-  $rabbit_userid                      = $::os_service_default,
-  $rabbit_virtual_host                = $::os_service_default,
-  $rabbit_use_ssl                     = $::os_service_default,
-  $rabbit_heartbeat_timeout_threshold = $::os_service_default,
-  $rabbit_heartbeat_rate              = $::os_service_default,
-  $rabbit_ha_queues                   = $::os_service_default,
-  $amqp_durable_queues                = $::os_service_default,
-  $enable_queue                       = $::os_service_default,
-  $queue_namespace                    = $::os_service_default,
-  $queue_topic                        = $::os_service_default,
-  $queue_version                      = $::os_service_default,
-  $queue_server_name                  = $::os_service_default,
-  $retry_scheduler_initial_delay_seconds
-                                      = $::os_service_default,
-  $retry_scheduler_periodic_interval_max_seconds
-                                      = $::os_service_default,
-  $kombu_ssl_ca_certs                 = $::os_service_default,
-  $kombu_ssl_certfile                 = $::os_service_default,
-  $kombu_ssl_keyfile                  = $::os_service_default,
-  $kombu_ssl_version                  = $::os_service_default,
-  $kombu_reconnect_delay              = $::os_service_default,
-  $kombu_compression                  = $::os_service_default,
-  $manage_service                     = true,
-  $enabled                            = true,
+  $ensure_package                                = 'present',
+  $client_package_ensure                         = 'present',
+  $bind_host                                     = '0.0.0.0',
+  $bind_port                                     = '9311',
+  $host_href                                     = undef,
+  $max_allowed_secret_in_bytes                   = $::os_service_default,
+  $max_allowed_request_size_in_bytes             = $::os_service_default,
+  $rpc_backend                                   = $::os_service_default,
+  $rabbit_host                                   = $::os_service_default,
+  $rabbit_hosts                                  = $::os_service_default,
+  $rabbit_password                               = $::os_service_default,
+  $rabbit_port                                   = $::os_service_default,
+  $rabbit_userid                                 = $::os_service_default,
+  $rabbit_virtual_host                           = $::os_service_default,
+  $rabbit_use_ssl                                = $::os_service_default,
+  $rabbit_heartbeat_timeout_threshold            = $::os_service_default,
+  $rabbit_heartbeat_rate                         = $::os_service_default,
+  $rabbit_ha_queues                              = $::os_service_default,
+  $amqp_durable_queues                           = $::os_service_default,
+  $enable_queue                                  = $::os_service_default,
+  $queue_namespace                               = $::os_service_default,
+  $queue_topic                                   = $::os_service_default,
+  $queue_version                                 = $::os_service_default,
+  $queue_server_name                             = $::os_service_default,
+  $retry_scheduler_initial_delay_seconds         = $::os_service_default,
+  $retry_scheduler_periodic_interval_max_seconds = $::os_service_default,
+  $kombu_ssl_ca_certs                            = $::os_service_default,
+  $kombu_ssl_certfile                            = $::os_service_default,
+  $kombu_ssl_keyfile                             = $::os_service_default,
+  $kombu_ssl_version                             = $::os_service_default,
+  $kombu_reconnect_delay                         = $::os_service_default,
+  $kombu_compression                             = $::os_service_default,
+  $manage_service                                = true,
+  $enabled                                       = true,
 ) inherits barbican::params {
 
   include ::barbican::db
@@ -282,10 +290,12 @@ class barbican::api (
     'queue/server_name': value => $queue_server_name;
   }
 
-  # retry scheduler options
+  # retry scheduler and max allowed secret options
   barbican_config {
     'retry_scheduler/initial_delay_seconds':         value => $retry_scheduler_initial_delay_seconds;
     'retry_scheduler/periodic_interval_max_seconds': value => $retry_scheduler_periodic_interval_max_seconds;
+    'DEFAULT/max_allowed_secret_in_bytes':           value => $max_allowed_secret_in_bytes;
+    'DEFAULT/max_allowed_request_size_in_bytes':     value => $max_allowed_request_size_in_bytes;
   }
 
   if $manage_service {

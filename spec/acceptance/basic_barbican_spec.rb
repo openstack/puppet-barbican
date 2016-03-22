@@ -18,6 +18,9 @@ describe 'barbican::api class' do
             verbose => true,
           }
 
+          class { '::barbican::quota':
+          }
+
           class { '::barbican::api':
           }
         }
