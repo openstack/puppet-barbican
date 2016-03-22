@@ -1,5 +1,5 @@
 require 'spec_helper_acceptance'
-describe 'barbican::api class' do
+describe 'barbican::api basic test class' do
   context 'default parameters' do
     pp= <<-EOS
       include ::openstack_integration
@@ -41,8 +41,14 @@ describe 'barbican::api class' do
             host_href                         => 'http://localhost:9311',
             auth_type                         => 'keystone',
             keystone_password                 => 'a_big_secret',
+            service_name                      => 'httpd',
             enabled_certificate_plugins       => ['snakeoil_ca'],
             db_auto_create                    => false,
+          }
+
+          include ::apache
+          class { '::barbican::wsgi::apache':
+            ssl => false,
           }
         }
       }
@@ -72,7 +78,7 @@ describe 'barbican::api class' do
       end
 
       describe port(9311) do
-        it { is_expected.to be_listening.with('tcp') }
+        it { is_expected.to be_listening }
       end
     end
   end

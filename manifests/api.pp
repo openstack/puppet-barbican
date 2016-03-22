@@ -204,6 +204,15 @@
 #   automatically when the server starts.
 #   Defaults to $::os_service_default
 #
+# [*service_name*]
+#   (optional) Name of the service that will be providing the
+#   server functionality of barbican-api.
+#   If the value is 'httpd', this means barbican-api will be a web
+#   service, and you must use another class to configure that
+#   web service. For example, use class { 'barbican::wsgi::apache'...}
+#   to make barbican-api be a web app using apache mod_wsgi.
+#   Defaults to 'barbican-api'
+#
 class barbican::api (
   $ensure_package                                = 'present',
   $client_package_ensure                         = 'present',
@@ -250,6 +259,7 @@ class barbican::api (
   $enabled                                       = true,
   $sync_db                                       = true,
   $db_auto_create                                = $::os_service_default,
+  $service_name                                  = 'barbican-api',
 ) inherits barbican::params {
 
   include ::barbican::db
@@ -271,7 +281,7 @@ class barbican::api (
     owner   => 'root',
     group   => 'barbican',
     require => Package['barbican-api'],
-    notify  => Service['barbican-api'],
+    notify  => Service[$service_name],
   }
 
   file { ['/etc/barbican/barbican.conf',
@@ -279,7 +289,7 @@ class barbican::api (
           '/etc/barbican/gunicorn-config.py']:
     ensure  => present,
     require => Package['barbican-api'],
-    notify  => Service['barbican-api'],
+    notify  => Service[$service_name],
   }
 
   package { 'barbican-api':
@@ -290,8 +300,8 @@ class barbican::api (
 
   File['/etc/barbican/barbican.conf']          -> Barbican_config<||>
   File['/etc/barbican/barbican-api-paste.ini'] -> Barbican_api_paste_ini<||>
-  Barbican_config<||>                          ~> Service['barbican-api']
-  Barbican_api_paste_ini<||>                   ~> Service['barbican-api']
+  Barbican_config<||>                          ~> Service[$service_name]
+  Barbican_api_paste_ini<||>                   ~> Service[$service_name]
 
   # basic service config
   if $host_href == undef {
@@ -311,7 +321,7 @@ class barbican::api (
       path  => '/etc/barbican/gunicorn-config.py',
       line  => "bind = '${bind_host}:${bind_port}'",
       match => '.*bind = .*',
-    } -> Service['barbican-api']
+    } -> Service[$service_name]
 
   #rabbit config
   if $rpc_backend in [$::os_service_default, 'rabbit'] {
@@ -403,13 +413,28 @@ class barbican::api (
     include ::barbican::db::sync
   }
 
-  service { 'barbican-api':
-    ensure     => $service_ensure,
-    name       => $::barbican::params::api_service_name,
-    enable     => $enabled,
-    hasstatus  => true,
-    hasrestart => true,
-    tag        => 'barbican-service',
+  if $service_name == 'barbican-api' {
+    service { 'barbican-api':
+      ensure     => $service_ensure,
+      name       => $::barbican::params::api_service_name,
+      enable     => $enabled,
+      hasstatus  => true,
+      hasrestart => true,
+      tag        => 'barbican-service',
+    }
+  } elsif $service_name == 'httpd' {
+    include ::apache::params
+    service { 'barbican-api':
+      ensure => 'stopped',
+      name   => $::barbican::params::api_service_name,
+      enable => false,
+      tag    => 'barbican-service',
+    }
+
+    # we need to make sure barbican-api is stopped before trying to start apache
+    Service['barbican-api'] -> Service[$service_name]
+  } else {
+    fail('Invalid service_name. Use barbican-api for stand-alone or httpd')
   }
 
 }

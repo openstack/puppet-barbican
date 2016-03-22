@@ -11,7 +11,7 @@ class barbican::params {
       $worker_service_name          = 'openstack-barbican-worker'
       $client_package_name          = 'python-barbicanclient'
       $barbican_wsgi_script_path    = '/var/www/cgi-bin/barbican'
-      $barbican_wsgi_script_source  = '/usr/share/barbican/barbican.wsgi'
+      $barbican_wsgi_script_source  = '/usr/lib/python2.7/site-packages/barbican/api/app.wsgi'
       $paste_config                 = '/etc/barbican/barbican-api-paste.ini'
       $dogtag_client_package        = 'pki-base'
     }
@@ -20,7 +20,7 @@ class barbican::params {
       $service_name                 = 'openstack-barbican'
       $client_package_name          = 'python-barbicanclient'
       $barbican_wsgi_script_path    = '/var/www/cgi-bin/barbican'
-      $barbican_wsgi_script_source  = '/usr/share/barbican/barbican.wsgi'
+      $barbican_wsgi_script_source  = '/usr/lib/python2.7/site-packages/barbican/api/app.wsgi'
       $paste_config                 = '/etc/barbican/barbican-api-paste.ini'
       $dogtag_client_package        = 'pki-base'
     }
