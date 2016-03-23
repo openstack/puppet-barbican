@@ -14,7 +14,7 @@ barbican
 Overview
 --------
 
-The barbican module is a part of [OpenStack](https://github.com/openstack), an effort by the OpenStack infrastructure team to provide continuous integration testing and code review for OpenStack and OpenStack community projects not part of the core software.  The module its self is used to flexibly configure and manage the Key management service for OpenStack.
+The barbican module is a part of [OpenStack](https://github.com/openstack), an effort by the OpenStack infrastructure team to provide continuous integration testing and code review for OpenStack and OpenStack community projects not part of the core software.  The module itself is used to flexibly configure and manage the Key management service for OpenStack.
 
 Module Description
 ------------------
@@ -30,8 +30,11 @@ Setup
 
 ### Installing barbican
 
-    barbican is not currently in Puppet Forge, but is anticipated to be added soon.  Once that happens, you'll be able to install barbican with:
-    puppet module install openstack/barbican
+barbican is not currently in Puppet Forge, but is anticipated to be added soon.  Once that happens, you'll be able to install barbican with:
+
+```
+puppet module install openstack/barbican
+```
 
 ### Beginning with barbican
 
