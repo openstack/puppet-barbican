@@ -250,7 +250,7 @@ class barbican::api (
 
   #rabbit config
   if $rpc_backend in [$::os_service_default, 'rabbit'] {
-    oslo::messaging_rabbit {'barbican_config':
+    oslo::messaging::rabbit {'barbican_config':
       rabbit_password             => $rabbit_password,
       rabbit_userid               => $rabbit_userid,
       rabbit_virtual_host         => $rabbit_virtual_host,
