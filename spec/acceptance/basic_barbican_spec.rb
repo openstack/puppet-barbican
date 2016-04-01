@@ -21,6 +21,9 @@ describe 'barbican::api class' do
           class { '::barbican::quota':
           }
 
+          class { '::barbican::keystone::notification':
+          }
+
           class { '::barbican::api':
           }
         }
