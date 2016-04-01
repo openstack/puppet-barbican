@@ -16,7 +16,7 @@ class barbican::db::sync(
     path        => '/usr/bin',
     user        => 'barbican',
     refreshonly => true,
-    subscribe   => [Package['barbican-api'], Barbican_config['database/connection']],
+    subscribe   => [Package['barbican-api'], Barbican_config['database/connection'], Barbican_config['DEFAULT/sql_connection'], ]
   }
 
   Exec['barbican-db-manage'] ~> Service<| title == 'barbican-api' |>

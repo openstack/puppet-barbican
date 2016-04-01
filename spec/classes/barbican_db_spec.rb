@@ -12,6 +12,12 @@ describe 'barbican::db' do
       it { is_expected.to contain_barbican_config('database/max_retries').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_barbican_config('database/retry_interval').with_value('<SERVICE DEFAULT>') }
 
+      # TODO(aschultz): remove once oslo is properly used
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_connection').with_value('sqlite:////var/lib/barbican/barbican.sqlite') }
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_size').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('<SERVICE DEFAULT>') }
+
     end
 
     context 'with specific parameters' do
@@ -21,6 +27,8 @@ describe 'barbican::db' do
           :database_min_pool_size  => '2',
           :database_max_retries    => '11',
           :database_retry_interval => '11',
+          :database_max_overflow   => '11',
+          :database_pool_size      => '2',
         }
       end
 
@@ -29,7 +37,13 @@ describe 'barbican::db' do
       it { is_expected.to contain_barbican_config('database/min_pool_size').with_value('2') }
       it { is_expected.to contain_barbican_config('database/max_retries').with_value('11') }
       it { is_expected.to contain_barbican_config('database/retry_interval').with_value('11') }
+      it { is_expected.to contain_barbican_config('database/max_overflow').with_value('11') }
 
+      # TODO(aschultz) remove once oslo is properly used
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_connection').with_value('mysql+pymysql://barbican:barbican@localhost/barbican').with_secret(true) }
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('3601') }
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_size').with_value('2') }
+      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('11') }
     end
 
     context 'with postgresql backend' do
