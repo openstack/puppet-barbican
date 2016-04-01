@@ -4,6 +4,10 @@
 #
 # === Parameters
 #
+# [*dogtag_plugin_ensure_package*]
+#   (optional) State of the dogtag client packages
+#   Defaults to 'present'
+#
 # [*dogtag_plugin_pem_path*]
 #   (optional) Path to KRA agent PEM file
 #   Defaults to $::os_service_default
@@ -37,6 +41,7 @@
 #   Defaults to $::os_service_default
 #
 class barbican::plugins::dogtag (
+  $dogtag_plugin_ensure_package     = 'present',
   $dogtag_plugin_pem_path           = $::os_service_default,
   $dogtag_plugin_dogtag_host        = $::os_service_default,
   $dogtag_plugin_dogtag_port        = $::os_service_default,
@@ -48,13 +53,14 @@ class barbican::plugins::dogtag (
 ) {
 
   include ::barbican::api
+  include ::barbican::params
 
   if $dogtag_plugin_nss_password == undef {
     fail('dogtag_plugin_nss_password must be defined')
   }
 
   package {'dogtag-client':
-    ensure => $::barbican::api::ensure_package,
+    ensure => $dogtag_plugin_ensure_package,
     name   => $::barbican::params::dogtag_client_package,
     tag    => ['openstack', 'dogtag-client-package']
   } -> Service['barbican-api']

@@ -13,6 +13,7 @@ describe 'barbican::plugins::dogtag' do
 
   let :default_params do
     {
+      :dogtag_plugin_ensure_package       => 'present',
       :dogtag_plugin_pem_path             => '<SERVICE DEFAULT>',
       :dogtag_plugin_dogtag_host          => '<SERVICE DEFAULT>',
       :dogtag_plugin_dogtag_port          => '<SERVICE DEFAULT>',
@@ -47,6 +48,11 @@ describe 'barbican::plugins::dogtag' do
       let :params do
         param_set
       end
+
+      it { is_expected.to contain_package('python-barbicanclient').with(
+        'ensure' => param_hash[:dogtag_plugin_ensure_package],
+        'tag'    => 'openstack',
+      ) }
 
       it 'is_expected.to set dogtag parameters' do
         is_expected.to contain_barbican_config('dogtag_plugin/pem_path')\
