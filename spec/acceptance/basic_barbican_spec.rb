@@ -25,6 +25,7 @@ describe 'barbican::api class' do
           }
 
           class { '::barbican::api':
+            enabled_certificate_plugins => ['simple_certificate','dogtag']
           }
         }
       }

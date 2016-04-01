@@ -41,6 +41,10 @@ describe 'barbican::api' do
       :kombu_reconnect_delay                         => '<SERVICE DEFAULT>',
       :manage_service                                => true,
       :enabled                                       => true,
+      :enabled_secretstore_plugins                   => ['<SERVICE DEFAULT>'],
+      :enabled_crypto_plugins                        => ['<SERVICE DEFAULT>'],
+      :enabled_certificate_plugins                   => ['<SERVICE DEFAULT>'],
+      :enabled_certificate_event_plugins             => ['<SERVICE DEFAULT>'],
       :retry_scheduler_initial_delay_seconds         => '<SERVICE DEFAULT>',
       :retry_scheduler_periodic_interval_max_seconds => '<SERVICE DEFAULT>',
     }
@@ -74,6 +78,10 @@ describe 'barbican::api' do
       :kombu_ssl_keyfile                             => 'path_to_keyfile',
       :kombu_ssl_version                             => '1.2',
       :kombu_reconnect_delay                         => '10',
+      :enabled_secretstore_plugins                   => ['dogtag_crypto', 'store_crypto', 'kmip'],
+      :enabled_crypto_plugins                        => ['simple_crypto'],
+      :enabled_certificate_plugins                   => ['simple_certificate', 'dogtag'],
+      :enabled_certificate_event_plugins             => ['simple_certificate_event', 'foo_event'],
       :retry_scheduler_initial_delay_seconds         => 20.0,
       :retry_scheduler_periodic_interval_max_seconds => 20.0,
       :max_allowed_secret_in_bytes                   => 20000,
@@ -112,7 +120,7 @@ describe 'barbican::api' do
           'bind_host',
           'bind_port',
           'max_allowed_secret_in_bytes',
-          'max_allowed_request_size_in_bytes'
+          'max_allowed_request_size_in_bytes',
         ].each do |config|
           is_expected.to contain_barbican_config("DEFAULT/#{config}").with_value(param_hash[config.intern])
         end
@@ -142,6 +150,17 @@ describe 'barbican::api' do
         is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_value(param_hash[:kombu_ssl_keyfile])
         is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_ssl_version').with_value(param_hash[:kombu_ssl_version])
         is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_reconnect_delay').with_value(param_hash[:kombu_reconnect_delay])
+      end
+
+      it 'configures enabled plugins' do
+        is_expected.to contain_barbican_config('secretstore/enabled_secretstore_plugins') \
+          .with_value(param_hash[:enabled_secretstore_plugins])
+        is_expected.to contain_barbican_config('crypto/enabled_crypto_plugins') \
+          .with_value(param_hash[:enabled_crypto_plugins])
+        is_expected.to contain_barbican_config('certificate/enabled_certificate_plugins') \
+          .with_value(param_hash[:enabled_certificate_plugins])
+        is_expected.to contain_barbican_config('certificate_event/enabled_certificate_event_plugins') \
+          .with_value(param_hash[:enabled_certificate_event_plugins])
       end
     end
   end

@@ -121,6 +121,25 @@
 #   (optional) Seconds (float) to wait between starting retry scheduler
 #   Defaults to $::os_service_default
 #
+# [*enabled_secretstore_plugins*]
+#   (optional) Enabled secretstore plugins. Multiple plugins
+#   are defined in a list eg. ['store_crypto', dogtag_crypto']
+#   Defaults to $::os_service_default
+#
+# [*enabled_crypto_plugins*]
+#   (optional) Enabled crypto_plugins.  Multiple plugins
+#   are defined in a list eg. ['simple_crypto','p11_crypto']
+#   Defaults to $::os_service_default
+#
+# [*enabled_certificate_plugins*]
+#   (optional) Enabled certificate plugins as a list.
+#   e.g. ['snakeoil_ca', 'dogtag']
+#   Defaults to $::os_service_default
+#
+# [*enabled_certificate_event_plugins*]
+#   (optional) Enabled certificate event plugins as a list
+#   Defaults to $::os_service_default
+#
 # [*kombu_ssl_ca_certs*]
 #   (optional) SSL certification authority file (valid only if SSL enabled).
 #   Defaults to $::os_service_default
@@ -185,6 +204,10 @@ class barbican::api (
   $queue_server_name                             = $::os_service_default,
   $retry_scheduler_initial_delay_seconds         = $::os_service_default,
   $retry_scheduler_periodic_interval_max_seconds = $::os_service_default,
+  $enabled_secretstore_plugins                   = $::os_service_default,
+  $enabled_crypto_plugins                        = $::os_service_default,
+  $enabled_certificate_plugins                   = $::os_service_default,
+  $enabled_certificate_event_plugins             = $::os_service_default,
   $kombu_ssl_ca_certs                            = $::os_service_default,
   $kombu_ssl_certfile                            = $::os_service_default,
   $kombu_ssl_keyfile                             = $::os_service_default,
@@ -296,6 +319,14 @@ class barbican::api (
     'retry_scheduler/periodic_interval_max_seconds': value => $retry_scheduler_periodic_interval_max_seconds;
     'DEFAULT/max_allowed_secret_in_bytes':           value => $max_allowed_secret_in_bytes;
     'DEFAULT/max_allowed_request_size_in_bytes':     value => $max_allowed_request_size_in_bytes;
+  }
+
+  # enabled plugins
+  barbican_config {
+    'secretstore/enabled_secretstore_plugins':             value => $enabled_secretstore_plugins;
+    'crypto/enabled_crypto_plugins':                       value => $enabled_crypto_plugins;
+    'certificate/enabled_certificate_plugins':             value => $enabled_certificate_plugins;
+    'certificate_event/enabled_certificate_event_plugins': value => $enabled_certificate_event_plugins;
   }
 
   if $manage_service {
