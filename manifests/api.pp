@@ -38,7 +38,6 @@
 # [*rpc_backend*]
 #   (optional) The rpc backend implementation to use, can be:
 #     rabbit (for rabbitmq)
-#     qpid (for qpid)
 #     zmq (for zeromq)
 #   Defaults to $::os_service_default
 #
