@@ -43,8 +43,6 @@ class barbican::db (
   $database_max_overflow   = $::os_service_default,
 ) {
 
-  include ::barbican::params
-
   $database_connection_real = pick($::barbican::database_connection, $database_connection)
   $database_idle_timeout_real = pick($::barbican::database_idle_timeout, $database_idle_timeout)
   $database_min_pool_size_real = pick($::barbican::database_min_pool_size, $database_min_pool_size)
@@ -56,44 +54,14 @@ class barbican::db (
   validate_re($database_connection_real,
     '^(sqlite|mysql(\+pymysql)?|postgresql):\/\/(\S+:\S+@\S+\/\S+)?')
 
-  case $database_connection_real {
-    /^mysql(\+pymysql)?:\/\//: {
-      require 'mysql::bindings'
-      require 'mysql::bindings::python'
-      if $database_connection_real =~ /^mysql\+pymysql/ {
-        $backend_package = $::barbican::params::pymysql_package_name
-      } else {
-        $backend_package = false
-      }
-    }
-    /^postgresql:\/\//: {
-      $backend_package = false
-      require 'postgresql::lib::python'
-    }
-    /^sqlite:\/\//: {
-      $backend_package = $::barbican::params::sqlite_package_name
-    }
-    default: {
-      fail('Unsupported backend configured')
-    }
-  }
-
-  if $backend_package and !defined(Package[$backend_package]) {
-    package {'barbican-backend-package':
-      ensure => present,
-      name   => $backend_package,
-      tag    => 'openstack',
-    }
-  }
-
-  barbican_config {
-    'database/connection':     value => $database_connection_real, secret => true;
-    'database/idle_timeout':   value => $database_idle_timeout_real;
-    'database/min_pool_size':  value => $database_min_pool_size_real;
-    'database/max_retries':    value => $database_max_retries_real;
-    'database/retry_interval': value => $database_retry_interval_real;
-    'database/max_pool_size':  value => $database_max_pool_size_real;
-    'database/max_overflow':   value => $database_max_overflow_real;
+  oslo::db { 'barbican_config':
+    connection     => $database_connection_real,
+    idle_timeout   => $database_idle_timeout_real,
+    min_pool_size  => $database_min_pool_size_real,
+    max_pool_size  => $database_max_pool_size_real,
+    max_retries    => $database_max_retries_real,
+    retry_interval => $database_retry_interval_real,
+    max_overflow   => $database_max_overflow_real,
   }
 
 }

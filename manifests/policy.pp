@@ -36,4 +36,6 @@ class barbican::policy (
 
   create_resources('openstacklib::policy::base', $policies)
 
+  oslo::policy { 'barbican_config': policy_file => $policy_path }
+
 }

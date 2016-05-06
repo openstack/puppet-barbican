@@ -20,6 +20,7 @@ describe 'barbican::policy' do
         :key   => 'context_is_admin',
         :value => 'foo:bar'
       })
+      is_expected.to contain_barbican_config('oslo_policy/policy_file').with_value('/etc/barbican/policy.json')
     end
   end
 
