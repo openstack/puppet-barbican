@@ -25,7 +25,8 @@ describe 'barbican::api class' do
           }
 
           class { '::barbican::api':
-            enabled_certificate_plugins => ['simple_certificate','dogtag']
+            enabled_certificate_plugins => ['simple_certificate','dogtag'],
+            host_href                   => 'http://localhost:9311'
           }
         }
       }
