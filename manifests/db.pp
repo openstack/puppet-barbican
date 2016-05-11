@@ -43,6 +43,11 @@
 #   will be removed during a later release.
 #   (Optional) Defaults to $::os_service_default
 #
+# [*database_db_max_retries*]
+#   (Optional) Maximum retries in case of connection error or deadlock error
+#   before error is raised. Set to -1 to specify an infinite retry count.
+#   Defaults to $::os_service_default
+#
 class barbican::db (
   $database_connection     = 'sqlite:////var/lib/barbican/barbican.sqlite',
   $database_idle_timeout   = $::os_service_default,
@@ -52,6 +57,7 @@ class barbican::db (
   $database_retry_interval = $::os_service_default,
   $database_max_overflow   = $::os_service_default,
   $database_pool_size      = $::os_service_default,
+  $database_db_max_retries = $::os_service_default,
 ) {
 
   $database_connection_real = pick($::barbican::database_connection, $database_connection)
@@ -73,6 +79,7 @@ class barbican::db (
     max_retries    => $database_max_retries_real,
     retry_interval => $database_retry_interval_real,
     max_overflow   => $database_max_overflow_real,
+    db_max_retries => $database_db_max_retries,
   }
 
   # TODO(aschultz): Remove this config once barbican properly leverages oslo

@@ -11,6 +11,7 @@ describe 'barbican::db' do
       it { is_expected.to contain_barbican_config('database/min_pool_size').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_barbican_config('database/max_retries').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_barbican_config('database/retry_interval').with_value('<SERVICE DEFAULT>') }
+      it { is_expected.to contain_barbican_config('database/db_max_retries').with_value('<SERVICE DEFAULT>') }
 
       # TODO(aschultz): remove once oslo is properly used
       it { is_expected.to contain_barbican_config('DEFAULT/sql_connection').with_value('sqlite:////var/lib/barbican/barbican.sqlite') }
@@ -29,6 +30,7 @@ describe 'barbican::db' do
           :database_retry_interval => '11',
           :database_max_overflow   => '11',
           :database_pool_size      => '2',
+          :database_db_max_retries => '-1',
         }
       end
 
@@ -38,6 +40,7 @@ describe 'barbican::db' do
       it { is_expected.to contain_barbican_config('database/max_retries').with_value('11') }
       it { is_expected.to contain_barbican_config('database/retry_interval').with_value('11') }
       it { is_expected.to contain_barbican_config('database/max_overflow').with_value('11') }
+      it { is_expected.to contain_barbican_config('database/db_max_retries').with_value('-1') }
 
       # TODO(aschultz) remove once oslo is properly used
       it { is_expected.to contain_barbican_config('DEFAULT/sql_connection').with_value('mysql+pymysql://barbican:barbican@localhost/barbican').with_secret(true) }
