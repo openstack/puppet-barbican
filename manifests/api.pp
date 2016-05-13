@@ -168,6 +168,14 @@
 #   (string value)
 #   Defaults to $::os_service_default
 #
+# [*auth_type*]
+#   (optional) authentication type
+#   Defaults to 'keystone'
+#
+# [*identity_uri*]
+#   (optional) identity server URI, needed for keystone auth
+#   Defaults to 'http://localhost:35357'
+#
 # [*manage_service*]
 #   (optional) If Puppet should manage service startup / shutdown.
 #   Defaults to true.
@@ -175,6 +183,26 @@
 # [*enabled*]
 #   (optional) Whether to enable services.
 #   Defaults to true.
+#
+# [*keystone_password*]
+#   (required) Password used to authentication.
+#
+# [*keystone_tenant*]
+#   (optional) Tenant to authenticate to.
+#   Defaults to 'services'.
+#
+# [*keystone_user*]
+#   (optional) User to authenticate as with keystone.
+#   Defaults to 'barbican'.
+#
+# [*sync_db*]
+#   (optional) Run barbican-db-manage on api nodes.
+#   Defaults to true
+#
+# [*db_auto_create*]
+#   (optional) Barbican API server option to create the database
+#   automatically when the server starts.
+#   Defaults to $::os_service_default
 #
 class barbican::api (
   $ensure_package                                = 'present',
@@ -213,8 +241,15 @@ class barbican::api (
   $kombu_ssl_version                             = $::os_service_default,
   $kombu_reconnect_delay                         = $::os_service_default,
   $kombu_compression                             = $::os_service_default,
+  $auth_type                                     = 'keystone',
+  $identity_uri                                  = 'http://localhost:35357',
+  $keystone_password                             = undef,
+  $keystone_tenant                               = 'services',
+  $keystone_user                                 = 'barbican',
   $manage_service                                = true,
   $enabled                                       = true,
+  $sync_db                                       = true,
+  $db_auto_create                                = $::os_service_default,
 ) inherits barbican::params {
 
   include ::barbican::db
@@ -250,7 +285,7 @@ class barbican::api (
   package { 'barbican-api':
     ensure => $ensure_package,
     name   => $::barbican::params::api_package_name,
-    tag    => ['openstack', 'barbican-api-package'],
+    tag    => ['openstack', 'barbican-package'],
   }
 
   File['/etc/barbican/barbican.conf']          -> Barbican_config<||>
@@ -328,12 +363,44 @@ class barbican::api (
     'certificate_event/enabled_certificate_event_plugins': value => $enabled_certificate_event_plugins;
   }
 
+  # keystone config
+  if $auth_type == 'keystone' {
+    if $keystone_password == undef {
+      fail('keystone_password must be defined')
+    }
+
+    barbican_api_paste_ini {
+      'pipeline:barbican_api/pipeline':              value => 'cors keystone_authtoken context apiapp';
+      'filter:keystone_authtoken/identity_uri':      value => $identity_uri;
+      'filter:keystone_authtoken/admin_tenant_name': value => $keystone_tenant;
+      'filter:keystone_authtoken/admin_user'       : value => $keystone_user;
+      'filter:keystone_authtoken/admin_password'   : value => $keystone_password, secret => true;
+    }
+  } else {
+    barbican_api_paste_ini {
+      'pipeline:barbican_api/pipeline':              value => 'cors unauthenticated-context apiapp';
+      'filter:keystone_authtoken/identity_uri':      ensure => 'absent';
+      'filter:keystone_authtoken/admin_tenant_name': ensure => 'absent';
+      'filter:keystone_authtoken/admin_user'       : ensure => 'absent';
+      'filter:keystone_authtoken/admin_password'   : ensure => 'absent';
+    }
+  }
+
+
   if $manage_service {
     if $enabled {
       $service_ensure = 'running'
     } else {
       $service_ensure = 'stopped'
     }
+  }
+
+  # set value to have the server auto-create the database on startup
+  # instead of using db_sync
+  barbican_config { 'DEFAULT/db_auto_create': value => $db_auto_create }
+
+  if $sync_db {
+    include ::barbican::db::sync
   }
 
   service { 'barbican-api':
