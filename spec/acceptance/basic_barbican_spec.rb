@@ -20,7 +20,6 @@ describe 'barbican::api basic test class' do
           }
 
           class { '::barbican::api::logging':
-            verbose => true,
           }
 
           class { '::barbican::quota':
