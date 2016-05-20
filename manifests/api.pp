@@ -172,7 +172,7 @@
 #   (optional) authentication type
 #   Defaults to 'keystone'
 #
-# [*identity_uri*]
+# [*auth_url*]
 #   (optional) identity server URI, needed for keystone auth
 #   Defaults to 'http://localhost:35357'
 #
@@ -194,6 +194,14 @@
 # [*keystone_user*]
 #   (optional) User to authenticate as with keystone.
 #   Defaults to 'barbican'.
+#
+# [*project_domain_id*]
+#   (optional) Auth user project's domain ID
+#   Defaults to 'default'
+#
+# [*user_domain_id*]
+#   (optional) Auth user's domain ID
+#   Defaults to 'default'
 #
 # [*sync_db*]
 #   (optional) Run barbican-db-manage on api nodes.
@@ -251,10 +259,12 @@ class barbican::api (
   $kombu_reconnect_delay                         = $::os_service_default,
   $kombu_compression                             = $::os_service_default,
   $auth_type                                     = 'keystone',
-  $identity_uri                                  = 'http://localhost:35357',
+  $auth_url                                      = 'http://localhost:35357',
   $keystone_password                             = undef,
   $keystone_tenant                               = 'services',
   $keystone_user                                 = 'barbican',
+  $project_domain_id                             = 'default',
+  $user_domain_id                                = 'default',
   $manage_service                                = true,
   $enabled                                       = true,
   $sync_db                                       = true,
@@ -380,19 +390,23 @@ class barbican::api (
     }
 
     barbican_api_paste_ini {
-      'pipeline:barbican_api/pipeline':              value => 'cors keystone_authtoken context apiapp';
-      'filter:keystone_authtoken/identity_uri':      value => $identity_uri;
-      'filter:keystone_authtoken/admin_tenant_name': value => $keystone_tenant;
-      'filter:keystone_authtoken/admin_user'       : value => $keystone_user;
-      'filter:keystone_authtoken/admin_password'   : value => $keystone_password, secret => true;
+      'pipeline:barbican_api/pipeline':     value => 'cors authtoken context apiapp';
+      'filter:authtoken/auth_url':          value => $auth_url;
+      'filter:authtoken/project_name':      value => $keystone_tenant;
+      'filter:authtoken/username':          value => $keystone_user;
+      'filter:authtoken/password':          value => $keystone_password, secret => true;
+      'filter:authtoken/user_domain_id':    value => $user_domain_id;
+      'filter:authtoken/project_domain_id': value => $project_domain_id;
     }
   } else {
     barbican_api_paste_ini {
-      'pipeline:barbican_api/pipeline':              value => 'cors unauthenticated-context apiapp';
-      'filter:keystone_authtoken/identity_uri':      ensure => 'absent';
-      'filter:keystone_authtoken/admin_tenant_name': ensure => 'absent';
-      'filter:keystone_authtoken/admin_user'       : ensure => 'absent';
-      'filter:keystone_authtoken/admin_password'   : ensure => 'absent';
+      'pipeline:barbican_api/pipeline':     value => 'cors unauthenticated-context apiapp';
+      'filter:authtoken/auth_url':          ensure => 'absent';
+      'filter:authtoken/project_name':      ensure => 'absent';
+      'filter:authtoken/username':          ensure => 'absent';
+      'filter:authtoken/password':          ensure => 'absent';
+      'filter:authtoken/user_domain_id':    ensure => 'absent';
+      'filter:authtoken/project_domain_id': ensure => 'absent';
     }
   }
 

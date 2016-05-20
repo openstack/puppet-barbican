@@ -46,7 +46,7 @@ describe 'barbican::api' do
       :enabled_certificate_plugins                   => ['<SERVICE DEFAULT>'],
       :enabled_certificate_event_plugins             => ['<SERVICE DEFAULT>'],
       :auth_type                                     => 'keystone',
-      :identity_uri                                  => 'http://localhost:35357',
+      :auth_url                                      => 'http://localhost:35357',
       :keystone_password                             => 'foo',
       :retry_scheduler_initial_delay_seconds         => '<SERVICE DEFAULT>',
       :retry_scheduler_periodic_interval_max_seconds => '<SERVICE DEFAULT>',
@@ -92,7 +92,7 @@ describe 'barbican::api' do
       :max_allowed_secret_in_bytes                   => 20000,
       :max_allowed_request_size_in_bytes             => 2000000,
       :enabled                                       => false,
-      :identity_uri                                  => 'https://keystone.example.com:35357',
+      :auth_url                                      => 'https://keystone.example.com:35357',
       :keystone_password                             => 'bar',
     }
   ].each do |param_set|
@@ -182,10 +182,10 @@ describe 'barbican::api' do
 
     it 'is_expected.to set keystone params correctly' do
       is_expected.to contain_barbican_api_paste_ini('pipeline:barbican_api/pipeline')\
-        .with_value('cors keystone_authtoken context apiapp')
-      is_expected.to contain_barbican_api_paste_ini('filter:keystone_authtoken/identity_uri')\
+        .with_value('cors authtoken context apiapp')
+      is_expected.to contain_barbican_api_paste_ini('filter:authtoken/auth_url')\
         .with_value('http://localhost:35357')
-      is_expected.to contain_barbican_api_paste_ini('filter:keystone_authtoken/admin_tenant_name')\
+      is_expected.to contain_barbican_api_paste_ini('filter:authtoken/project_name')\
         .with_value('services')
     end
   end
