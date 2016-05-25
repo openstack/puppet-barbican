@@ -145,9 +145,6 @@ class barbican::wsgi::apache (
     include ::apache::mod::ssl
   }
 
-  Package['barbican-api'] -> Package['httpd']
-  Package['barbican-api'] ~> Service['httpd']
-  Barbican_config <| |> ~> Service['httpd']
   Service['httpd'] -> Keystone_endpoint <| |>
   Service['httpd'] -> Keystone_role <| |>
   Service['httpd'] -> Keystone_service <| |>

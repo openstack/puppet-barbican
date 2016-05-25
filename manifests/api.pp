@@ -310,6 +310,7 @@ class barbican::api (
 
   File['/etc/barbican/barbican.conf']          -> Barbican_config<||>
   File['/etc/barbican/barbican-api-paste.ini'] -> Barbican_api_paste_ini<||>
+  Package['barbican-api']                      ~> Service[$service_name]
   Barbican_config<||>                          ~> Service[$service_name]
   Barbican_api_paste_ini<||>                   ~> Service[$service_name]
 
