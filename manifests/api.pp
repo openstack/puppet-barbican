@@ -221,6 +221,22 @@
 #   to make barbican-api be a web app using apache mod_wsgi.
 #   Defaults to 'barbican-api'
 #
+# [*use_ssl*]
+#   (optional) Enable SSL on the API server
+#   Defaults to false, not set
+#
+# [*cert_file*]
+#   (optinal) Certificate file to use when starting API server securely
+#   Defaults to $::os_service_default
+#
+# [*key_file*]
+#   (optional) Private key file to use when starting API server securely
+#   Defaults to $::os_service_default
+#
+# [*ca_file*]
+#   (optional) CA certificate file to use to verify connecting clients
+#   Defaults to $::os_service_default
+#
 class barbican::api (
   $ensure_package                                = 'present',
   $client_package_ensure                         = 'present',
@@ -269,6 +285,10 @@ class barbican::api (
   $enabled                                       = true,
   $sync_db                                       = true,
   $db_auto_create                                = $::os_service_default,
+  $use_ssl                                       = false,
+  $ca_file                                       = $::os_service_default,
+  $cert_file                                     = $::os_service_default,
+  $key_file                                      = $::os_service_default,
   $service_name                                  = 'barbican-api',
 ) inherits barbican::params {
 
@@ -423,6 +443,22 @@ class barbican::api (
   # set value to have the server auto-create the database on startup
   # instead of using db_sync
   barbican_config { 'DEFAULT/db_auto_create': value => $db_auto_create }
+
+  if $use_ssl {
+    if is_service_default($cert_file) {
+      fail('The cert_file parameter is required when use_ssl is set to true')
+    }
+    if is_service_default($key_file) {
+      fail('The key_file parameter is required when use_ssl is set to true')
+    }
+  }
+
+  # SSL Options
+  barbican_config {
+    'DEFAULT/cert_file' : value => $cert_file;
+    'DEFAULT/key_file' :  value => $key_file;
+    'DEFAULT/ca_file' :   value => $ca_file;
+  }
 
   if $sync_db {
     include ::barbican::db::sync
