@@ -35,7 +35,7 @@
 #
 # [*service_name*]
 #   (optional) Name of the service.
-#   Defaults to the value of auth_name.
+#   Defaults to 'barbican'.
 #
 # [*public_url*]
 #   (optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:9311')
@@ -57,7 +57,7 @@ class barbican::keystone::auth (
   $configure_endpoint  = true,
   $configure_user      = true,
   $configure_user_role = true,
-  $service_name        = undef,
+  $service_name        = 'barbican',
   $service_type        = 'key-manager',
   $region              = 'RegionOne',
   $public_url          = 'http://127.0.0.1:9311',
@@ -65,18 +65,16 @@ class barbican::keystone::auth (
   $admin_url           = 'http://127.0.0.1:9311',
 ) {
 
-  $real_service_name    = pick($service_name, $auth_name)
-
   if $configure_user_role {
     Keystone_user_role["${auth_name}@${tenant}"] ~> Service <| name == 'barbican-api' |>
   }
-  Keystone_endpoint["${region}/${real_service_name}::${service_type}"]  ~> Service <| name == 'barbican-api' |>
+  Keystone_endpoint["${region}/${service_name}::${service_type}"]  ~> Service <| name == 'barbican-api' |>
 
   keystone::resource::service_identity { 'barbican':
     configure_user      => $configure_user,
     configure_user_role => $configure_user_role,
     configure_endpoint  => $configure_endpoint,
-    service_name        => $real_service_name,
+    service_name        => $service_name,
     service_type        => $service_type,
     service_description => 'Key management Service',
     region              => $region,

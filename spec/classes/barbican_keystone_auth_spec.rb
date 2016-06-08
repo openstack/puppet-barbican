@@ -63,8 +63,8 @@ describe 'barbican::keystone::auth' do
 
     it { is_expected.to contain_keystone_user('barbicany') }
     it { is_expected.to contain_keystone_user_role('barbicany@services') }
-    it { is_expected.to contain_keystone_service('barbicany::key-manager') }
-    it { is_expected.to contain_keystone_endpoint('RegionOne/barbicany::key-manager') }
+    it { is_expected.to contain_keystone_service('barbican::key-manager') }
+    it { is_expected.to contain_keystone_endpoint('RegionOne/barbican::key-manager') }
   end
 
   describe 'when overriding service name' do
