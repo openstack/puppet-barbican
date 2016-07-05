@@ -12,7 +12,7 @@ class barbican::db::sync(
   $extra_params  = undef,
 ) {
   exec { 'barbican-db-manage':
-    command     => "barbican-db-manage upgrade ${extra_params}",
+    command     => "barbican-manage db upgrade ${extra_params}",
     path        => '/usr/bin',
     user        => 'barbican',
     refreshonly => true,
