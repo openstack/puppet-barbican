@@ -1,6 +1,7 @@
 # Parameters for puppet-barbican
 #
 class barbican::params {
+  include ::openstacklib::defaults
 
   case $::osfamily {
     'RedHat': {

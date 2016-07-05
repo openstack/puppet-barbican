@@ -4,10 +4,10 @@ describe 'barbican::api' do
 
   let :facts do
     @default_facts.merge(
-      {
+      OSDefaults.get_facts({
         :osfamily       => 'RedHat',
         :processorcount => '7',
-      }
+      })
     )
   end
 
@@ -91,7 +91,6 @@ describe 'barbican::api' do
       :retry_scheduler_periodic_interval_max_seconds => 20.0,
       :max_allowed_secret_in_bytes                   => 20000,
       :max_allowed_request_size_in_bytes             => 2000000,
-      :enabled                                       => false,
       :auth_url                                      => 'https://keystone.example.com:35357',
       :keystone_password                             => 'bar',
     }
@@ -252,7 +251,7 @@ describe 'barbican::api' do
 
   describe 'on RedHat platforms' do
     let :facts do
-      @default_facts.merge({
+      OSDefaults.get_facts({
         :osfamily               => 'RedHat',
         :operatingsystemrelease => '7',
       })
@@ -266,7 +265,7 @@ describe 'barbican::api' do
 
   describe 'on unknown platforms' do
     let :facts do
-      { :osfamily => 'unknown' }
+      OSDefaults.get_facts({ :osfamily => 'unknown' })
     end
     let(:params) { default_params }
 
