@@ -41,7 +41,7 @@ describe 'barbican::api basic test class' do
             auth_type                         => 'keystone',
             keystone_password                 => 'a_big_secret',
             service_name                      => 'httpd',
-            enabled_certificate_plugins       => ['snakeoil_ca'],
+            enabled_certificate_plugins       => ['simple_certificate'],
             db_auto_create                    => false,
           }
 

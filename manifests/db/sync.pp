@@ -16,8 +16,11 @@ class barbican::db::sync(
     path        => '/usr/bin',
     user        => 'barbican',
     refreshonly => true,
-    subscribe   => [Package['barbican-api'], Barbican_config['database/connection'], Barbican_config['DEFAULT/sql_connection'], ]
   }
 
+  Barbican_config <| title == 'database/connection' |> ~> Exec['barbican-db-manage']
+  Barbican_config <| title == 'DEFAULT/sql_connection' |> ~> Exec['barbican-db-manage']
+  Package <| tag == 'barbican-package' |> ~> Exec['barbican-db-manage']
+  Package <| tag == 'openstack' |> -> Exec['barbican-db-manage']
   Exec['barbican-db-manage'] ~> Service<| title == 'barbican-api' |>
 }

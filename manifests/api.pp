@@ -411,23 +411,31 @@ class barbican::api (
     }
 
     barbican_api_paste_ini {
-      'pipeline:barbican_api/pipeline':     value => 'cors authtoken context apiapp';
-      'filter:authtoken/auth_url':          value => $auth_url;
-      'filter:authtoken/project_name':      value => $keystone_tenant;
-      'filter:authtoken/username':          value => $keystone_user;
-      'filter:authtoken/password':          value => $keystone_password, secret => true;
-      'filter:authtoken/user_domain_id':    value => $user_domain_id;
-      'filter:authtoken/project_domain_id': value => $project_domain_id;
+      'pipeline:barbican_api/pipeline': value => 'cors authtoken context apiapp';
+    }
+
+    barbican_config {
+      'keystone_authtoken/auth_plugin':       value => 'password';
+      'keystone_authtoken/auth_url':          value => $auth_url;
+      'keystone_authtoken/project_name':      value => $keystone_tenant;
+      'keystone_authtoken/username':          value => $keystone_user;
+      'keystone_authtoken/password':          value => $keystone_password, secret => true;
+      'keystone_authtoken/user_domain_id':    value => $user_domain_id;
+      'keystone_authtoken/project_domain_id': value => $project_domain_id;
     }
   } else {
     barbican_api_paste_ini {
-      'pipeline:barbican_api/pipeline':     value => 'cors unauthenticated-context apiapp';
-      'filter:authtoken/auth_url':          ensure => 'absent';
-      'filter:authtoken/project_name':      ensure => 'absent';
-      'filter:authtoken/username':          ensure => 'absent';
-      'filter:authtoken/password':          ensure => 'absent';
-      'filter:authtoken/user_domain_id':    ensure => 'absent';
-      'filter:authtoken/project_domain_id': ensure => 'absent';
+      'pipeline:barbican_api/pipeline': value => 'cors unauthenticated-context apiapp';
+    }
+
+    barbican_config {
+      'keystone_authtoken/auth_plugin':       ensure => 'absent';
+      'keystone_authtoken/auth_uri':          ensure => 'absent';
+      'keystone_authtoken/project_name':      ensure => 'absent';
+      'keystone_authtoken/username':          ensure => 'absent';
+      'keystone_authtoken/password':          ensure => 'absent';
+      'keystone_authtoken/user_domain_id':    ensure => 'absent';
+      'keystone_authtoken/project_domain_id': ensure => 'absent';
     }
   }
 

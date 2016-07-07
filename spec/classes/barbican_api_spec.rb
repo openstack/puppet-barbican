@@ -225,9 +225,9 @@ describe 'barbican::api' do
     it 'is_expected.to set keystone params correctly' do
       is_expected.to contain_barbican_api_paste_ini('pipeline:barbican_api/pipeline')\
         .with_value('cors authtoken context apiapp')
-      is_expected.to contain_barbican_api_paste_ini('filter:authtoken/auth_url')\
+      is_expected.to contain_barbican_config('keystone_authtoken/auth_url')\
         .with_value('http://localhost:35357')
-      is_expected.to contain_barbican_api_paste_ini('filter:authtoken/project_name')\
+      is_expected.to contain_barbican_config('keystone_authtoken/project_name')\
         .with_value('services')
     end
   end
