@@ -91,7 +91,6 @@ describe 'barbican::api' do
       :retry_scheduler_periodic_interval_max_seconds => 20.0,
       :max_allowed_secret_in_bytes                   => 20000,
       :max_allowed_request_size_in_bytes             => 2000000,
-      :enabled                                       => false,
       :auth_url                                      => 'https://keystone.example.com:35357',
       :keystone_password                             => 'bar',
     }
