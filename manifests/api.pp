@@ -237,6 +237,10 @@
 #   (optional) CA certificate file to use to verify connecting clients
 #   Defaults to $::os_service_default
 #
+# [*keystone_auth_type*]
+#   (optional) An authentication plugin to use with an OpenStack Identity server.
+#   Defaults to 'password'
+#
 class barbican::api (
   $ensure_package                                = 'present',
   $client_package_ensure                         = 'present',
@@ -290,6 +294,7 @@ class barbican::api (
   $cert_file                                     = $::os_service_default,
   $key_file                                      = $::os_service_default,
   $service_name                                  = 'barbican-api',
+  $keystone_auth_type                            = 'password',
 ) inherits barbican::params {
 
   include ::barbican::db
@@ -415,7 +420,7 @@ class barbican::api (
     }
 
     barbican_config {
-      'keystone_authtoken/auth_plugin':       value => 'password';
+      'keystone_authtoken/auth_type':         value => $keystone_auth_type;
       'keystone_authtoken/auth_url':          value => $auth_url;
       'keystone_authtoken/project_name':      value => $keystone_tenant;
       'keystone_authtoken/username':          value => $keystone_user;
@@ -430,6 +435,7 @@ class barbican::api (
 
     barbican_config {
       'keystone_authtoken/auth_plugin':       ensure => 'absent';
+      'keystone_authtoken/auth_type':         ensure => 'absent';
       'keystone_authtoken/auth_uri':          ensure => 'absent';
       'keystone_authtoken/project_name':      ensure => 'absent';
       'keystone_authtoken/username':          ensure => 'absent';

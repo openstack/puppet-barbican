@@ -218,6 +218,7 @@ describe 'barbican::api' do
       {
         :auth_type            => 'keystone',
         :keystone_password    => 'foobar',
+        :keystone_auth_type   => 'passwordv3',
       }
     end
 
@@ -228,6 +229,8 @@ describe 'barbican::api' do
         .with_value('http://localhost:35357')
       is_expected.to contain_barbican_config('keystone_authtoken/project_name')\
         .with_value('services')
+      is_expected.to contain_barbican_config('keystone_authtoken/auth_type')\
+        .with_value('passwordv3')
     end
   end
 
