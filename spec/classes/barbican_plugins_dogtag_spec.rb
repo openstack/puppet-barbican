@@ -21,7 +21,6 @@ describe 'barbican::plugins::dogtag' do
       :dogtag_plugin_simple_cmc_profile   => '<SERVICE DEFAULT>',
       :dogtag_plugin_ca_expiration_time   => '<SERVICE DEFAULT>',
       :dogtag_plugin_plugin_working_dir   => '<SERVICE DEFAULT>',
-      :keystone_password                  => 'password',
     }
   end
 

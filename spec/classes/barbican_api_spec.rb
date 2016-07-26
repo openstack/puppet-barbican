@@ -45,18 +45,13 @@ describe 'barbican::api' do
       :enabled_crypto_plugins                        => ['<SERVICE DEFAULT>'],
       :enabled_certificate_plugins                   => ['<SERVICE DEFAULT>'],
       :enabled_certificate_event_plugins             => ['<SERVICE DEFAULT>'],
-      :auth_type                                     => 'keystone',
-      :auth_url                                      => 'http://localhost:35357',
-      :keystone_password                             => 'foo',
+      :auth_strategy                                 => 'keystone',
       :retry_scheduler_initial_delay_seconds         => '<SERVICE DEFAULT>',
       :retry_scheduler_periodic_interval_max_seconds => '<SERVICE DEFAULT>',
     }
   end
 
   [{
-      :keystone_password                  => 'foo',
-   },
-   {
       :bind_host                                     => '127.0.0.1',
       :bind_port                                     => '9312',
       :rpc_backend                                   => 'rabbit',
@@ -91,12 +86,13 @@ describe 'barbican::api' do
       :retry_scheduler_periodic_interval_max_seconds => 20.0,
       :max_allowed_secret_in_bytes                   => 20000,
       :max_allowed_request_size_in_bytes             => 2000000,
-      :auth_url                                      => 'https://keystone.example.com:35357',
-      :keystone_password                             => 'bar',
     }
   ].each do |param_set|
 
     describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
+      let :pre_condition do
+          'class { "barbican::keystone::authtoken": password => "secret", }'
+      end
 
       let :param_hash do
         default_params.merge(param_set)
@@ -172,13 +168,16 @@ describe 'barbican::api' do
   end
 
   describe 'with SSL socket options set' do
+    let :pre_condition do
+        'class { "barbican::keystone::authtoken": password => "secret", }'
+    end
+
     let :params do
       {
-        :use_ssl           => true,
-        :cert_file         => '/path/to/cert',
-        :ca_file           => '/path/to/ca',
-        :key_file          => '/path/to/key',
-        :keystone_password => 'foobar',
+        :use_ssl   => true,
+        :cert_file => '/path/to/cert',
+        :ca_file   => '/path/to/ca',
+        :key_file  => '/path/to/key',
       }
     end
 
@@ -188,10 +187,13 @@ describe 'barbican::api' do
   end
 
   describe 'with SSL socket options left by default' do
+    let :pre_condition do
+        'class { "barbican::keystone::authtoken": password => "secret", }'
+    end
+
     let :params do
       {
-        :use_ssl           => false,
-        :keystone_password => 'foobar',
+        :use_ssl => false,
       }
     end
 
@@ -201,12 +203,15 @@ describe 'barbican::api' do
   end
 
   describe 'with SSL socket options set wrongly configured' do
+    let :pre_condition do
+        'class { "barbican::keystone::authtoken": password => "secret", }'
+    end
+
     let :params do
       {
-        :use_ssl           => true,
-        :ca_file           => '/path/to/ca',
-        :key_file          => '/path/to/key',
-        :keystone_password => 'foobar',
+        :use_ssl  => true,
+        :ca_file  => '/path/to/ca',
+        :key_file => '/path/to/key',
       }
     end
 
@@ -214,23 +219,20 @@ describe 'barbican::api' do
   end
 
   describe 'with keystone auth' do
+    let :pre_condition do
+        'class { "barbican::keystone::authtoken": password => "secret", }'
+    end
+
     let :params do
       {
-        :auth_type            => 'keystone',
-        :keystone_password    => 'foobar',
-        :keystone_auth_type   => 'passwordv3',
+        :auth_strategy => 'keystone',
       }
     end
 
     it 'is_expected.to set keystone params correctly' do
       is_expected.to contain_barbican_api_paste_ini('pipeline:barbican_api/pipeline')\
         .with_value('cors authtoken context apiapp')
-      is_expected.to contain_barbican_config('keystone_authtoken/auth_url')\
-        .with_value('http://localhost:35357')
-      is_expected.to contain_barbican_config('keystone_authtoken/project_name')\
-        .with_value('services')
-      is_expected.to contain_barbican_config('keystone_authtoken/auth_type')\
-        .with_value('passwordv3')
+      is_expected.to contain_class('barbican::keystone::authtoken')
     end
   end
 
@@ -239,7 +241,7 @@ describe 'barbican::api' do
       {
         :manage_service => false,
         :enabled        => false,
-        :auth_type      => 'None',
+        :auth_strategy  => 'None',
       }
     end
 
@@ -253,6 +255,10 @@ describe 'barbican::api' do
   end
 
   describe 'on RedHat platforms' do
+    let :pre_condition do
+        'class { "barbican::keystone::authtoken": password => "secret", }'
+    end
+
     let :facts do
       OSDefaults.get_facts({
         :osfamily               => 'RedHat',

@@ -168,13 +168,9 @@
 #   (string value)
 #   Defaults to $::os_service_default
 #
-# [*auth_type*]
+# [*auth_strategy*]
 #   (optional) authentication type
 #   Defaults to 'keystone'
-#
-# [*auth_url*]
-#   (optional) identity server URI, needed for keystone auth
-#   Defaults to 'http://localhost:35357'
 #
 # [*manage_service*]
 #   (optional) If Puppet should manage service startup / shutdown.
@@ -183,25 +179,6 @@
 # [*enabled*]
 #   (optional) Whether to enable services.
 #   Defaults to true.
-#
-# [*keystone_password*]
-#   (required) Password used to authentication.
-#
-# [*keystone_tenant*]
-#   (optional) Tenant to authenticate to.
-#   Defaults to 'services'.
-#
-# [*keystone_user*]
-#   (optional) User to authenticate as with keystone.
-#   Defaults to 'barbican'.
-#
-# [*project_domain_id*]
-#   (optional) Auth user project's domain ID
-#   Defaults to 'default'
-#
-# [*user_domain_id*]
-#   (optional) Auth user's domain ID
-#   Defaults to 'default'
 #
 # [*sync_db*]
 #   (optional) Run barbican-db-manage on api nodes.
@@ -237,9 +214,21 @@
 #   (optional) CA certificate file to use to verify connecting clients
 #   Defaults to $::os_service_default
 #
-# [*keystone_auth_type*]
-#   (optional) An authentication plugin to use with an OpenStack Identity server.
-#   Defaults to 'password'
+# === DEPRECATED PARAMETERS
+#
+# [*keystone_password*]
+#   (optional) DEPRECATED. Use barbican::keystone::authtoken::password
+#   instead.
+#   Defaults to undef
+#
+# [*auth_url*]
+#   (optional) DEPRECATED. Use barbican::keystone::authtoken::auth_url
+#   instead.
+#   Defaults to undef
+#
+# [*auth_type*]
+#   (optional) DEPRECATED. Use auth_strategy instead.
+#   Defaults to undef
 #
 class barbican::api (
   $ensure_package                                = 'present',
@@ -278,13 +267,7 @@ class barbican::api (
   $kombu_ssl_version                             = $::os_service_default,
   $kombu_reconnect_delay                         = $::os_service_default,
   $kombu_compression                             = $::os_service_default,
-  $auth_type                                     = 'keystone',
-  $auth_url                                      = 'http://localhost:35357',
-  $keystone_password                             = undef,
-  $keystone_tenant                               = 'services',
-  $keystone_user                                 = 'barbican',
-  $project_domain_id                             = 'default',
-  $user_domain_id                                = 'default',
+  $auth_strategy                                 = 'keystone',
   $manage_service                                = true,
   $enabled                                       = true,
   $sync_db                                       = true,
@@ -294,12 +277,31 @@ class barbican::api (
   $cert_file                                     = $::os_service_default,
   $key_file                                      = $::os_service_default,
   $service_name                                  = 'barbican-api',
-  $keystone_auth_type                            = 'password',
+  # DEPRECATED
+  $auth_type                                     = undef,
+  $keystone_password                             = undef,
+  $auth_url                                      = undef,
 ) inherits barbican::params {
+
 
   include ::barbican::db
   include ::barbican::api::logging
   include ::barbican::client
+
+  if $auth_type {
+    warning('auth_type is deprecated and will be removed, use auth_strategy instead')
+    $auth_strategy_real = $auth_type
+  } else {
+    $auth_strategy_real = $auth_strategy
+  }
+
+  if $keystone_password {
+    warning('keystone_password is deprecated, use barbican::keystone::authtoken::password instead.')
+  }
+
+  if $auth_url {
+    warning('auth_url is deprecated, use barbican::keystone::authtoken::auth_url instead.')
+  }
 
   file { ['/etc/barbican', '/var/log/barbican']:
     ensure  => directory,
@@ -410,24 +412,14 @@ class barbican::api (
   }
 
   # keystone config
-  if $auth_type == 'keystone' {
-    if $keystone_password == undef {
-      fail('keystone_password must be defined')
-    }
+  if $auth_strategy_real == 'keystone' {
+
+    include ::barbican::keystone::authtoken
 
     barbican_api_paste_ini {
       'pipeline:barbican_api/pipeline': value => 'cors authtoken context apiapp';
     }
 
-    barbican_config {
-      'keystone_authtoken/auth_type':         value => $keystone_auth_type;
-      'keystone_authtoken/auth_url':          value => $auth_url;
-      'keystone_authtoken/project_name':      value => $keystone_tenant;
-      'keystone_authtoken/username':          value => $keystone_user;
-      'keystone_authtoken/password':          value => $keystone_password, secret => true;
-      'keystone_authtoken/user_domain_id':    value => $user_domain_id;
-      'keystone_authtoken/project_domain_id': value => $project_domain_id;
-    }
   } else {
     barbican_api_paste_ini {
       'pipeline:barbican_api/pipeline': value => 'cors unauthenticated-context apiapp';
