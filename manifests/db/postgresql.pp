@@ -50,6 +50,6 @@ class barbican::db::postgresql(
     privileges    => $privileges,
   }
 
-  ::Openstacklib::Db::Postgresql['barbican'] ~> Exec<| title == 'barbican-manage db_sync' |>
+  ::Openstacklib::Db::Postgresql['barbican'] ~> Exec<| title == 'barbican-db-manage' |>
 
 }

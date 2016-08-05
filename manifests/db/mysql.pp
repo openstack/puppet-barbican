@@ -65,5 +65,5 @@ class barbican::db::mysql(
     allowed_hosts => $allowed_hosts,
   }
 
-  ::Openstacklib::Db::Mysql['barbican'] ~> Exec<| title == 'barbican-manage db_sync' |>
+  ::Openstacklib::Db::Mysql['barbican'] ~> Exec<| title == 'barbican-db-manage' |>
 }
