@@ -164,6 +164,8 @@ class barbican::wsgi::apache (
     require => Package['httpd'],
   }
 
+  Package<| tag == 'barbican-api' |> -> File[$::barbican::params::barbican_wsgi_script_path]
+
   $wsgi_files = {
     'barbican_wsgi_main'  => {
       'path' => "${::barbican::params::barbican_wsgi_script_path}/main",

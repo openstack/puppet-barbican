@@ -141,23 +141,37 @@ describe 'barbican::db' do
         )
       end
     end
+
   end
 
-  context 'on Redhat platforms' do
-    let :facts do
-      @default_facts.merge({ :osfamily => 'RedHat',
-        :operatingsystemrelease => '7.1',
-      })
-    end
-
-    it_configures 'barbican::db'
-
+  shared_examples_for 'barbican db on redhat' do
     context 'using pymysql driver' do
       let :params do
         { :database_connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican', }
       end
 
       it { is_expected.not_to contain_package('db_backend_package') }
+    end
+  end
+
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts({
+          :processorcount => 8,
+          :fqdn           => 'some.host.tld',
+          :concat_basedir => '/var/lib/puppet/concat',
+        }))
+      end
+
+      it_configures 'barbican::db'
+
+      case facts[:osfamily]
+      when 'RedHat'
+        it_configures 'barbican db on redhat'
+      end
     end
   end
 
