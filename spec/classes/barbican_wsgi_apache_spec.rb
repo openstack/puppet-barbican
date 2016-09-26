@@ -121,7 +121,7 @@ describe 'barbican::wsgi::apache' do
         {
           :httpd_service_name => 'apache2',
           :httpd_ports_file   => '/etc/apache2/ports.conf',
-          :wsgi_script_path   => '/var/www/cgi-bin/barbican',
+          :wsgi_script_path   => '/usr/lib/cgi-bin/barbican',
         }
       when 'RedHat'
         {

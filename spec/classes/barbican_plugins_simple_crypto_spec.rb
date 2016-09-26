@@ -21,36 +21,45 @@ require 'spec_helper'
 
 describe 'barbican::plugins::simple_crypto' do
 
-  let :facts do
-    @default_facts.merge(
-      {
-        :osfamily       => 'RedHat',
-        :processorcount => '7',
-      }
-    )
+  shared_examples_for 'barbican plugins simple_crypto' do
+    describe 'with parameter passed into pk11 plugin' do
+      let :params do
+        {
+          :simple_crypto_plugin_kek       => 'XXXXXXXXXXXXX'
+        }
+      end
+
+      it 'is_expected.to set simple_crypto parameters' do
+        is_expected.to contain_barbican_config('simple_crypto_plugin/kek') \
+          .with_value(params[:simple_crypto_plugin_kek])
+      end
+    end
+
+    describe 'with no parameter passed into pk11 plugin' do
+      let :params do
+        {}
+      end
+
+      it 'is_expected.to set default simple_crypto parameters' do
+        is_expected.to contain_barbican_config('simple_crypto_plugin/kek') \
+          .with_value('<SERVICE DEFAULT>')
+      end
+    end
   end
 
-  describe 'with parameter passed into pk11 plugin' do
-    let :params do
-      {
-        :simple_crypto_plugin_kek       => 'XXXXXXXXXXXXX'
-      }
-    end
+  on_supported_os({
+    :supported_os   => OSDefaults.get_supported_os
+  }).each do |os,facts|
+    context "on #{os}" do
+      let (:facts) do
+        facts.merge(OSDefaults.get_facts({
+          :processorcount => 8,
+          :fqdn           => 'some.host.tld',
+          :concat_basedir => '/var/lib/puppet/concat',
+        }))
+      end
 
-    it 'is_expected.to set simple_crypto parameters' do
-      is_expected.to contain_barbican_config('simple_crypto_plugin/kek') \
-        .with_value(params[:simple_crypto_plugin_kek])
-    end
-  end
-
-  describe 'with no parameter passed into pk11 plugin' do
-    let :params do
-      {}
-    end
-
-    it 'is_expected.to set default simple_crypto parameters' do
-      is_expected.to contain_barbican_config('simple_crypto_plugin/kek') \
-        .with_value('<SERVICE DEFAULT>')
+      it_configures 'barbican plugins simple_crypto'
     end
   end
 end

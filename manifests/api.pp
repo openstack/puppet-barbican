@@ -303,12 +303,6 @@ class barbican::api (
     warning('auth_url is deprecated, use barbican::keystone::authtoken::auth_url instead.')
   }
 
-  file { ['/etc/barbican', '/var/log/barbican']:
-    ensure  => directory,
-    require => Package['barbican-api'],
-    notify  => Service['barbican-api'],
-  }
-
   # TODO: Remove the posix users and permissions and merge this definition
   # with the previous one, once the barbican package has been updated
   # with the correct ownership for this directory.
@@ -321,25 +315,17 @@ class barbican::api (
     notify  => Service[$service_name],
   }
 
-  file { ['/etc/barbican/barbican.conf',
-          '/etc/barbican/barbican-api-paste.ini',
-          '/etc/barbican/gunicorn-config.py']:
-    ensure  => present,
-    require => Package['barbican-api'],
-    notify  => Service[$service_name],
-  }
-
   package { 'barbican-api':
     ensure => $ensure_package,
     name   => $::barbican::params::api_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
 
-  File['/etc/barbican/barbican.conf']          -> Barbican_config<||>
-  File['/etc/barbican/barbican-api-paste.ini'] -> Barbican_api_paste_ini<||>
-  Package['barbican-api']                      ~> Service[$service_name]
-  Barbican_config<||>                          ~> Service[$service_name]
-  Barbican_api_paste_ini<||>                   ~> Service[$service_name]
+  Package['barbican-api']                ~> Service[$service_name]
+  Barbican_config<||>                    ~> Service[$service_name]
+  Barbican_api_paste_ini<||>             ~> Service[$service_name]
+  Package<| tag == 'barbican-package' |> -> Barbican_config<||>
+  Package<| tag == 'barbican-package' |> -> Barbican_api_paste_ini<||>
 
   # basic service config
   if $host_href == undef {
@@ -353,13 +339,6 @@ class barbican::api (
     'DEFAULT/bind_port': value => $bind_port;
     'DEFAULT/host_href': value => $host_href_real;
   }
-
-  File['/etc/barbican/gunicorn-config.py'] ->
-    file_line { 'Modify bind_port in gunicorn-config.py':
-      path  => '/etc/barbican/gunicorn-config.py',
-      line  => "bind = '${bind_host}:${bind_port}'",
-      match => '.*bind = .*',
-    } -> Service[$service_name]
 
   #rabbit config
   if $rpc_backend in [$::os_service_default, 'rabbit'] {
@@ -461,9 +440,9 @@ class barbican::api (
 
   # SSL Options
   barbican_config {
-    'DEFAULT/cert_file' : value => $cert_file;
-    'DEFAULT/key_file' :  value => $key_file;
-    'DEFAULT/ca_file' :   value => $ca_file;
+    'DEFAULT/cert_file': value => $cert_file;
+    'DEFAULT/key_file':  value => $key_file;
+    'DEFAULT/ca_file':   value => $ca_file;
   }
 
   if $sync_db {
@@ -471,6 +450,9 @@ class barbican::api (
   }
 
   if $service_name == 'barbican-api' {
+    if $::osfamily == 'Debian' {
+      fail('On Debian family the service_name must be set to httpd as there is no eventlet init script.')
+    }
     service { 'barbican-api':
       ensure     => $service_ensure,
       name       => $::barbican::params::api_service_name,
@@ -479,17 +461,27 @@ class barbican::api (
       hasrestart => true,
       tag        => 'barbican-service',
     }
-  } elsif $service_name == 'httpd' {
-    include ::apache::params
-    service { 'barbican-api':
-      ensure => 'stopped',
-      name   => $::barbican::params::api_service_name,
-      enable => false,
-      tag    => 'barbican-service',
+
+    file_line { 'Modify bind_port in gunicorn-config.py':
+      path  => '/etc/barbican/gunicorn-config.py',
+      line  => "bind = '${bind_host}:${bind_port}'",
+      match => '.*bind = .*',
     }
 
-    # we need to make sure barbican-api is stopped before trying to start apache
-    Service['barbican-api'] -> Service[$service_name]
+    Package<| tag == 'barbican-package' |> -> File_line['Modify bind_port in gunicorn-config.py'] ~> Service[$service_name]
+  } elsif $service_name == 'httpd' {
+    include ::apache::params
+    # Debian/Ubuntu do not have a barbican-api and this will error out on them.
+    if $::osfamily == 'RedHat' {
+      service { 'barbican-api':
+        ensure => 'stopped',
+        name   => $::barbican::params::api_service_name,
+        enable => false,
+        tag    => 'barbican-service',
+      }
+      # we need to make sure barbican-api is stopped before trying to start apache
+      Service['barbican-api'] -> Service[$service_name]
+    }
   } else {
     fail('Invalid service_name. Use barbican-api for stand-alone or httpd')
   }

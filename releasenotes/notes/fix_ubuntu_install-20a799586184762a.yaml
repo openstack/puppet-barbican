@@ -1,0 +1,11 @@
+---
+issues:
+  - Fix for wsgi app locations for Ubuntu/Debian, was previously using RedHat packaging locations.
+  - Add conditional to prevent puppet from trying to manage barbican-api service on Ubuntu/Debian
+    as the packaging contains no init script for the eventlet.
+  - Add api_package_name for Ubuntu/Debian. This worked because the title is the same as the
+    package name on Ubuntu/Debian and api_package_name was undefined.
+  - Add worker_package_name and worker_service_name for Ubuntu/Debian.
+  - Remove unused variable package_name from params for both Ubuntu/Debian and RedHat.
+  - Remove service_name for Ubuntu/Debian as there is no init script for Ubuntu/Debian and apache
+    must be used.
