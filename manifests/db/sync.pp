@@ -13,9 +13,11 @@ class barbican::db::sync(
 ) {
   exec { 'barbican-db-manage':
     command     => "barbican-manage db upgrade ${extra_params}",
-    path        => '/usr/bin',
+    path        => ['/bin', '/usr/bin', ],
     user        => 'barbican',
     refreshonly => true,
+    try_sleep   => 5,
+    tries       => 10,
   }
 
   Barbican_config <| title == 'database/connection' |> ~> Exec['barbican-db-manage']
