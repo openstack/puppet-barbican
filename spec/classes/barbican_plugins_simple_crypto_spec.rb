@@ -24,8 +24,8 @@ describe 'barbican::plugins::simple_crypto' do
   let :facts do
     @default_facts.merge(
       {
-        :osfamily       => 'RedHat',
-        :processorcount => '7',
+        :osfamily   => 'RedHat',
+        :os_workers => '7',
       }
     )
   end

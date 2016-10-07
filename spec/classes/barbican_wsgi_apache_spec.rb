@@ -58,7 +58,7 @@ describe 'barbican::wsgi::apache' do
           'user'         => 'barbican',
           'group'        => 'barbican',
           'processes'    => '1',
-          'threads'      => '42',
+          'threads'      => '8',
           'display-name' => 'barbican-api',
         },
         'wsgi_process_group'          => 'barbican-api',
@@ -109,7 +109,7 @@ describe 'barbican::wsgi::apache' do
   }).each do |os,facts|
     let (:facts) do
       facts.merge!(OSDefaults.get_facts({
-        :processorcount => 42,
+        :os_workers     => 8,
         :concat_basedir => '/var/lib/puppet/concat',
         :fqdn           => 'some.host.tld'
       }))

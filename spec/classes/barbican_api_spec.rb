@@ -24,8 +24,8 @@ describe 'barbican::api' do
   let :facts do
     @default_facts.merge(
       OSDefaults.get_facts({
-        :osfamily       => 'RedHat',
-        :processorcount => '7',
+        :osfamily   => 'RedHat',
+        :os_workers => '7',
       })
     )
   end

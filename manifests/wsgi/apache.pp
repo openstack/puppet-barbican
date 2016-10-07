@@ -67,7 +67,7 @@
 #
 #   [*threads*]
 #     (optional) The number of threads for the vhost.
-#     Defaults to $::processorcount
+#     Defaults to $::os_workers
 #
 #   [*wsgi_script_ensure*]
 #     (optional) File ensure parameter for wsgi scripts.
@@ -127,7 +127,7 @@ class barbican::wsgi::apache (
   $ssl_crl_path            = undef,
   $ssl_crl                 = undef,
   $ssl_certs_dir           = undef,
-  $threads                 = $::processorcount,
+  $threads                 = $::os_workers,
   $priority                = '10',
   $wsgi_script_ensure      = 'file',
   $wsgi_script_source      = undef,
