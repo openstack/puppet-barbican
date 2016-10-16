@@ -203,6 +203,20 @@ class barbican::wsgi::apache (
   $wsgi_script_aliases_main = hash([$public_path_real,"${::barbican::params::barbican_wsgi_script_path}/main"])
   $wsgi_script_aliases_main_real = $wsgi_script_aliases_main
 
+
+  file { $::barbican::params::httpd_config_file:
+    ensure  => present,
+    content => "#
+# This file has been cleaned by Puppet.
+#
+# OpenStack Horizon configuration has been moved to:
+# - ${priority}-barbican_wsgi_main.conf
+#",
+  }
+
+  Package<| tag == 'barbican-api' |> -> File[$::barbican::params::httpd_config_file]
+  File[$::barbican::params::httpd_config_file] ~> Service['httpd']
+
   ::apache::vhost { 'barbican_wsgi_main':
     ensure                      => 'present',
     servername                  => $servername,

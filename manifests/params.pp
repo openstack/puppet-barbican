@@ -13,6 +13,7 @@ class barbican::params {
       $barbican_wsgi_script_path    = '/var/www/cgi-bin/barbican'
       $barbican_wsgi_script_source  = '/usr/lib/python2.7/site-packages/barbican/api/app.wsgi'
       $dogtag_client_package        = 'pki-base'
+      $httpd_config_file            = '/etc/httpd/conf.d/barbican-api.conf'
     }
     'Debian': {
       $api_package_name             = 'barbican-api'
@@ -22,6 +23,7 @@ class barbican::params {
       $barbican_wsgi_script_path    = '/usr/lib/cgi-bin/barbican'
       $barbican_wsgi_script_source  = '/usr/lib/python2.7/dist-packages/barbican/api/app.wsgi'
       $dogtag_client_package        = 'pki-base'
+      $httpd_config_file            = '/etc/apache2/conf-available/barbican-api.conf'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operating system")

@@ -70,6 +70,7 @@ describe 'barbican::wsgi::apache' do
         'access_log_format'           => false,
       )}
       it { is_expected.to contain_concat("#{platform_parameters[:httpd_ports_file]}") }
+      it { is_expected.to contain_file(platform_parameters[:httpd_config_file]) }
     end
 
     describe 'when overriding default apache logging' do
@@ -122,12 +123,14 @@ describe 'barbican::wsgi::apache' do
           :httpd_service_name => 'apache2',
           :httpd_ports_file   => '/etc/apache2/ports.conf',
           :wsgi_script_path   => '/usr/lib/cgi-bin/barbican',
+          :httpd_config_file  => '/etc/apache2/conf-available/barbican-api.conf',
         }
       when 'RedHat'
         {
           :httpd_service_name => 'httpd',
           :httpd_ports_file   => '/etc/httpd/conf/ports.conf',
           :wsgi_script_path   => '/var/www/cgi-bin/barbican',
+          :httpd_config_file  => '/etc/httpd/conf.d/barbican-api.conf',
         }
       end
     end
