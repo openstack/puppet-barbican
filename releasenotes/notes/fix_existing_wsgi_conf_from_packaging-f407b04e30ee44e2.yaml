@@ -1,0 +1,4 @@
+---
+issues:
+  - Ubuntu Cloud Archive barbican-api package deposits a config, in a different directory, that conflicts with the puppet created config.
+    The behavior now is to update the config deposited by the package to have only a comment to inform of the correct config file.
