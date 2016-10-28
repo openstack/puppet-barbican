@@ -61,6 +61,7 @@ describe 'barbican::api' do
         :retry_scheduler_initial_delay_seconds         => '<SERVICE DEFAULT>',
         :retry_scheduler_periodic_interval_max_seconds => '<SERVICE DEFAULT>',
         :service_name                                  => platform_params[:service_name],
+        :enable_proxy_headers_parsing                  => '<SERVICE DEFAULT>',
       }
     end
 
@@ -99,6 +100,7 @@ describe 'barbican::api' do
         :retry_scheduler_periodic_interval_max_seconds => 20.0,
         :max_allowed_secret_in_bytes                   => 20000,
         :max_allowed_request_size_in_bytes             => 2000000,
+        :enable_proxy_headers_parsing                  => false,
       }
     ].each do |param_set|
       describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
@@ -174,6 +176,19 @@ describe 'barbican::api' do
             .with_value(param_hash[:enabled_certificate_event_plugins])
         end
       end
+    end
+
+    describe 'with enable_proxy_headers_parsing' do
+      let :pre_condition do
+          'class { "barbican::keystone::authtoken": password => "secret", }
+           include ::apache'
+      end
+
+      let :params do
+        default_params.merge!({:enable_proxy_headers_parsing => true })
+      end
+
+      it { is_expected.to contain_barbican_config('oslo_middleware/enable_proxy_headers_parsing').with_value(true) }
     end
 
     describe 'with SSL socket options set' do

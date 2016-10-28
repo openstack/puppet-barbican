@@ -214,6 +214,11 @@
 #   (optional) CA certificate file to use to verify connecting clients
 #   Defaults to $::os_service_default
 #
+# [*enable_proxy_headers_parsing*]
+#   (Optional) Enable paste middleware to handle SSL requests through
+#   HTTPProxyToWSGI middleware.
+#   Defaults to $::os_service_default.
+#
 # === DEPRECATED PARAMETERS
 #
 # [*keystone_password*]
@@ -277,6 +282,7 @@ class barbican::api (
   $cert_file                                     = $::os_service_default,
   $key_file                                      = $::os_service_default,
   $service_name                                  = 'barbican-api',
+  $enable_proxy_headers_parsing                  = $::os_service_default,
   # DEPRECATED
   $auth_type                                     = undef,
   $keystone_password                             = undef,
@@ -484,6 +490,10 @@ class barbican::api (
     }
   } else {
     fail('Invalid service_name. Use barbican-api for stand-alone or httpd')
+  }
+
+  oslo::middleware { 'barbican_config':
+    enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
   }
 
 }
