@@ -28,6 +28,7 @@ describe 'barbican::api' do
         :bind_host                                     => '0.0.0.0',
         :bind_port                                     => '9311',
         :rpc_backend                                   => 'rabbit',
+        :default_transport_url                         => '<SERVICE DEFAULT>',
         :rabbit_host                                   => '<SERVICE_DEFAULT>',
         :rabbit_hosts                                  => ['<SERVICE DEFAULT>'],
         :rabbit_password                               => '<SERVICE DEFAULT>',
@@ -69,6 +70,7 @@ describe 'barbican::api' do
         :bind_host                                     => '127.0.0.1',
         :bind_port                                     => '9312',
         :rpc_backend                                   => 'rabbit',
+        :default_transport_url                         => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
         :rabbit_host                                   => 'rabbithost',
         :rabbit_hosts                                  => ['rabbithost:1234'],
         :rabbit_password                               => 'bugs_bunny',
@@ -149,6 +151,7 @@ describe 'barbican::api' do
 
         it 'configures rabbit' do
           is_expected.to contain_barbican_config('DEFAULT/rpc_backend').with_value(param_hash[:rpc_backend])
+          is_expected.to contain_barbican_config('DEFAULT/transport_url').with_value(param_hash[:default_transport_url])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_hosts').with_value(param_hash[:rabbit_hosts])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_password').with_value(param_hash[:rabbit_password]).with_secret(true)
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_userid').with_value(param_hash[:rabbit_userid])
@@ -323,7 +326,7 @@ describe 'barbican::api' do
       case facts[:osfamily]
       when 'RedHat'
         let (:platform_params) do
-          { :service_name => 'barbican-api' } 
+          { :service_name => 'barbican-api' }
         end
         it_behaves_like 'barbican api redhat'
       when 'Debian'

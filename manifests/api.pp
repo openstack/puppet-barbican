@@ -41,28 +41,9 @@
 #     zmq (for zeromq)
 #   Defaults to $::os_service_default
 #
-# [*rabbit_host*]
-#   (optional) Location of rabbitmq installation.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_hosts*]
-#   (optional) List of clustered rabbit servers.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_port*]
-#   (optional) Port for rabbitmq instance.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_password*]
-#   (optional) Password used to connect to rabbitmq.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_userid*]
-#   (optional) User used to connect to rabbitmq.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_virtual_host*]
-#   (optional) The RabbitMQ virtual host.
+# [*default_transport_url*]
+#   (optional) Connection url for oslo messaging backend. An example rabbit url
+#   would be, rabbit://user:pass@host:port/virtual_host
 #   Defaults to $::os_service_default
 #
 # [*rabbit_use_ssl*]
@@ -235,6 +216,30 @@
 #   (optional) DEPRECATED. Use auth_strategy instead.
 #   Defaults to undef
 #
+# [*rabbit_host*]
+#   (optional) Location of rabbitmq installation.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_hosts*]
+#   (optional) List of clustered rabbit servers.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_port*]
+#   (optional) Port for rabbitmq instance.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_password*]
+#   (optional) Password used to connect to rabbitmq.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_userid*]
+#   (optional) User used to connect to rabbitmq.
+#   Defaults to $::os_service_default
+#
+# [*rabbit_virtual_host*]
+#   (optional) The RabbitMQ virtual host.
+#   Defaults to $::os_service_default
+#
 class barbican::api (
   $ensure_package                                = 'present',
   $client_package_ensure                         = 'present',
@@ -244,12 +249,7 @@ class barbican::api (
   $max_allowed_secret_in_bytes                   = $::os_service_default,
   $max_allowed_request_size_in_bytes             = $::os_service_default,
   $rpc_backend                                   = $::os_service_default,
-  $rabbit_host                                   = $::os_service_default,
-  $rabbit_hosts                                  = $::os_service_default,
-  $rabbit_password                               = $::os_service_default,
-  $rabbit_port                                   = $::os_service_default,
-  $rabbit_userid                                 = $::os_service_default,
-  $rabbit_virtual_host                           = $::os_service_default,
+  $default_transport_url                         = $::os_service_default,
   $rabbit_use_ssl                                = $::os_service_default,
   $rabbit_heartbeat_timeout_threshold            = $::os_service_default,
   $rabbit_heartbeat_rate                         = $::os_service_default,
@@ -287,6 +287,12 @@ class barbican::api (
   $auth_type                                     = undef,
   $keystone_password                             = undef,
   $auth_url                                      = undef,
+  $rabbit_host                                   = $::os_service_default,
+  $rabbit_hosts                                  = $::os_service_default,
+  $rabbit_password                               = $::os_service_default,
+  $rabbit_port                                   = $::os_service_default,
+  $rabbit_userid                                 = $::os_service_default,
+  $rabbit_virtual_host                           = $::os_service_default,
 ) inherits barbican::params {
 
 
@@ -307,6 +313,17 @@ class barbican::api (
 
   if $auth_url {
     warning('auth_url is deprecated, use barbican::keystone::authtoken::auth_url instead.')
+  }
+
+  if !is_service_default($rabbit_host) or
+    !is_service_default($rabbit_hosts) or
+    !is_service_default($rabbit_password) or
+    !is_service_default($rabbit_port) or
+    !is_service_default($rabbit_userid) or
+    !is_service_default($rabbit_virtual_host) {
+    warning("barbican::rabbit_host, barbican::rabbit_hosts, barbican::rabbit_password, \
+barbican::rabbit_port, barbican::rabbit_userid and barbican::rabbit_virtual_host are \
+deprecated. Please use barbican::default_transport_url instead.")
   }
 
   # TODO: Remove the posix users and permissions and merge this definition
@@ -369,6 +386,10 @@ class barbican::api (
     }
   } else {
     barbican_config { 'DEFAULT/rpc_backend': value => $rpc_backend }
+  }
+
+  oslo::messaging::default { 'barbican_config':
+    transport_url => $default_transport_url,
   }
 
   # queue options
