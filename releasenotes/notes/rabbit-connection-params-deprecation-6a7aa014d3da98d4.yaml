@@ -1,0 +1,6 @@
+---
+deprecations:
+  - barbican::rabbit_host, barbican::rabbit_hosts, barbican::rabbit_password,
+    barbican::rabbit_port, barbican::rabbit_userid and
+    barbican::rabbit_virtual_host are deprecated.
+    barbican::default_transport_url should be used instead.
