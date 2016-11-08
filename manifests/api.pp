@@ -202,20 +202,6 @@
 #
 # === DEPRECATED PARAMETERS
 #
-# [*keystone_password*]
-#   (optional) DEPRECATED. Use barbican::keystone::authtoken::password
-#   instead.
-#   Defaults to undef
-#
-# [*auth_url*]
-#   (optional) DEPRECATED. Use barbican::keystone::authtoken::auth_url
-#   instead.
-#   Defaults to undef
-#
-# [*auth_type*]
-#   (optional) DEPRECATED. Use auth_strategy instead.
-#   Defaults to undef
-#
 # [*rabbit_host*]
 #   (optional) Location of rabbitmq installation.
 #   Defaults to $::os_service_default
@@ -284,9 +270,6 @@ class barbican::api (
   $service_name                                  = 'barbican-api',
   $enable_proxy_headers_parsing                  = $::os_service_default,
   # DEPRECATED
-  $auth_type                                     = undef,
-  $keystone_password                             = undef,
-  $auth_url                                      = undef,
   $rabbit_host                                   = $::os_service_default,
   $rabbit_hosts                                  = $::os_service_default,
   $rabbit_password                               = $::os_service_default,
@@ -299,21 +282,6 @@ class barbican::api (
   include ::barbican::db
   include ::barbican::api::logging
   include ::barbican::client
-
-  if $auth_type {
-    warning('auth_type is deprecated and will be removed, use auth_strategy instead')
-    $auth_strategy_real = $auth_type
-  } else {
-    $auth_strategy_real = $auth_strategy
-  }
-
-  if $keystone_password {
-    warning('keystone_password is deprecated, use barbican::keystone::authtoken::password instead.')
-  }
-
-  if $auth_url {
-    warning('auth_url is deprecated, use barbican::keystone::authtoken::auth_url instead.')
-  }
 
   if !is_service_default($rabbit_host) or
     !is_service_default($rabbit_hosts) or
@@ -418,7 +386,7 @@ deprecated. Please use barbican::default_transport_url instead.")
   }
 
   # keystone config
-  if $auth_strategy_real == 'keystone' {
+  if $auth_strategy == 'keystone' {
 
     include ::barbican::keystone::authtoken
 

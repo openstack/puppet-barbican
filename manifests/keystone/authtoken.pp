@@ -223,18 +223,15 @@ class barbican::keystone::authtoken(
   $token_cache_time               = $::os_service_default,
 ) {
 
-  if is_service_default($password) and ! $::barbican::api::keystone_password {
+  if is_service_default($password) {
     fail('Please set password for barbican service user')
   }
 
-  $password_real = pick($::barbican::api::keystone_password, $password)
-  $auth_url_real = pick($::barbican::api::auth_url, $auth_url)
-
   keystone::resource::authtoken { 'barbican_config':
     username                       => $username,
-    password                       => $password_real,
+    password                       => $password,
     project_name                   => $project_name,
-    auth_url                       => $auth_url_real,
+    auth_url                       => $auth_url,
     auth_uri                       => $auth_uri,
     auth_version                   => $auth_version,
     auth_type                      => $auth_type,

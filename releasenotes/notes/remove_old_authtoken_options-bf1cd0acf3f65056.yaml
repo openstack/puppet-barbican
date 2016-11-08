@@ -1,0 +1,5 @@
+---
+other:
+  - removed deprecated barbican::api::keystone_password
+  - removed deprecated barbican::api::auth_url
+  - removed deprecated barbican::api::auth_type
