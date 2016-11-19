@@ -37,73 +37,61 @@ describe 'barbican::wsgi::apache' do
       )}
 
       it { is_expected.to contain_file('barbican_wsgi_main').with(
-        'ensure'  => 'file',
-        'path'    => "#{platform_parameters[:wsgi_script_path]}/main",
-        'owner'   => 'barbican',
-        'group'   => 'barbican',
-        'mode'    => '0644',
-        'require' => [ "File[#{platform_parameters[:wsgi_script_path]}]", "Package[barbican-api]" ],
+        'ensure' => 'file',
+        'path'   => "#{platform_parameters[:wsgi_script_path]}/main",
+        'source' => platform_parameters[:wsgi_script_source],
+        'owner'  => 'barbican',
+        'group'  => 'barbican',
+        'mode'   => '0644',
       )}
+      it { is_expected.to contain_file('barbican_wsgi_main').that_requires("File[#{platform_parameters[:wsgi_script_path]}]") }
 
       it { is_expected.to contain_apache__vhost('barbican_wsgi_main').with(
-        'servername'                  => 'some.host.tld',
-        'ip'                          => nil,
-        'port'                        => '9311',
-        'docroot'                     => "#{platform_parameters[:wsgi_script_path]}",
-        'docroot_owner'               => 'barbican',
-        'docroot_group'               => 'barbican',
-        'ssl'                         => 'true',
-        'wsgi_daemon_process'         => 'barbican-api',
-        'wsgi_daemon_process_options' => {
-          'user'         => 'barbican',
-          'group'        => 'barbican',
-          'processes'    => '1',
-          'threads'      => '8',
-          'display-name' => 'barbican-api',
-        },
-        'wsgi_process_group'          => 'barbican-api',
-        'wsgi_script_aliases'         => { '/' => "#{platform_parameters[:wsgi_script_path]}/main" },
-        'wsgi_application_group'      => '%{GLOBAL}',
-        'wsgi_pass_authorization'     => 'On',
-        'headers'                     => nil,
-        'require'                     => 'File[barbican_wsgi_main]',
-        'access_log_format'           => false,
+        'servername'          => 'some.host.tld',
+        'ip'                  => nil,
+        'port'                => '9311',
+        'docroot'             => "#{platform_parameters[:wsgi_script_path]}",
+        'docroot_owner'       => 'barbican',
+        'docroot_group'       => 'barbican',
+        'ssl'                 => 'true',
+        'wsgi_daemon_process' => 'barbican-api',
+        'wsgi_process_group'  => 'barbican-api',
+        'wsgi_script_aliases' => { '/' => "#{platform_parameters[:wsgi_script_path]}/main" },
+        'require'             => 'File[barbican_wsgi_main]',
       )}
       it { is_expected.to contain_concat("#{platform_parameters[:httpd_ports_file]}") }
       it { is_expected.to contain_file(platform_parameters[:httpd_config_file]) }
     end
 
-    describe 'when overriding default apache logging' do
+    describe 'when overriding parameters using different ports' do
       let :params do
         {
-          :servername        => 'dummy.host',
-          :access_log_format => 'foo',
+          :servername  => 'dummy.host',
+          :bind_host   => '10.42.51.1',
+          :public_port => 12345,
+          :ssl         => false,
+          :workers     => 37,
         }
       end
+
       it { is_expected.to contain_apache__vhost('barbican_wsgi_main').with(
-          'servername'        => 'dummy.host',
-          'access_log_format' => 'foo',
-          )}
-    end
-
-    describe 'when overriding parameters using symlink and custom file source' do
-      let :params do
-        {
-          :wsgi_script_ensure => 'link',
-          :wsgi_script_source => '/opt/barbican/httpd/barbican.py',
-        }
-      end
-
-      it { is_expected.to contain_file('barbican_wsgi_main').with(
-        'ensure'  => 'link',
-        'path'    => "#{platform_parameters[:wsgi_script_path]}/main",
-        'target'  => '/opt/barbican/httpd/barbican.py',
-        'owner'   => 'barbican',
-        'group'   => 'barbican',
-        'mode'    => '0644',
-        'require' => [ "File[#{platform_parameters[:wsgi_script_path]}]", "Package[barbican-api]" ],
+        'servername'          => 'dummy.host',
+        'ip'                  => '10.42.51.1',
+        'port'                => '12345',
+        'docroot'             => "#{platform_parameters[:wsgi_script_path]}",
+        'docroot_owner'       => 'barbican',
+        'docroot_group'       => 'barbican',
+        'ssl'                 => 'false',
+        'wsgi_daemon_process' => 'barbican-api',
+        'wsgi_process_group'  => 'barbican-api',
+        'wsgi_script_aliases' => { '/' => "#{platform_parameters[:wsgi_script_path]}/main" },
+        'require'             => 'File[barbican_wsgi_main]',
       )}
+
+      it { is_expected.to contain_concat("#{platform_parameters[:httpd_ports_file]}") }
+      it { is_expected.to contain_file(platform_parameters[:httpd_config_file]) }
     end
+
   end
 
   on_supported_os({
@@ -123,6 +111,7 @@ describe 'barbican::wsgi::apache' do
           :httpd_service_name => 'apache2',
           :httpd_ports_file   => '/etc/apache2/ports.conf',
           :wsgi_script_path   => '/usr/lib/cgi-bin/barbican',
+          :wsgi_script_source => '/usr/lib/python2.7/dist-packages/barbican/api/app.wsgi',
           :httpd_config_file  => '/etc/apache2/conf-available/barbican-api.conf',
         }
       when 'RedHat'
@@ -130,6 +119,7 @@ describe 'barbican::wsgi::apache' do
           :httpd_service_name => 'httpd',
           :httpd_ports_file   => '/etc/httpd/conf/ports.conf',
           :wsgi_script_path   => '/var/www/cgi-bin/barbican',
+          :wsgi_script_source => '/usr/lib/python2.7/site-packages/barbican/api/app.wsgi',
           :httpd_config_file  => '/etc/httpd/conf.d/barbican-api.conf',
         }
       end
