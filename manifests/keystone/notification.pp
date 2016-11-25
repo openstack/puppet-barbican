@@ -32,6 +32,8 @@ class barbican::keystone::notification (
   $keystone_notification_thread_pool_size = $::os_service_default,
 ) {
 
+  include ::barbican::deps
+
   barbican_config {
     'keystone_notifications/enable':           value => $enable_keystone_notification;
     'keystone_notifications/control_exchange': value => $keystone_notification_control_exchange;

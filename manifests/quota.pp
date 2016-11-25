@@ -32,6 +32,8 @@ class barbican::quota (
   $quota_cas         = $::os_service_default,
 ) {
 
+  include ::barbican::deps
+
   barbican_config {
     'quotas/quota_secrets':      value => $quota_secrets;
     'quotas/quota_orders':       value => $quota_orders;

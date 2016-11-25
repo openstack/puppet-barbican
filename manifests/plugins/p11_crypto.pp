@@ -42,6 +42,8 @@ class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_slot_id      = undef,
 ) {
 
+  include ::barbican::deps
+
   if $p11_crypto_plugin_login == undef {
       fail('p11_crypto_plugin_login must be defined')
   }

@@ -105,6 +105,7 @@ class barbican::wsgi::apache (
   $priority      = '10',
 ) {
 
+  include ::barbican::deps
   include ::barbican::params
   include ::apache
   include ::apache::mod::wsgi

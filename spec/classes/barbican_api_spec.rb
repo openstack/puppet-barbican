@@ -123,8 +123,9 @@ describe 'barbican::api' do
           "http://${::fqdn}:$param_hash[:bind_port]"
         end
 
-        it { is_expected.to contain_class 'barbican::api::logging' }
-        it { is_expected.to contain_class 'barbican::db' }
+        it { is_expected.to contain_class('barbican::deps') }
+        it { is_expected.to contain_class('barbican::api::logging') }
+        it { is_expected.to contain_class('barbican::db') }
 
         it { is_expected.to contain_package('barbican-api').with(
             :tag => ['openstack', 'barbican-package'],
