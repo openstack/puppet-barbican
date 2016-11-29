@@ -28,6 +28,8 @@ class barbican::policy (
   $policy_path = '/etc/barbican/policy.json',
 ) {
 
+  include ::barbican::deps
+
   validate_hash($policies)
 
   Openstacklib::Policy::Base {

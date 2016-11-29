@@ -53,6 +53,8 @@ class barbican::db::mysql(
   $allowed_hosts = undef
 ) {
 
+  include ::barbican::deps
+
   validate_string($password)
 
   ::openstacklib::db::mysql { 'barbican':
@@ -65,5 +67,7 @@ class barbican::db::mysql(
     allowed_hosts => $allowed_hosts,
   }
 
-  ::Openstacklib::Db::Mysql['barbican'] ~> Exec<| title == 'barbican-db-manage' |>
+  Anchor['barbican::db::begin']
+  ~> Class['barbican::db::mysql']
+  ~> Anchor['barbican::db::end']
 }

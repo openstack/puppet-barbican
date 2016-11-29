@@ -52,6 +52,7 @@ class barbican::plugins::dogtag (
   $dogtag_plugin_plugin_working_dir = $::os_service_default,
 ) {
 
+  include ::barbican::deps
   include ::barbican::params
 
   if $dogtag_plugin_nss_password == undef {
@@ -75,5 +76,4 @@ class barbican::plugins::dogtag (
     'dogtag_plugin/plugin_working_dir': value => $dogtag_plugin_plugin_working_dir;
   }
 
-  Package['dogtag-client'] -> Barbican_config<||>
 }

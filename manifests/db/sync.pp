@@ -11,6 +11,9 @@
 class barbican::db::sync(
   $extra_params  = undef,
 ) {
+
+  include ::barbican::deps
+
   exec { 'barbican-db-manage':
     command     => "barbican-manage db upgrade ${extra_params}",
     path        => ['/bin', '/usr/bin', ],
@@ -18,11 +21,12 @@ class barbican::db::sync(
     refreshonly => true,
     try_sleep   => 5,
     tries       => 10,
+    subscribe   => [
+      Anchor['barbican::install::end'],
+      Anchor['barbican::config::end'],
+      Anchor['barbican::dbsync::begin']
+    ],
+    notify      => Anchor['barbican::dbsync::end'],
   }
 
-  Barbican_config <| title == 'database/connection' |> ~> Exec['barbican-db-manage']
-  Barbican_config <| title == 'DEFAULT/sql_connection' |> ~> Exec['barbican-db-manage']
-  Package <| tag == 'barbican-package' |> ~> Exec['barbican-db-manage']
-  Package <| tag == 'openstack' |> -> Exec['barbican-db-manage']
-  Exec['barbican-db-manage'] ~> Service<| title == 'barbican-api' |>
 }

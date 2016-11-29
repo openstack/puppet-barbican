@@ -30,6 +30,9 @@ class barbican::config (
   $api_config = {},
   $api_paste_ini_config = {},
 ) {
+
+  include ::barbican::deps
+
   validate_hash($api_config)
   validate_hash($api_paste_ini_config)
 

@@ -44,6 +44,8 @@ class barbican::plugins::kmip (
   $kmip_plugin_ca_certs = undef,
 ) {
 
+  include ::barbican::deps
+
   if $kmip_plugin_host == undef {
     fail('kmip_plugin_host must be defined')
   }

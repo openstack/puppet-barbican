@@ -279,6 +279,7 @@ class barbican::api (
 ) inherits barbican::params {
 
 
+  include ::barbican::deps
   include ::barbican::db
   include ::barbican::api::logging
   include ::barbican::client
@@ -302,8 +303,8 @@ deprecated. Please use barbican::default_transport_url instead.")
     mode    => '0770',
     owner   => 'root',
     group   => 'barbican',
-    require => Package['barbican-api'],
-    notify  => Service[$service_name],
+    require => Anchor['barbican::install::end'],
+    notify  => Anchor['barbican::service::end'],
   }
 
   package { 'barbican-api':
@@ -311,12 +312,6 @@ deprecated. Please use barbican::default_transport_url instead.")
     name   => $::barbican::params::api_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
-
-  Package['barbican-api']                ~> Service[$service_name]
-  Barbican_config<||>                    ~> Service[$service_name]
-  Barbican_api_paste_ini<||>             ~> Service[$service_name]
-  Package<| tag == 'barbican-package' |> -> Barbican_config<||>
-  Package<| tag == 'barbican-package' |> -> Barbican_api_paste_ini<||>
 
   # basic service config
   if $host_href == undef {
@@ -461,9 +456,9 @@ deprecated. Please use barbican::default_transport_url instead.")
       path  => '/etc/barbican/gunicorn-config.py',
       line  => "bind = '${bind_host}:${bind_port}'",
       match => '.*bind = .*',
+      tag   => 'modify-bind-port',
     }
 
-    Package<| tag == 'barbican-package' |> -> File_line['Modify bind_port in gunicorn-config.py'] ~> Service[$service_name]
   } elsif $service_name == 'httpd' {
     include ::apache::params
     # Debian/Ubuntu do not have a barbican-api and this will error out on them.

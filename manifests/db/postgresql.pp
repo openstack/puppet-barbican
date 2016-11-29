@@ -40,7 +40,7 @@ class barbican::db::postgresql(
   $privileges = 'ALL',
 ) {
 
-  Class['barbican::db::postgresql'] -> Service<| title == 'barbican' |>
+  include ::barbican::deps
 
   ::openstacklib::db::postgresql { 'barbican':
     password_hash => postgresql_password($user, $password),
@@ -50,6 +50,8 @@ class barbican::db::postgresql(
     privileges    => $privileges,
   }
 
-  ::Openstacklib::Db::Postgresql['barbican'] ~> Exec<| title == 'barbican-db-manage' |>
+  Anchor['barbican::db::begin']
+  ~> Class['barbican::db::postgresql']
+  ~> Anchor['barbican::db::end']
 
 }
