@@ -46,6 +46,19 @@
 #   would be, rabbit://user:pass@host:port/virtual_host
 #   Defaults to $::os_service_default
 #
+# [*notification_transport_url*]
+#   (optional) Connection url for oslo messaging notifications backend. An
+#   example rabbit url would be, rabbit://user:pass@host:port/virtual_host
+#   Defaults to $::os_service_default
+#
+# [*notification_driver*]
+#   (optional) Driver to use for oslo messaging notifications backend.
+#   Defaults to $::os_service_default
+#
+# [*notification_topics*]
+#   (optional) Topics to use for oslo messaging notifications backend.
+#   Defaults to $::os_service_default
+#
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
 #   Defaults to $::os_service_default
@@ -236,6 +249,9 @@ class barbican::api (
   $max_allowed_request_size_in_bytes             = $::os_service_default,
   $rpc_backend                                   = $::os_service_default,
   $default_transport_url                         = $::os_service_default,
+  $notification_transport_url                    = $::os_service_default,
+  $notification_driver                           = $::os_service_default,
+  $notification_topics                           = $::os_service_default,
   $rabbit_use_ssl                                = $::os_service_default,
   $rabbit_heartbeat_timeout_threshold            = $::os_service_default,
   $rabbit_heartbeat_rate                         = $::os_service_default,
@@ -353,6 +369,12 @@ deprecated. Please use barbican::default_transport_url instead.")
 
   oslo::messaging::default { 'barbican_config':
     transport_url => $default_transport_url,
+  }
+
+  oslo::messaging::notifications { 'barbican_config':
+    driver        => $notification_driver,
+    transport_url => $notification_transport_url,
+    topics        => $notification_topics,
   }
 
   # queue options

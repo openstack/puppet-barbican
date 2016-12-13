@@ -29,6 +29,9 @@ describe 'barbican::api' do
         :bind_port                                     => '9311',
         :rpc_backend                                   => 'rabbit',
         :default_transport_url                         => '<SERVICE DEFAULT>',
+        :notification_transport_url                    => '<SERVICE DEFAULT>',
+        :notification_driver                           => '<SERVICE DEFAULT>',
+        :notification_topics                           => '<SERVICE DEFAULT>',
         :rabbit_host                                   => '<SERVICE_DEFAULT>',
         :rabbit_hosts                                  => ['<SERVICE DEFAULT>'],
         :rabbit_password                               => '<SERVICE DEFAULT>',
@@ -71,6 +74,9 @@ describe 'barbican::api' do
         :bind_port                                     => '9312',
         :rpc_backend                                   => 'rabbit',
         :default_transport_url                         => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
+        :notification_transport_url                    => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
+        :notification_driver                           => 'kombu',
+        :notification_topics                           => 'notifications',
         :rabbit_host                                   => 'rabbithost',
         :rabbit_hosts                                  => ['rabbithost:1234'],
         :rabbit_password                               => 'bugs_bunny',
@@ -153,6 +159,9 @@ describe 'barbican::api' do
         it 'configures rabbit' do
           is_expected.to contain_barbican_config('DEFAULT/rpc_backend').with_value(param_hash[:rpc_backend])
           is_expected.to contain_barbican_config('DEFAULT/transport_url').with_value(param_hash[:default_transport_url])
+          is_expected.to contain_barbican_config('oslo_messaging_notifications/transport_url').with_value(param_hash[:notification_transport_url])
+          is_expected.to contain_barbican_config('oslo_messaging_notifications/driver').with_value(param_hash[:notification_driver])
+          is_expected.to contain_barbican_config('oslo_messaging_notifications/topics').with_value(param_hash[:notification_topics])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_hosts').with_value(param_hash[:rabbit_hosts])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_password').with_value(param_hash[:rabbit_password]).with_secret(true)
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_userid').with_value(param_hash[:rabbit_userid])
