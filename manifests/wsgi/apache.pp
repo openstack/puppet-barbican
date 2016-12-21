@@ -69,6 +69,10 @@
 #     (optional) The number of threads for the vhost.
 #     Defaults to $::os_workers
 #
+#   [*wsgi_process_display_name*]
+#     (optional) Name of the WSGI process display-name.
+#     Defaults to undef
+#
 # == Dependencies
 #
 #   requires Class['apache'] & Class['barbican']
@@ -88,21 +92,22 @@
 #   Copyright 2015 Red Hat Inc. <licensing@redhat.com>
 #
 class barbican::wsgi::apache (
-  $servername    = $::fqdn,
-  $public_port   = 9311,
-  $bind_host     = undef,
-  $public_path   = '/',
-  $ssl           = true,
-  $workers       = 1,
-  $ssl_cert      = undef,
-  $ssl_key       = undef,
-  $ssl_chain     = undef,
-  $ssl_ca        = undef,
-  $ssl_crl_path  = undef,
-  $ssl_crl       = undef,
-  $ssl_certs_dir = undef,
-  $threads       = $::os_workers,
-  $priority      = '10',
+  $servername                 = $::fqdn,
+  $public_port                = 9311,
+  $bind_host                  = undef,
+  $public_path                = '/',
+  $ssl                        = true,
+  $workers                    = 1,
+  $ssl_cert                   = undef,
+  $ssl_key                    = undef,
+  $ssl_chain                  = undef,
+  $ssl_ca                     = undef,
+  $ssl_crl_path               = undef,
+  $ssl_crl                    = undef,
+  $ssl_certs_dir              = undef,
+  $wsgi_process_display_name  = undef,
+  $threads                    = $::os_workers,
+  $priority                   = '10',
 ) {
 
   include ::barbican::deps
@@ -134,27 +139,28 @@ class barbican::wsgi::apache (
   File[$::barbican::params::httpd_config_file] ~> Service['httpd']
 
   ::openstacklib::wsgi::apache { 'barbican_wsgi_main':
-    bind_host           => $bind_host,
-    bind_port           => $public_port,
-    group               => 'barbican',
-    path                => $public_path,
-    priority            => $priority,
-    servername          => $servername,
-    ssl                 => $ssl,
-    ssl_ca              => $ssl_ca,
-    ssl_cert            => $ssl_cert,
-    ssl_certs_dir       => $ssl_certs_dir,
-    ssl_chain           => $ssl_chain,
-    ssl_crl             => $ssl_crl,
-    ssl_crl_path        => $ssl_crl_path,
-    ssl_key             => $ssl_key,
-    threads             => $threads,
-    user                => 'barbican',
-    workers             => $workers,
-    wsgi_daemon_process => 'barbican-api',
-    wsgi_process_group  => 'barbican-api',
-    wsgi_script_dir     => $::barbican::params::barbican_wsgi_script_path,
-    wsgi_script_file    => 'main',
-    wsgi_script_source  => $::barbican::params::barbican_wsgi_script_source,
+    bind_host                 => $bind_host,
+    bind_port                 => $public_port,
+    group                     => 'barbican',
+    path                      => $public_path,
+    priority                  => $priority,
+    servername                => $servername,
+    ssl                       => $ssl,
+    ssl_ca                    => $ssl_ca,
+    ssl_cert                  => $ssl_cert,
+    ssl_certs_dir             => $ssl_certs_dir,
+    ssl_chain                 => $ssl_chain,
+    ssl_crl                   => $ssl_crl,
+    ssl_crl_path              => $ssl_crl_path,
+    ssl_key                   => $ssl_key,
+    threads                   => $threads,
+    user                      => 'barbican',
+    workers                   => $workers,
+    wsgi_daemon_process       => 'barbican-api',
+    wsgi_process_display_name => $wsgi_process_display_name,
+    wsgi_process_group        => 'barbican-api',
+    wsgi_script_dir           => $::barbican::params::barbican_wsgi_script_path,
+    wsgi_script_file          => 'main',
+    wsgi_script_source        => $::barbican::params::barbican_wsgi_script_source,
   }
 }

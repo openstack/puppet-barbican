@@ -56,6 +56,13 @@ describe 'barbican::wsgi::apache' do
         'docroot_group'       => 'barbican',
         'ssl'                 => 'true',
         'wsgi_daemon_process' => 'barbican-api',
+        'wsgi_daemon_process_options' => {
+          'user'         => 'barbican',
+          'group'        => 'barbican',
+          'processes'    => 1,
+          'threads'      => '8',
+          'display-name' => 'barbican_wsgi_main',
+        },
         'wsgi_process_group'  => 'barbican-api',
         'wsgi_script_aliases' => { '/' => "#{platform_parameters[:wsgi_script_path]}/main" },
         'require'             => 'File[barbican_wsgi_main]',
@@ -67,11 +74,12 @@ describe 'barbican::wsgi::apache' do
     describe 'when overriding parameters using different ports' do
       let :params do
         {
-          :servername  => 'dummy.host',
-          :bind_host   => '10.42.51.1',
-          :public_port => 12345,
-          :ssl         => false,
-          :workers     => 37,
+          :servername                => 'dummy.host',
+          :bind_host                 => '10.42.51.1',
+          :public_port               => 12345,
+          :ssl                       => false,
+          :wsgi_process_display_name => 'barbican-api',
+          :workers                   => 37,
         }
       end
 
@@ -84,6 +92,13 @@ describe 'barbican::wsgi::apache' do
         'docroot_group'       => 'barbican',
         'ssl'                 => 'false',
         'wsgi_daemon_process' => 'barbican-api',
+        'wsgi_daemon_process_options' => {
+            'user'         => 'barbican',
+            'group'        => 'barbican',
+            'processes'    => '37',
+            'threads'      => '8',
+            'display-name' => 'barbican-api',
+        },
         'wsgi_process_group'  => 'barbican-api',
         'wsgi_script_aliases' => { '/' => "#{platform_parameters[:wsgi_script_path]}/main" },
         'require'             => 'File[barbican_wsgi_main]',
