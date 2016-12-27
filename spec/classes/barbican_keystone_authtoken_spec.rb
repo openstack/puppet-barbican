@@ -63,7 +63,6 @@ describe 'barbican::keystone::authtoken' do
         is_expected.to contain_barbican_config('keystone_authtoken/memcached_servers').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/region_name').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/revocation_cache_time').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_barbican_config('keystone_authtoken/signing_dir').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/token_cache_time').with_value('<SERVICE DEFAULT>')
       end
     end
@@ -104,7 +103,6 @@ describe 'barbican::keystone::authtoken' do
           :memcached_servers                    => ['memcached01:11211','memcached02:11211'],
           :region_name                          => 'region2',
           :revocation_cache_time                => '11',
-          :signing_dir                          => '/var/cache',
           :token_cache_time                     => '301',
         })
       end
@@ -143,7 +141,6 @@ describe 'barbican::keystone::authtoken' do
         is_expected.to contain_barbican_config('keystone_authtoken/memcached_servers').with_value('memcached01:11211,memcached02:11211')
         is_expected.to contain_barbican_config('keystone_authtoken/region_name').with_value(params[:region_name])
         is_expected.to contain_barbican_config('keystone_authtoken/revocation_cache_time').with_value(params[:revocation_cache_time])
-        is_expected.to contain_barbican_config('keystone_authtoken/signing_dir').with_value(params[:signing_dir])
         is_expected.to contain_barbican_config('keystone_authtoken/token_cache_time').with_value(params[:token_cache_time])
       end
     end
