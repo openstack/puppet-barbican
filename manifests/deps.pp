@@ -24,6 +24,10 @@ class barbican::deps {
   ~> Service<| tag == 'barbican-service' |>
   ~> anchor { 'barbican::service::end': }
 
+  # all db settings should be applied and all packages should be installed
+  # before dbsync starts
+  Oslo::Db<||> -> Anchor['barbican::dbsync::begin']
+
   # policy config should occur in the config block also.
   Anchor['barbican::config::begin']
   -> Openstacklib::Policy::Base<||>
