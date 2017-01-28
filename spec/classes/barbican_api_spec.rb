@@ -29,6 +29,8 @@ describe 'barbican::api' do
         :bind_port                                     => '9311',
         :rpc_backend                                   => 'rabbit',
         :default_transport_url                         => '<SERVICE DEFAULT>',
+        :rpc_response_timeout                          => '<SERVICE DEFAULT>',
+        :control_exchange                              => '<SERVICE DEFAULT>',
         :notification_transport_url                    => '<SERVICE DEFAULT>',
         :notification_driver                           => '<SERVICE DEFAULT>',
         :notification_topics                           => '<SERVICE DEFAULT>',
@@ -74,6 +76,8 @@ describe 'barbican::api' do
         :bind_port                                     => '9312',
         :rpc_backend                                   => 'rabbit',
         :default_transport_url                         => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
+        :rpc_response_timeout                          => '120',
+        :control_exchange                              => 'barbican',
         :notification_transport_url                    => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
         :notification_driver                           => 'kombu',
         :notification_topics                           => 'notifications',
@@ -159,6 +163,8 @@ describe 'barbican::api' do
         it 'configures rabbit' do
           is_expected.to contain_barbican_config('DEFAULT/rpc_backend').with_value(param_hash[:rpc_backend])
           is_expected.to contain_barbican_config('DEFAULT/transport_url').with_value(param_hash[:default_transport_url])
+          is_expected.to contain_barbican_config('DEFAULT/rpc_response_timeout').with_value(param_hash[:rpc_response_timeout])
+          is_expected.to contain_barbican_config('DEFAULT/control_exchange').with_value(param_hash[:control_exchange])
           is_expected.to contain_barbican_config('oslo_messaging_notifications/transport_url').with_value(param_hash[:notification_transport_url])
           is_expected.to contain_barbican_config('oslo_messaging_notifications/driver').with_value(param_hash[:notification_driver])
           is_expected.to contain_barbican_config('oslo_messaging_notifications/topics').with_value(param_hash[:notification_topics])
