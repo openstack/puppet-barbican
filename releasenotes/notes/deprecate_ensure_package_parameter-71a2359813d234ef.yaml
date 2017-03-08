@@ -1,0 +1,4 @@
+---
+deprecations:
+  - barbican::api::ensure_package is now deprecated and will be removed
+    in the future release. Please use barbican::api::package_ensure instead.

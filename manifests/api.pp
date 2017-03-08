@@ -5,7 +5,7 @@
 #
 # === Parameters
 #
-# [*ensure_package*]
+# [*package_ensure*]
 #   (optional) The state of barbican packages
 #   Defaults to 'present'
 #
@@ -249,8 +249,12 @@
 #   (optional) The RabbitMQ virtual host.
 #   Defaults to $::os_service_default
 #
+# [*ensure_package*]
+#   (optional) The state of barbican packages
+#   Defaults to undef
+#
 class barbican::api (
-  $ensure_package                                = 'present',
+  $package_ensure                                = 'present',
   $client_package_ensure                         = 'present',
   $bind_host                                     = '0.0.0.0',
   $bind_port                                     = '9311',
@@ -304,6 +308,7 @@ class barbican::api (
   $rabbit_port                                   = $::os_service_default,
   $rabbit_userid                                 = $::os_service_default,
   $rabbit_virtual_host                           = $::os_service_default,
+  $ensure_package                                = undef,
 ) inherits barbican::params {
 
 
@@ -323,6 +328,14 @@ barbican::rabbit_port, barbican::rabbit_userid and barbican::rabbit_virtual_host
 deprecated. Please use barbican::default_transport_url instead.")
   }
 
+  if $ensure_package {
+    warning("barbican::api::ensure_package is deprecated and will be removed in \
+the future release. Please use barbican::api::package_ensure instead.")
+    $package_ensure_real = $ensure_package
+  } else {
+    $package_ensure_real = $package_ensure
+  }
+
   # TODO: Remove the posix users and permissions and merge this definition
   # with the previous one, once the barbican package has been updated
   # with the correct ownership for this directory.
@@ -336,7 +349,7 @@ deprecated. Please use barbican::default_transport_url instead.")
   }
 
   package { 'barbican-api':
-    ensure => $ensure_package,
+    ensure => $package_ensure_real,
     name   => $::barbican::params::api_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
