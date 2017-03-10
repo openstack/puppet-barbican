@@ -174,13 +174,16 @@ describe 'barbican::api' do
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_virtual_host').with_value(param_hash[:rabbit_virtual_host])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value(param_hash[:rabbit_heartbeat_timeout_threshold])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_rate').with_value(param_hash[:rabbit_heartbeat_rate])
+          is_expected.to contain_oslo__messaging__rabbit('barbican_config').with(
+            :rabbit_use_ssl     => true,
+            :kombu_ssl_ca_certs => 'path_to_certs',
+            :kombu_ssl_certfile => 'path_to_certfile',
+            :kombu_ssl_keyfile  => 'path_to_keyfile',
+            :kombu_ssl_version  => '1.2',
+          )
         end
 
-        it 'configures kombu certs' do
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_ssl_ca_certs').with_value(param_hash[:kombu_ssl_ca_certs])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_ssl_certfile').with_value(param_hash[:kombu_ssl_certfile])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_ssl_keyfile').with_value(param_hash[:kombu_ssl_keyfile])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_ssl_version').with_value(param_hash[:kombu_ssl_version])
+        it 'configures kombu params' do
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_reconnect_delay').with_value(param_hash[:kombu_reconnect_delay])
         end
 
