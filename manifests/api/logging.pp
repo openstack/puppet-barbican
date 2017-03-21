@@ -120,6 +120,7 @@ class barbican::api::logging(
     use_syslog                    => $use_syslog,
     use_stderr                    => $use_stderr,
     log_dir                       => $log_dir,
+    log_file                      => $log_file,
     syslog_log_facility           => $log_facility,
     logging_context_format_string => $logging_context_format_string,
     logging_default_format_string => $logging_default_format_string,
