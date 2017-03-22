@@ -323,9 +323,9 @@ class barbican::api (
     !is_service_default($rabbit_port) or
     !is_service_default($rabbit_userid) or
     !is_service_default($rabbit_virtual_host) {
-    warning("barbican::rabbit_host, barbican::rabbit_hosts, barbican::rabbit_password, \
-barbican::rabbit_port, barbican::rabbit_userid and barbican::rabbit_virtual_host are \
-deprecated. Please use barbican::default_transport_url instead.")
+    warning("barbican::api::rabbit_host, barbican::api::rabbit_hosts, barbican::api::rabbit_password, \
+barbican::api::rabbit_port, barbican::api::rabbit_userid and barbican::api::rabbit_virtual_host are \
+deprecated. Please use barbican::api::default_transport_url instead.")
   }
 
   if $ensure_package {
