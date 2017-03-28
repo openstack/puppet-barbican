@@ -71,7 +71,7 @@ class barbican::plugins::kmip (
   if $kmip_plugin_username != undef {
     barbican_config {
       'kmip_plugin/username': value => $kmip_plugin_username;
-      'kmip_plugin/password': value => $kmip_plugin_password;
+      'kmip_plugin/password': value => $kmip_plugin_password, secret => true;
       'kmip_plugin/host':     value => $kmip_plugin_host;
       'kmip_plugin/port':     value => $kmip_plugin_port;
     }

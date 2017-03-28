@@ -41,7 +41,7 @@ describe 'barbican::plugins::kmip' do
         is_expected.to contain_barbican_config('kmip_plugin/username')\
           .with_value(params[:kmip_plugin_username])
         is_expected.to contain_barbican_config('kmip_plugin/password')\
-          .with_value(params[:kmip_plugin_password])
+          .with_value(params[:kmip_plugin_password]).with_secret(true)
       end
     end
 
