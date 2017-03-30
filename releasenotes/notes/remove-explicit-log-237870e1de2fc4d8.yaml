@@ -1,0 +1,5 @@
+---
+fixes:
+  - Remove explcit barbican.log file as apache cannot write to this file when
+    selinux is enabled. Instead operators should define this file if they want
+    to use it or rely on the logging in apache.

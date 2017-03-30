@@ -27,7 +27,7 @@
 #
 #  [*log_file*]
 #    (optional) File where logs should be stored.
-#    Defaults to '/var/log/barbican/api.log'
+#    Defaults to $::os_service_default
 #
 #  [*logging_context_format_string*]
 #    (optional) Format string to use for log messages with context.
@@ -98,7 +98,7 @@ class barbican::api::logging(
   $use_stderr                    = $::os_service_default,
   $log_facility                  = $::os_service_default,
   $log_dir                       = '/var/log/barbican',
-  $log_file                      = '/var/log/barbican/api.log',
+  $log_file                      = $::os_service_default,
   $debug                         = $::os_service_default,
   $logging_context_format_string = $::os_service_default,
   $logging_default_format_string = $::os_service_default,

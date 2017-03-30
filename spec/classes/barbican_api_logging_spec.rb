@@ -101,7 +101,7 @@ describe 'barbican::api::logging' do
      :log_config_append, :publish_errors,
      :default_log_levels, :fatal_deprecations,
      :instance_format, :instance_uuid_format,
-     :log_date_format, ].each { |param|
+     :log_date_format, :log_file ].each { |param|
         it { is_expected.to contain_barbican_config("DEFAULT/#{param}").with_value('<SERVICE DEFAULT>') }
       }
   end
