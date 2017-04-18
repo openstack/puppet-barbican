@@ -21,6 +21,7 @@ class barbican::db::sync(
     refreshonly => true,
     try_sleep   => 5,
     tries       => 10,
+    logoutput   => on_failure,
     subscribe   => [
       Anchor['barbican::install::end'],
       Anchor['barbican::config::end'],
