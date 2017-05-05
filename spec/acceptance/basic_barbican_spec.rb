@@ -31,7 +31,9 @@ describe 'barbican::api basic test class' do
          password => 'a_big_secret',
       }
 
-      class { '::barbican::api::logging': }
+      class { '::barbican::api::logging':
+        debug => true,
+      }
 
       class { '::barbican::quota': }
 
