@@ -34,7 +34,7 @@ describe 'barbican::api' do
         :notification_transport_url                    => '<SERVICE DEFAULT>',
         :notification_driver                           => '<SERVICE DEFAULT>',
         :notification_topics                           => '<SERVICE DEFAULT>',
-        :rabbit_host                                   => '<SERVICE_DEFAULT>',
+        :rabbit_host                                   => '<SERVICE DEFAULT>',
         :rabbit_hosts                                  => ['<SERVICE DEFAULT>'],
         :rabbit_password                               => '<SERVICE DEFAULT>',
         :rabbit_port                                   => '<SERVICE DEFAULT>',
