@@ -30,8 +30,10 @@ describe 'barbican::db' do
         :connection     => 'sqlite:////var/lib/barbican/barbican.sqlite',
         :idle_timeout   => '<SERVICE DEFAULT>',
         :min_pool_size  => '<SERVICE DEFAULT>',
+        :max_pool_size  => '<SERVICE DEFAULT>',
         :max_retries    => '<SERVICE DEFAULT>',
         :retry_interval => '<SERVICE DEFAULT>',
+        :max_overflow   => '<SERVICE DEFAULT>',
       )}
 
       # TODO(aschultz): remove once oslo is properly used
@@ -47,6 +49,7 @@ describe 'barbican::db' do
         { :database_connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican',
           :database_idle_timeout   => '3601',
           :database_min_pool_size  => '2',
+          :database_max_pool_size  => '11',
           :database_max_retries    => '11',
           :database_retry_interval => '11',
           :database_max_overflow   => '11',
@@ -60,6 +63,7 @@ describe 'barbican::db' do
         :connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican',
         :idle_timeout   => '3601',
         :min_pool_size  => '2',
+        :max_pool_size  => '11',
         :max_retries    => '11',
         :retry_interval => '11',
         :max_overflow   => '11',
