@@ -316,6 +316,7 @@ class barbican::api (
   include ::barbican::db
   include ::barbican::api::logging
   include ::barbican::client
+  include ::barbican::policy
 
   if !is_service_default($rabbit_host) or
     !is_service_default($rabbit_hosts) or

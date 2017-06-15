@@ -136,6 +136,7 @@ describe 'barbican::api' do
         it { is_expected.to contain_class('barbican::deps') }
         it { is_expected.to contain_class('barbican::api::logging') }
         it { is_expected.to contain_class('barbican::db') }
+        it { is_expected.to contain_class('barbican::policy') }
 
         it { is_expected.to contain_package('barbican-api').with(
             :tag => ['openstack', 'barbican-package'],
