@@ -22,56 +22,29 @@ require 'spec_helper'
 describe 'barbican::wsgi::apache' do
 
   shared_examples_for 'apache serving barbican with mod_wsgi' do
-    it { is_expected.to contain_service('httpd').with_name(platform_parameters[:httpd_service_name]) }
-    it { is_expected.to contain_class('barbican::deps') }
-    it { is_expected.to contain_class('barbican::params') }
-    it { is_expected.to contain_class('apache') }
-    it { is_expected.to contain_class('apache::mod::wsgi') }
-
-    describe 'with default parameters' do
-
-      it { is_expected.to contain_file("#{platform_parameters[:wsgi_script_path]}").with(
-        'ensure'  => 'directory',
-        'owner'   => 'barbican',
-        'group'   => 'barbican',
-        'require' => 'Package[httpd]',
+    context 'with default parameters' do
+      it { is_expected.to contain_class('barbican::params') }
+      it { is_expected.to contain_class('apache') }
+      it { is_expected.to contain_class('apache::mod::wsgi') }
+      it { is_expected.to contain_class('apache::mod::ssl') }
+      it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+        :bind_port           => 9311,
+        :group               => 'barbican',
+        :path                => '/',
+        :servername          => facts[:fqdn],
+        :ssl                 => true,
+        :threads             => facts[:os_workers],
+        :user                => 'barbican',
+        :workers             => 1,
+        :wsgi_daemon_process => 'barbican-api',
+        :wsgi_process_group  => 'barbican-api',
+        :wsgi_script_dir     => platform_params[:wsgi_script_path],
+        :wsgi_script_file    => 'main',
+        :wsgi_script_source  => platform_params[:wsgi_script_source],
       )}
-
-      it { is_expected.to contain_file('barbican_wsgi_main').with(
-        'ensure' => 'file',
-        'path'   => "#{platform_parameters[:wsgi_script_path]}/main",
-        'source' => platform_parameters[:wsgi_script_source],
-        'owner'  => 'barbican',
-        'group'  => 'barbican',
-        'mode'   => '0644',
-      )}
-      it { is_expected.to contain_file('barbican_wsgi_main').that_requires("File[#{platform_parameters[:wsgi_script_path]}]") }
-
-      it { is_expected.to contain_apache__vhost('barbican_wsgi_main').with(
-        'servername'          => 'some.host.tld',
-        'ip'                  => nil,
-        'port'                => '9311',
-        'docroot'             => "#{platform_parameters[:wsgi_script_path]}",
-        'docroot_owner'       => 'barbican',
-        'docroot_group'       => 'barbican',
-        'ssl'                 => 'true',
-        'wsgi_daemon_process' => 'barbican-api',
-        'wsgi_daemon_process_options' => {
-          'user'         => 'barbican',
-          'group'        => 'barbican',
-          'processes'    => 1,
-          'threads'      => '8',
-          'display-name' => 'barbican_wsgi_main',
-        },
-        'wsgi_process_group'  => 'barbican-api',
-        'wsgi_script_aliases' => { '/' => "#{platform_parameters[:wsgi_script_path]}/main" },
-        'require'             => 'File[barbican_wsgi_main]',
-      )}
-      it { is_expected.to contain_concat("#{platform_parameters[:httpd_ports_file]}") }
-      it { is_expected.to contain_file(platform_parameters[:httpd_config_file]) }
     end
 
-    describe 'when overriding parameters using different ports' do
+    context 'when overriding parameters using different ports' do
       let :params do
         {
           :servername                => 'dummy.host',
@@ -82,32 +55,28 @@ describe 'barbican::wsgi::apache' do
           :workers                   => 37,
         }
       end
-
-      it { is_expected.to contain_apache__vhost('barbican_wsgi_main').with(
-        'servername'          => 'dummy.host',
-        'ip'                  => '10.42.51.1',
-        'port'                => '12345',
-        'docroot'             => "#{platform_parameters[:wsgi_script_path]}",
-        'docroot_owner'       => 'barbican',
-        'docroot_group'       => 'barbican',
-        'ssl'                 => 'false',
-        'wsgi_daemon_process' => 'barbican-api',
-        'wsgi_daemon_process_options' => {
-            'user'         => 'barbican',
-            'group'        => 'barbican',
-            'processes'    => '37',
-            'threads'      => '8',
-            'display-name' => 'barbican-api',
-        },
-        'wsgi_process_group'  => 'barbican-api',
-        'wsgi_script_aliases' => { '/' => "#{platform_parameters[:wsgi_script_path]}/main" },
-        'require'             => 'File[barbican_wsgi_main]',
+      it { is_expected.to contain_class('barbican::params') }
+      it { is_expected.to contain_class('apache') }
+      it { is_expected.to contain_class('apache::mod::wsgi') }
+      it { is_expected.to_not contain_class('apache::mod::ssl') }
+      it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+        :bind_host                 => '10.42.51.1',
+        :bind_port                 => 12345,
+        :group                     => 'barbican',
+        :path                      => '/',
+        :servername                => 'dummy.host',
+        :ssl                       => false,
+        :threads                   => facts[:os_workers],
+        :user                      => 'barbican',
+        :workers                   => 37,
+        :wsgi_daemon_process       => 'barbican-api',
+        :wsgi_process_display_name => 'barbican-api',
+        :wsgi_process_group        => 'barbican-api',
+        :wsgi_script_dir           => platform_params[:wsgi_script_path],
+        :wsgi_script_file          => 'main',
+        :wsgi_script_source        => platform_params[:wsgi_script_source],
       )}
-
-      it { is_expected.to contain_concat("#{platform_parameters[:httpd_ports_file]}") }
-      it { is_expected.to contain_file(platform_parameters[:httpd_config_file]) }
     end
-
   end
 
   on_supported_os({
@@ -120,7 +89,7 @@ describe 'barbican::wsgi::apache' do
       }))
     end
 
-    let(:platform_parameters) do
+    let(:platform_params) do
       case facts[:osfamily]
       when 'Debian'
         {
