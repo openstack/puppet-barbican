@@ -1,0 +1,4 @@
+---
+deprecations:
+  - barbican::rpc_backend is deprecated and will be removed in a future
+    release. Please use barbican::default_transport_url instead.

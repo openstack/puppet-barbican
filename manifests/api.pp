@@ -35,12 +35,6 @@
 #   (optional) Maximum request size against the barbican API.
 #   Defaults to $::os_service_default
 #
-# [*rpc_backend*]
-#   (optional) The rpc backend implementation to use, can be:
-#     rabbit (for rabbitmq)
-#     zmq (for zeromq)
-#   Defaults to $::os_service_default
-#
 # [*default_transport_url*]
 #   (optional) Connection url for oslo messaging backend. An example rabbit url
 #   would be, rabbit://user:pass@host:port/virtual_host
@@ -253,6 +247,12 @@
 #   (optional) The state of barbican packages
 #   Defaults to undef
 #
+# [*rpc_backend*]
+#   (optional) The rpc backend implementation to use, can be:
+#     rabbit (for rabbitmq)
+#     zmq (for zeromq)
+#   Defaults to $::os_service_default
+#
 class barbican::api (
   $package_ensure                                = 'present',
   $client_package_ensure                         = 'present',
@@ -261,7 +261,6 @@ class barbican::api (
   $host_href                                     = undef,
   $max_allowed_secret_in_bytes                   = $::os_service_default,
   $max_allowed_request_size_in_bytes             = $::os_service_default,
-  $rpc_backend                                   = $::os_service_default,
   $default_transport_url                         = $::os_service_default,
   $rpc_response_timeout                          = $::os_service_default,
   $control_exchange                              = $::os_service_default,
@@ -309,6 +308,7 @@ class barbican::api (
   $rabbit_userid                                 = $::os_service_default,
   $rabbit_virtual_host                           = $::os_service_default,
   $ensure_package                                = undef,
+  $rpc_backend                                   = $::os_service_default,
 ) inherits barbican::params {
 
 
@@ -323,10 +323,11 @@ class barbican::api (
     !is_service_default($rabbit_password) or
     !is_service_default($rabbit_port) or
     !is_service_default($rabbit_userid) or
-    !is_service_default($rabbit_virtual_host) {
+    !is_service_default($rabbit_virtual_host) or
+    !is_service_default($rpc_backend) {
     warning("barbican::api::rabbit_host, barbican::api::rabbit_hosts, barbican::api::rabbit_password, \
-barbican::api::rabbit_port, barbican::api::rabbit_userid and barbican::api::rabbit_virtual_host are \
-deprecated. Please use barbican::api::default_transport_url instead.")
+barbican::api::rabbit_port, barbican::api::rabbit_userid, barbican::api::rabbit_virtual_host and \
+barbican::rpc_backend are deprecated. Please use barbican::api::default_transport_url instead.")
   }
 
   if $ensure_package {
@@ -368,29 +369,24 @@ the future release. Please use barbican::api::package_ensure instead.")
     'DEFAULT/host_href': value => $host_href_real;
   }
 
-  #rabbit config
-  if $rpc_backend in [$::os_service_default, 'rabbit'] {
-    oslo::messaging::rabbit {'barbican_config':
-      rabbit_password             => $rabbit_password,
-      rabbit_userid               => $rabbit_userid,
-      rabbit_virtual_host         => $rabbit_virtual_host,
-      rabbit_use_ssl              => $rabbit_use_ssl,
-      heartbeat_timeout_threshold => $rabbit_heartbeat_timeout_threshold,
-      heartbeat_rate              => $rabbit_heartbeat_rate,
-      kombu_reconnect_delay       => $kombu_reconnect_delay,
-      amqp_durable_queues         => $amqp_durable_queues,
-      kombu_compression           => $kombu_compression,
-      kombu_ssl_ca_certs          => $kombu_ssl_ca_certs,
-      kombu_ssl_certfile          => $kombu_ssl_certfile,
-      kombu_ssl_keyfile           => $kombu_ssl_keyfile,
-      kombu_ssl_version           => $kombu_ssl_version,
-      rabbit_hosts                => $rabbit_hosts,
-      rabbit_host                 => $rabbit_host,
-      rabbit_port                 => $rabbit_port,
-      rabbit_ha_queues            => $rabbit_ha_queues,
-    }
-  } else {
-    barbican_config { 'DEFAULT/rpc_backend': value => $rpc_backend }
+  oslo::messaging::rabbit {'barbican_config':
+    rabbit_password             => $rabbit_password,
+    rabbit_userid               => $rabbit_userid,
+    rabbit_virtual_host         => $rabbit_virtual_host,
+    rabbit_use_ssl              => $rabbit_use_ssl,
+    heartbeat_timeout_threshold => $rabbit_heartbeat_timeout_threshold,
+    heartbeat_rate              => $rabbit_heartbeat_rate,
+    kombu_reconnect_delay       => $kombu_reconnect_delay,
+    amqp_durable_queues         => $amqp_durable_queues,
+    kombu_compression           => $kombu_compression,
+    kombu_ssl_ca_certs          => $kombu_ssl_ca_certs,
+    kombu_ssl_certfile          => $kombu_ssl_certfile,
+    kombu_ssl_keyfile           => $kombu_ssl_keyfile,
+    kombu_ssl_version           => $kombu_ssl_version,
+    rabbit_hosts                => $rabbit_hosts,
+    rabbit_host                 => $rabbit_host,
+    rabbit_port                 => $rabbit_port,
+    rabbit_ha_queues            => $rabbit_ha_queues,
   }
 
   oslo::messaging::default { 'barbican_config':
