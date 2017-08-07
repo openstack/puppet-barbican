@@ -27,7 +27,6 @@ describe 'barbican::api' do
       {
         :bind_host                                     => '0.0.0.0',
         :bind_port                                     => '9311',
-        :rpc_backend                                   => 'rabbit',
         :default_transport_url                         => '<SERVICE DEFAULT>',
         :rpc_response_timeout                          => '<SERVICE DEFAULT>',
         :control_exchange                              => '<SERVICE DEFAULT>',
@@ -74,7 +73,6 @@ describe 'barbican::api' do
     [{
         :bind_host                                     => '127.0.0.1',
         :bind_port                                     => '9312',
-        :rpc_backend                                   => 'rabbit',
         :default_transport_url                         => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
         :rpc_response_timeout                          => '120',
         :control_exchange                              => 'barbican',
@@ -162,7 +160,6 @@ describe 'barbican::api' do
         end
 
         it 'configures rabbit' do
-          is_expected.to contain_barbican_config('DEFAULT/rpc_backend').with_value(param_hash[:rpc_backend])
           is_expected.to contain_barbican_config('DEFAULT/transport_url').with_value(param_hash[:default_transport_url])
           is_expected.to contain_barbican_config('DEFAULT/rpc_response_timeout').with_value(param_hash[:rpc_response_timeout])
           is_expected.to contain_barbican_config('DEFAULT/control_exchange').with_value(param_hash[:control_exchange])
