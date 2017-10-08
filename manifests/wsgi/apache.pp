@@ -73,6 +73,18 @@
 #     (optional) Name of the WSGI process display-name.
 #     Defaults to undef
 #
+#   [*access_log_file*]
+#     The log file name for the virtualhost.
+#     Optional. Defaults to false.
+#
+#   [*access_log_format*]
+#     The log format for the virtualhost.
+#     Optional. Defaults to false.
+#
+#   [*error_log_file*]
+#     The error log file name for the virtualhost.
+#     Optional. Defaults to undef.
+#
 # == Dependencies
 #
 #   requires Class['apache'] & Class['barbican']
@@ -108,6 +120,9 @@ class barbican::wsgi::apache (
   $wsgi_process_display_name  = undef,
   $threads                    = $::os_workers,
   $priority                   = '10',
+  $access_log_file            = false,
+  $access_log_format          = false,
+  $error_log_file             = undef,
 ) {
 
   include ::barbican::deps
@@ -162,5 +177,8 @@ class barbican::wsgi::apache (
     wsgi_script_dir           => $::barbican::params::barbican_wsgi_script_path,
     wsgi_script_file          => 'main',
     wsgi_script_source        => $::barbican::params::barbican_wsgi_script_source,
+    access_log_file           => $access_log_file,
+    access_log_format         => $access_log_format,
+    error_log_file            => $error_log_file,
   }
 }
