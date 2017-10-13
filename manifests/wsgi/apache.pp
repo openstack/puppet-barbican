@@ -31,7 +31,7 @@
 #
 #   [*workers*]
 #     Number of WSGI workers to spawn.
-#     Optional. Defaults to 1
+#     Optional. Defaults to $::os_workers
 #
 #   [*ssl_cert*]
 #     (optional) Path to SSL certificate
@@ -67,7 +67,7 @@
 #
 #   [*threads*]
 #     (optional) The number of threads for the vhost.
-#     Defaults to $::os_workers
+#     Defaults to 1
 #
 #   [*wsgi_process_display_name*]
 #     (optional) Name of the WSGI process display-name.
@@ -109,7 +109,7 @@ class barbican::wsgi::apache (
   $bind_host                  = undef,
   $public_path                = '/',
   $ssl                        = true,
-  $workers                    = 1,
+  $workers                    = $::os_workers,
   $ssl_cert                   = undef,
   $ssl_key                    = undef,
   $ssl_chain                  = undef,
@@ -118,7 +118,7 @@ class barbican::wsgi::apache (
   $ssl_crl                    = undef,
   $ssl_certs_dir              = undef,
   $wsgi_process_display_name  = undef,
-  $threads                    = $::os_workers,
+  $threads                    = 1,
   $priority                   = '10',
   $access_log_file            = false,
   $access_log_format          = false,
