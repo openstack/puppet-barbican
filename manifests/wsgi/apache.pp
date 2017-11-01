@@ -85,6 +85,14 @@
 #     The error log file name for the virtualhost.
 #     Optional. Defaults to undef.
 #
+# [*custom_wsgi_process_options*]
+#   (optional) gives you the oportunity to add custom process options or to
+#   overwrite the default options for the WSGI main process.
+#   eg. to use a virtual python environment for the WSGI process
+#   you could set it to:
+#   { python-path => '/my/python/virtualenv' }
+#   Defaults to {}
+#
 # == Dependencies
 #
 #   requires Class['apache'] & Class['barbican']
@@ -104,25 +112,26 @@
 #   Copyright 2015 Red Hat Inc. <licensing@redhat.com>
 #
 class barbican::wsgi::apache (
-  $servername                 = $::fqdn,
-  $public_port                = 9311,
-  $bind_host                  = undef,
-  $public_path                = '/',
-  $ssl                        = true,
-  $workers                    = $::os_workers,
-  $ssl_cert                   = undef,
-  $ssl_key                    = undef,
-  $ssl_chain                  = undef,
-  $ssl_ca                     = undef,
-  $ssl_crl_path               = undef,
-  $ssl_crl                    = undef,
-  $ssl_certs_dir              = undef,
-  $wsgi_process_display_name  = undef,
-  $threads                    = 1,
-  $priority                   = '10',
-  $access_log_file            = false,
-  $access_log_format          = false,
-  $error_log_file             = undef,
+  $servername                  = $::fqdn,
+  $public_port                 = 9311,
+  $bind_host                   = undef,
+  $public_path                 = '/',
+  $ssl                         = true,
+  $workers                     = $::os_workers,
+  $ssl_cert                    = undef,
+  $ssl_key                     = undef,
+  $ssl_chain                   = undef,
+  $ssl_ca                      = undef,
+  $ssl_crl_path                = undef,
+  $ssl_crl                     = undef,
+  $ssl_certs_dir               = undef,
+  $wsgi_process_display_name   = undef,
+  $threads                     = 1,
+  $priority                    = '10',
+  $access_log_file             = false,
+  $access_log_format           = false,
+  $error_log_file              = undef,
+  $custom_wsgi_process_options = {},
 ) {
 
   include ::barbican::deps
@@ -154,31 +163,32 @@ class barbican::wsgi::apache (
   File[$::barbican::params::httpd_config_file] ~> Service['httpd']
 
   ::openstacklib::wsgi::apache { 'barbican_wsgi_main':
-    bind_host                 => $bind_host,
-    bind_port                 => $public_port,
-    group                     => 'barbican',
-    path                      => $public_path,
-    priority                  => $priority,
-    servername                => $servername,
-    ssl                       => $ssl,
-    ssl_ca                    => $ssl_ca,
-    ssl_cert                  => $ssl_cert,
-    ssl_certs_dir             => $ssl_certs_dir,
-    ssl_chain                 => $ssl_chain,
-    ssl_crl                   => $ssl_crl,
-    ssl_crl_path              => $ssl_crl_path,
-    ssl_key                   => $ssl_key,
-    threads                   => $threads,
-    user                      => 'barbican',
-    workers                   => $workers,
-    wsgi_daemon_process       => 'barbican-api',
-    wsgi_process_display_name => $wsgi_process_display_name,
-    wsgi_process_group        => 'barbican-api',
-    wsgi_script_dir           => $::barbican::params::barbican_wsgi_script_path,
-    wsgi_script_file          => 'main',
-    wsgi_script_source        => $::barbican::params::barbican_wsgi_script_source,
-    access_log_file           => $access_log_file,
-    access_log_format         => $access_log_format,
-    error_log_file            => $error_log_file,
+    bind_host                   => $bind_host,
+    bind_port                   => $public_port,
+    group                       => 'barbican',
+    path                        => $public_path,
+    priority                    => $priority,
+    servername                  => $servername,
+    ssl                         => $ssl,
+    ssl_ca                      => $ssl_ca,
+    ssl_cert                    => $ssl_cert,
+    ssl_certs_dir               => $ssl_certs_dir,
+    ssl_chain                   => $ssl_chain,
+    ssl_crl                     => $ssl_crl,
+    ssl_crl_path                => $ssl_crl_path,
+    ssl_key                     => $ssl_key,
+    threads                     => $threads,
+    user                        => 'barbican',
+    workers                     => $workers,
+    wsgi_daemon_process         => 'barbican-api',
+    wsgi_process_display_name   => $wsgi_process_display_name,
+    wsgi_process_group          => 'barbican-api',
+    wsgi_script_dir             => $::barbican::params::barbican_wsgi_script_path,
+    wsgi_script_file            => 'main',
+    wsgi_script_source          => $::barbican::params::barbican_wsgi_script_source,
+    access_log_file             => $access_log_file,
+    access_log_format           => $access_log_format,
+    error_log_file              => $error_log_file,
+    custom_wsgi_process_options => $custom_wsgi_process_options,
   }
 }
