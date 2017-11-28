@@ -34,6 +34,10 @@
 #   (optional) ca certs file for KMIP device
 #   Defaults to undef
 #
+# [*global_default*]
+#   (optional) set plugin as global default
+#   Defaults to false
+#
 class barbican::plugins::kmip (
   $kmip_plugin_username = undef,
   $kmip_plugin_password = undef,
@@ -42,6 +46,7 @@ class barbican::plugins::kmip (
   $kmip_plugin_keyfile  = undef,
   $kmip_plugin_certfile = undef,
   $kmip_plugin_ca_certs = undef,
+  $global_default       = false,
 ) {
 
   include ::barbican::deps
@@ -84,4 +89,10 @@ class barbican::plugins::kmip (
       'kmip_plugin/port':     value => $kmip_plugin_port;
     }
   }
+
+  barbican_config {
+    'secretstore:kmip/secret_store_plugin': value => 'kmip_plugin';
+    'secretstore:kmip/global_default':      value => $global_default;
+  }
+
 }

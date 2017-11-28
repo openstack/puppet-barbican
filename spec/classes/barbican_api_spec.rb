@@ -67,6 +67,8 @@ describe 'barbican::api' do
         :retry_scheduler_periodic_interval_max_seconds => '<SERVICE DEFAULT>',
         :service_name                                  => platform_params[:service_name],
         :enable_proxy_headers_parsing                  => '<SERVICE DEFAULT>',
+        :multiple_secret_stores_enabled                => false,
+        :enabled_secret_stores                         => 'simple_crypto',
       }
     end
 
@@ -111,6 +113,8 @@ describe 'barbican::api' do
         :max_allowed_secret_in_bytes                   => 20000,
         :max_allowed_request_size_in_bytes             => 2000000,
         :enable_proxy_headers_parsing                  => false,
+        :multiple_secret_stores_enabled                => true,
+        :enabled_secret_stores                         => 'simple_crypto,dogtag,kmip',
       }
     ].each do |param_set|
       describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
@@ -194,6 +198,13 @@ describe 'barbican::api' do
             .with_value(param_hash[:enabled_certificate_plugins])
           is_expected.to contain_barbican_config('certificate_event/enabled_certificate_event_plugins') \
             .with_value(param_hash[:enabled_certificate_event_plugins])
+        end
+
+        it 'configures plugins in multiple plugin config' do
+          is_expected.to contain_barbican_config('secretstore/stores_lookup_suffix') \
+            .with_value(param_hash[:enabled_secret_stores])
+          is_expected.to contain_barbican_config('secretstore/enable_multiple_secret_stores') \
+            .with_value(param_hash[:multiple_secret_stores_enabled])
         end
       end
     end

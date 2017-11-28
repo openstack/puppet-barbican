@@ -121,12 +121,26 @@
 # [*enabled_secretstore_plugins*]
 #   (optional) Enabled secretstore plugins. Multiple plugins
 #   are defined in a list eg. ['store_crypto', dogtag_crypto']
+#   Used when multiple_secret_stores_enabled is not set to true.
 #   Defaults to $::os_service_default
 #
 # [*enabled_crypto_plugins*]
 #   (optional) Enabled crypto_plugins.  Multiple plugins
 #   are defined in a list eg. ['simple_crypto','p11_crypto']
+#   Used when multiple_secret_stores_enabled is not set to true.
 #   Defaults to $::os_service_default
+#
+# [*enabled_secret_stores*]
+#   (optional) Enabled secretstores. This is the configuration
+#   parameters when multiple plugin configuration is used.
+#   Suffixes are defined in a comma separated list eg.
+#   'simple_crypto,dogtag,kmip,pkcs11'
+#   Defaults to 'simple_crypto'
+#
+# [*multiple_secret_stores_enabled*]
+#   (optional) Enabled crypto_plugins.  Multiple plugins
+#   are defined in a list eg. ['simple_crypto','p11_crypto']
+#   Defaults to false
 #
 # [*enabled_certificate_plugins*]
 #   (optional) Enabled certificate plugins as a list.
@@ -281,6 +295,8 @@ class barbican::api (
   $retry_scheduler_periodic_interval_max_seconds = $::os_service_default,
   $enabled_secretstore_plugins                   = $::os_service_default,
   $enabled_crypto_plugins                        = $::os_service_default,
+  $enabled_secret_stores                         = 'simple_crypto',
+  $multiple_secret_stores_enabled                = false,
   $enabled_certificate_plugins                   = $::os_service_default,
   $enabled_certificate_event_plugins             = $::os_service_default,
   $kombu_ssl_ca_certs                            = $::os_service_default,
@@ -418,12 +434,25 @@ the future release. Please use barbican::api::package_ensure instead.")
     'DEFAULT/max_allowed_request_size_in_bytes':     value => $max_allowed_request_size_in_bytes;
   }
 
+  if $multiple_secret_stores_enabled and !is_service_default($enabled_secretstore_plugins) {
+    warning("barbican::api::enabled_secretstore_plugins and barbican::api::enabled_crypto_plugins \
+      will be set by puppet, but will not be used by the server whenever \
+      barbican::api::multiple_secret_stores_enabled is set to true.  Use \
+      barbican::api::enabled_secret_stores instead")
+  }
+
   # enabled plugins
   barbican_config {
     'secretstore/enabled_secretstore_plugins':             value => $enabled_secretstore_plugins;
     'crypto/enabled_crypto_plugins':                       value => $enabled_crypto_plugins;
     'certificate/enabled_certificate_plugins':             value => $enabled_certificate_plugins;
     'certificate_event/enabled_certificate_event_plugins': value => $enabled_certificate_event_plugins;
+  }
+
+  # enabled plugins when multiple plugins is enabled
+  barbican_config {
+    'secretstore/enable_multiple_secret_stores': value => $multiple_secret_stores_enabled;
+    'secretstore/stores_lookup_suffix':          value => $enabled_secret_stores;
   }
 
   # keystone config

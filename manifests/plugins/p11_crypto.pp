@@ -33,6 +33,10 @@
 #   Required if p11_crypto_plugin is enabled.
 #   Defaults to undef
 #
+# [*global_default*]
+#   (optional) set plugin as global default
+#   Defaults to false
+#
 class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_library_path = $::os_service_default,
   $p11_crypto_plugin_login        = undef,
@@ -40,6 +44,7 @@ class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_mkek_length  = undef,
   $p11_crypto_plugin_hmac_label   = undef,
   $p11_crypto_plugin_slot_id      = undef,
+  $global_default                 = false,
 ) {
 
   include ::barbican::deps
@@ -67,5 +72,11 @@ class barbican::plugins::p11_crypto (
     'p11_crypto_plugin/mkek_length':  value => $p11_crypto_plugin_mkek_length;
     'p11_crypto_plugin/hmac_label':   value => $p11_crypto_plugin_hmac_label;
     'p11_crypto_plugin/slot_id':      value => $p11_crypto_plugin_slot_id;
+  }
+
+  barbican_config {
+    'secretstore:pkcs11/secret_store_plugin': value => 'store_crypto';
+    'secretstore:pkcs11/crypto_plugin':       value => 'p11_crypto';
+    'secretstore:pkcs11/global_default':      value => $global_default;
   }
 }

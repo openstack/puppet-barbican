@@ -1,0 +1,9 @@
+---
+features:
+  - Added parameters multiple_secret_stores_enabled and enabled_secret_stores
+    to configure secret store backends using the newer multiple backend
+    configuration scheme.  This will allow us to specify more than one backend
+    in case we need to migrate to more secure backends.
+  - Added parameters in each backend to configure them correctly using
+    the newer multiple backend scheme, including global_default to specify if
+    the backend is supposed to be the default backend for new secrets.

@@ -40,6 +40,7 @@ describe 'barbican::plugins::dogtag' do
       :dogtag_plugin_simple_cmc_profile   => '<SERVICE DEFAULT>',
       :dogtag_plugin_ca_expiration_time   => '<SERVICE DEFAULT>',
       :dogtag_plugin_plugin_working_dir   => '<SERVICE DEFAULT>',
+      :global_default                     => false,
     }
   end
 
@@ -55,6 +56,7 @@ describe 'barbican::plugins::dogtag' do
       :dogtag_plugin_simple_cmc_profile   => 'caServerCert',
       :dogtag_plugin_ca_expiration_time   => '100',
       :dogtag_plugin_plugin_working_dir   => 'path_to_working_dir',
+      :global_default                     => true,
     }
   ].each do |param_set|
 
@@ -90,6 +92,12 @@ describe 'barbican::plugins::dogtag' do
           .with_value(param_hash[:dogtag_plugin_ca_expiration_time])
         is_expected.to contain_barbican_config('dogtag_plugin/plugin_working_dir')\
           .with_value(param_hash[:dogtag_plugin_plugin_working_dir])
+        is_expected.to contain_barbican_config(
+          'secretstore:dogtag/secret_store_plugin') \
+          .with_value('dogtag_plugin')
+        is_expected.to contain_barbican_config(
+          'secretstore:dogtag/global_default') \
+          .with_value(param_hash[:global_default])
       end
     end
   end

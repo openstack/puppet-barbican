@@ -31,6 +31,7 @@ describe 'barbican::plugins::p11_crypto' do
           :p11_crypto_plugin_hmac_label   => 'hmac_label',
           :p11_crypto_plugin_slot_id      => 1,
           :p11_crypto_plugin_library_path => '/usr/lib/libCryptoki2_64.so',
+          :global_default                 => true,
         }
       end
 
@@ -47,6 +48,15 @@ describe 'barbican::plugins::p11_crypto' do
           .with_value(params[:p11_crypto_plugin_slot_id])
         is_expected.to contain_barbican_config('p11_crypto_plugin/library_path') \
           .with_value(params[:p11_crypto_plugin_library_path])
+        is_expected.to contain_barbican_config(
+          'secretstore:pkcs11/secret_store_plugin') \
+          .with_value('store_crypto')
+        is_expected.to contain_barbican_config(
+          'secretstore:pkcs11/crypto_plugin') \
+          .with_value('p11_crypto')
+        is_expected.to contain_barbican_config(
+          'secretstore:pkcs11/global_default') \
+          .with_value('true')
       end
     end
   end
