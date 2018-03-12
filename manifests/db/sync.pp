@@ -28,6 +28,7 @@ class barbican::db::sync(
       Anchor['barbican::dbsync::begin']
     ],
     notify      => Anchor['barbican::dbsync::end'],
+    tag         => 'openstack-db',
   }
 
 }
