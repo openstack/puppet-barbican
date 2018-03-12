@@ -17,6 +17,7 @@ describe 'barbican::db::sync' do
                          'Anchor[barbican::config::end]',
                          'Anchor[barbican::dbsync::begin]'],
         :notify      => 'Anchor[barbican::dbsync::end]',
+        :tag         => 'openstack-db',
       )
     end
 
@@ -40,6 +41,7 @@ describe 'barbican::db::sync' do
                          'Anchor[barbican::config::end]',
                          'Anchor[barbican::dbsync::begin]'],
           :notify      => 'Anchor[barbican::dbsync::end]',
+          :tag         => 'openstack-db',
         )
       }
     end
