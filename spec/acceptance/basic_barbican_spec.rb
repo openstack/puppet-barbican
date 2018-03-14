@@ -25,45 +25,7 @@ describe 'barbican::api basic test class' do
       include ::openstack_integration::repos
       include ::openstack_integration::mysql
       include ::openstack_integration::keystone
-      include ::barbican
-
-      class { '::barbican::keystone::auth':
-         password => 'a_big_secret',
-      }
-
-      class { '::barbican::api::logging':
-        debug => true,
-      }
-
-      class { '::barbican::quota': }
-
-      class { '::barbican::keystone::notification': }
-
-      class { '::barbican::db::mysql':
-        password => 'a_big_secret',
-      }
-
-      class { '::barbican::db':
-        database_connection => 'mysql+pymysql://barbican:a_big_secret@127.0.0.1/barbican?charset=utf8',
-      }
-
-      class { '::barbican::keystone::authtoken':
-        password => 'a_big_secret',
-      }
-
-      class { '::barbican::api':
-        host_href                   => 'http://localhost:9311',
-        auth_strategy               => 'keystone',
-        service_name                => 'httpd',
-        enabled_certificate_plugins => ['simple_certificate'],
-        db_auto_create              => false,
-      }
-
-      include ::apache
-      class { '::barbican::wsgi::apache':
-        ssl => false,
-      }
-
+      include ::openstack_integration::barbican
     EOS
 
     it 'should work with no errors' do
