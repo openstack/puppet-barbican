@@ -16,6 +16,20 @@ describe 'barbican::db::sync' do
         :subscribe   => ['Anchor[barbican::install::end]',
                          'Anchor[barbican::config::end]',
                          'Anchor[barbican::dbsync::begin]'],
+        :notify      => 'Exec[barbican-db-manage sync secret stores]',
+        :tag         => 'openstack-db',
+      )
+      is_expected.to contain_exec('barbican-db-manage sync secret stores').with(
+        :command     => 'barbican-manage db sync_secret_stores ',
+        :user        => 'barbican',
+        :path        => ['/bin','/usr/bin'],
+        :refreshonly => 'true',
+        :try_sleep   => 5,
+        :tries       => 10,
+        :logoutput   => 'on_failure',
+        :subscribe   => ['Anchor[barbican::install::end]',
+                         'Anchor[barbican::config::end]',
+                         'Anchor[barbican::dbsync::begin]'],
         :notify      => 'Anchor[barbican::dbsync::end]',
         :tag         => 'openstack-db',
       )
@@ -24,7 +38,8 @@ describe 'barbican::db::sync' do
     describe "overriding extra_params" do
       let :params do
         {
-          :extra_params => '--config-file /etc/barbican/barbican.conf',
+          :extra_params              => '--config-file /etc/barbican/barbican.conf',
+          :secret_store_extra_params => '--config-file /etc/barbican/barbican.conf',
         }
       end
 
@@ -40,6 +55,20 @@ describe 'barbican::db::sync' do
           :subscribe   => ['Anchor[barbican::install::end]',
                          'Anchor[barbican::config::end]',
                          'Anchor[barbican::dbsync::begin]'],
+          :notify      => 'Exec[barbican-db-manage sync secret stores]',
+          :tag         => 'openstack-db',
+        )
+        is_expected.to contain_exec('barbican-db-manage sync secret stores').with(
+          :command     => 'barbican-manage db sync_secret_stores --config-file /etc/barbican/barbican.conf',
+          :user        => 'barbican',
+          :path        => ['/bin','/usr/bin'],
+          :refreshonly => 'true',
+          :try_sleep   => 5,
+          :tries       => 10,
+          :logoutput   => 'on_failure',
+          :subscribe   => ['Anchor[barbican::install::end]',
+                           'Anchor[barbican::config::end]',
+                           'Anchor[barbican::dbsync::begin]'],
           :notify      => 'Anchor[barbican::dbsync::end]',
           :tag         => 'openstack-db',
         )
