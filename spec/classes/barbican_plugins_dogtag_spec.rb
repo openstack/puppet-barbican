@@ -83,7 +83,7 @@ describe 'barbican::plugins::dogtag' do
         is_expected.to contain_barbican_config('dogtag_plugin/nss_db_path')\
           .with_value(param_hash[:dogtag_plugin_nss_db_path])
         is_expected.to contain_barbican_config('dogtag_plugin/nss_password')\
-          .with_value(param_hash[:dogtag_plugin_nss_password])
+          .with_value(param_hash[:dogtag_plugin_nss_password]).with_secret(true)
         is_expected.to contain_barbican_config('dogtag_plugin/simple_cmc_profile')\
           .with_value(param_hash[:dogtag_plugin_simple_cmc_profile])
         is_expected.to contain_barbican_config('dogtag_plugin/ca_expiration_time')\
