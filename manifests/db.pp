@@ -48,6 +48,10 @@
 #   before error is raised. Set to -1 to specify an infinite retry count.
 #   Defaults to $::os_service_default
 #
+# [*database_pool_timeout*]
+#   (Optional) If set, use this value for pool_timeout with SQLAlchemy.
+#   Defaults to $::os_service_default
+#
 class barbican::db (
   $database_connection     = 'sqlite:////var/lib/barbican/barbican.sqlite',
   $database_idle_timeout   = $::os_service_default,
@@ -58,6 +62,7 @@ class barbican::db (
   $database_max_overflow   = $::os_service_default,
   $database_pool_size      = $::os_service_default,
   $database_db_max_retries = $::os_service_default,
+  $database_pool_timeout   = $::os_service_default,
 ) {
 
   include ::barbican::deps
@@ -74,6 +79,7 @@ class barbican::db (
     retry_interval => $database_retry_interval,
     max_overflow   => $database_max_overflow,
     db_max_retries => $database_db_max_retries,
+    pool_timeout   => $database_pool_timeout,
   }
 
   # TODO(aschultz): Remove this config once barbican properly leverages oslo
