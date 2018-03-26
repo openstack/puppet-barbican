@@ -80,7 +80,7 @@ class barbican::plugins::dogtag (
     'dogtag_plugin/dogtag_host':        value => $dogtag_plugin_dogtag_host;
     'dogtag_plugin/dogtag_port':        value => $dogtag_plugin_dogtag_port;
     'dogtag_plugin/nss_db_path':        value => $dogtag_plugin_nss_db_path;
-    'dogtag_plugin/nss_password':       value => $dogtag_plugin_nss_password;
+    'dogtag_plugin/nss_password':       value => $dogtag_plugin_nss_password, secret => true;
     'dogtag_plugin/simple_cmc_profile': value => $dogtag_plugin_simple_cmc_profile;
     'dogtag_plugin/ca_expiration_time': value => $dogtag_plugin_ca_expiration_time;
     'dogtag_plugin/plugin_working_dir': value => $dogtag_plugin_plugin_working_dir;
