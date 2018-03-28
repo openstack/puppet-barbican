@@ -16,7 +16,7 @@ class barbican::params {
       $worker_package_name          = 'openstack-barbican-worker'
       $worker_service_name          = 'openstack-barbican-worker'
       $barbican_wsgi_script_path    = '/var/www/cgi-bin/barbican'
-      $barbican_wsgi_script_source  = '/usr/lib/python2.7/site-packages/barbican/api/app.wsgi'
+      $barbican_wsgi_script_source  = '/usr/bin/barbican-wsgi-api'
       $httpd_config_file            = '/etc/httpd/conf.d/barbican-api.conf'
     }
     'Debian': {
@@ -24,7 +24,7 @@ class barbican::params {
       $worker_package_name          = 'barbican-worker'
       $worker_service_name          = 'barbican-worker'
       $barbican_wsgi_script_path    = '/usr/lib/cgi-bin/barbican'
-      $barbican_wsgi_script_source  = '/usr/lib/python2.7/dist-packages/barbican/api/app.wsgi'
+      $barbican_wsgi_script_source  = '/usr/bin/barbican-wsgi-api'
       $httpd_config_file            = '/etc/apache2/conf-available/barbican-api.conf'
     }
     default: {

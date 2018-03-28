@@ -40,7 +40,7 @@ describe 'barbican::wsgi::apache' do
         :wsgi_process_group          => 'barbican-api',
         :wsgi_script_dir             => platform_params[:wsgi_script_path],
         :wsgi_script_file            => 'main',
-        :wsgi_script_source          => platform_params[:wsgi_script_source],
+        :wsgi_script_source          => '/usr/bin/barbican-wsgi-api',
         :access_log_file             => false,
         :access_log_format           => false,
         :custom_wsgi_process_options => {},
@@ -83,7 +83,7 @@ describe 'barbican::wsgi::apache' do
         :wsgi_process_group          => 'barbican-api',
         :wsgi_script_dir             => platform_params[:wsgi_script_path],
         :wsgi_script_file            => 'main',
-        :wsgi_script_source          => platform_params[:wsgi_script_source],
+        :wsgi_script_source          => '/usr/bin/barbican-wsgi-api',
         :access_log_file             => '/var/log/httpd/access_log',
         :access_log_format           => 'some format',
         :error_log_file              => '/var/log/httpd/error_log',
@@ -111,7 +111,6 @@ describe 'barbican::wsgi::apache' do
           :httpd_service_name => 'apache2',
           :httpd_ports_file   => '/etc/apache2/ports.conf',
           :wsgi_script_path   => '/usr/lib/cgi-bin/barbican',
-          :wsgi_script_source => '/usr/lib/python2.7/dist-packages/barbican/api/app.wsgi',
           :httpd_config_file  => '/etc/apache2/conf-available/barbican-api.conf',
         }
       when 'RedHat'
@@ -119,7 +118,6 @@ describe 'barbican::wsgi::apache' do
           :httpd_service_name => 'httpd',
           :httpd_ports_file   => '/etc/httpd/conf/ports.conf',
           :wsgi_script_path   => '/var/www/cgi-bin/barbican',
-          :wsgi_script_source => '/usr/lib/python2.7/site-packages/barbican/api/app.wsgi',
           :httpd_config_file  => '/etc/httpd/conf.d/barbican-api.conf',
         }
       end
