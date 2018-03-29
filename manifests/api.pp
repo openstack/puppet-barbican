@@ -263,10 +263,6 @@
 #   (optional) The RabbitMQ virtual host.
 #   Defaults to $::os_service_default
 #
-# [*ensure_package*]
-#   (optional) The state of barbican packages
-#   Defaults to undef
-#
 # [*rpc_backend*]
 #   (optional) The rpc backend implementation to use, can be:
 #     rabbit (for rabbitmq)
@@ -330,7 +326,6 @@ class barbican::api (
   $rabbit_port                                   = $::os_service_default,
   $rabbit_userid                                 = $::os_service_default,
   $rabbit_virtual_host                           = $::os_service_default,
-  $ensure_package                                = undef,
   $rpc_backend                                   = $::os_service_default,
 ) inherits barbican::params {
 
@@ -353,14 +348,6 @@ barbican::api::rabbit_port, barbican::api::rabbit_userid, barbican::api::rabbit_
 barbican::rpc_backend are deprecated. Please use barbican::api::default_transport_url instead.")
   }
 
-  if $ensure_package {
-    warning("barbican::api::ensure_package is deprecated and will be removed in \
-the future release. Please use barbican::api::package_ensure instead.")
-    $package_ensure_real = $ensure_package
-  } else {
-    $package_ensure_real = $package_ensure
-  }
-
   # TODO: Remove the posix users and permissions and merge this definition
   # with the previous one, once the barbican package has been updated
   # with the correct ownership for this directory.
@@ -374,7 +361,7 @@ the future release. Please use barbican::api::package_ensure instead.")
   }
 
   package { 'barbican-api':
-    ensure => $package_ensure_real,
+    ensure => $package_ensure,
     name   => $::barbican::params::api_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
