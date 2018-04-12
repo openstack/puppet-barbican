@@ -5,7 +5,13 @@
 class barbican::params {
   include ::openstacklib::defaults
 
-  $client_package_name   = 'python-barbicanclient'
+  if ($::os_package_type == 'debian') {
+    $pyvers = '3'
+  } else {
+    $pyvers = ''
+  }
+
+  $client_package_name   = "python${pyvers}-barbicanclient"
   $group                 = 'barbican'
   $dogtag_client_package = 'pki-base'
 

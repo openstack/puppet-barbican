@@ -25,6 +25,7 @@ describe 'barbican::client' do
     describe "with default parameters" do
       it { is_expected.to contain_package('python-barbicanclient').with(
         'ensure' => 'present',
+        'name'   => platform_params[:client_package_name],
         'tag'    => 'openstack'
       )}
       it { is_expected.to contain_package('python-openstackclient').with(
@@ -53,6 +54,19 @@ describe 'barbican::client' do
         facts.merge(OSDefaults.get_facts({
           :fqdn           => 'some.host.tld',
         }))
+      end
+
+      let(:platform_params) do
+        case facts[:osfamily]
+        when 'Debian'
+          if facts[:os_package_type] == 'debian'
+            { :client_package_name => 'python3-barbicanclient' }
+          else
+            { :client_package_name => 'python-barbicanclient' }
+          end
+        when 'RedHat'
+          { :client_package_name => 'python-barbicanclient' }
+        end
       end
 
       it_configures 'barbican client'
