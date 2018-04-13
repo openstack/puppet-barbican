@@ -121,8 +121,8 @@ describe 'barbican::api' do
     ].each do |param_set|
       describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
         let :pre_condition do
-            'class { "barbican::keystone::authtoken": password => "secret", }
-             include ::apache'
+          'class { "barbican::keystone::authtoken": password => "secret", }
+          include ::apache'
         end
 
         let :param_hash do
