@@ -33,6 +33,8 @@ describe 'barbican::config' do
       { :api_config => config_hash }
     end
 
+    it { is_expected.to contain_class('barbican::deps') }
+
     it 'configures arbitrary barbican-config configurations' do
       is_expected.to contain_barbican_config('DEFAULT/foo').with_value('fooValue')
       is_expected.to contain_barbican_config('DEFAULT/bar').with_value('barValue')
