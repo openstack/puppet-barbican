@@ -510,8 +510,8 @@ barbican::rpc_backend are deprecated. Please use barbican::api::default_transpor
   }
 
   if $service_name == 'barbican-api' {
-    if $::osfamily == 'Debian' {
-      fail('On Debian family the service_name must be set to httpd as there is no eventlet init script.')
+    if $::os_package_type == 'ubuntu' {
+      fail('With Ubuntu packages the service_name must be set to httpd as there is no eventlet init script.')
     }
     service { 'barbican-api':
       ensure     => $service_ensure,
@@ -531,8 +531,8 @@ barbican::rpc_backend are deprecated. Please use barbican::api::default_transpor
 
   } elsif $service_name == 'httpd' {
     include ::apache::params
-    # Debian/Ubuntu do not have a barbican-api and this will error out on them.
-    if $::osfamily == 'RedHat' {
+    # Ubuntu packages does not have a barbican-api service
+    if $::os_package_type != 'ubuntu' {
       service { 'barbican-api':
         ensure => 'stopped',
         name   => $::barbican::params::api_service_name,

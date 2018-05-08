@@ -26,6 +26,9 @@ class barbican::params {
       $httpd_config_file            = '/etc/httpd/conf.d/barbican-api.conf'
     }
     'Debian': {
+      if ($::os_package_type == 'debian') {
+        $api_service_name           = 'barbican-api'
+      }
       $api_package_name             = 'barbican-api'
       $worker_package_name          = 'barbican-worker'
       $worker_service_name          = 'barbican-worker'
