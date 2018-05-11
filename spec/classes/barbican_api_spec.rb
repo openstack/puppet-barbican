@@ -214,8 +214,8 @@ describe 'barbican::api' do
 
     describe 'with enable_proxy_headers_parsing' do
       let :pre_condition do
-          'class { "barbican::keystone::authtoken": password => "secret", }
-           include ::apache'
+        'class { "barbican::keystone::authtoken": password => "secret", }
+        include ::apache'
       end
 
       let :params do
