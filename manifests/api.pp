@@ -465,14 +465,14 @@ barbican::rpc_backend are deprecated. Please use barbican::api::default_transpor
     }
 
     barbican_config {
-      'keystone_authtoken/auth_plugin':       ensure => 'absent';
-      'keystone_authtoken/auth_type':         ensure => 'absent';
-      'keystone_authtoken/auth_uri':          ensure => 'absent';
-      'keystone_authtoken/project_name':      ensure => 'absent';
-      'keystone_authtoken/username':          ensure => 'absent';
-      'keystone_authtoken/password':          ensure => 'absent';
-      'keystone_authtoken/user_domain_id':    ensure => 'absent';
-      'keystone_authtoken/project_domain_id': ensure => 'absent';
+      'keystone_authtoken/auth_plugin':          ensure => 'absent';
+      'keystone_authtoken/auth_type':            ensure => 'absent';
+      'keystone_authtoken/www_authenticate_uri': ensure => 'absent';
+      'keystone_authtoken/project_name':         ensure => 'absent';
+      'keystone_authtoken/username':             ensure => 'absent';
+      'keystone_authtoken/password':             ensure => 'absent';
+      'keystone_authtoken/user_domain_id':       ensure => 'absent';
+      'keystone_authtoken/project_domain_id':    ensure => 'absent';
     }
   }
 
