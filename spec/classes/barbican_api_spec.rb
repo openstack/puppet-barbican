@@ -33,12 +33,6 @@ describe 'barbican::api' do
         :notification_transport_url                    => '<SERVICE DEFAULT>',
         :notification_driver                           => '<SERVICE DEFAULT>',
         :notification_topics                           => '<SERVICE DEFAULT>',
-        :rabbit_host                                   => '<SERVICE DEFAULT>',
-        :rabbit_hosts                                  => ['<SERVICE DEFAULT>'],
-        :rabbit_password                               => '<SERVICE DEFAULT>',
-        :rabbit_port                                   => '<SERVICE DEFAULT>',
-        :rabbit_userid                                 => '<SERVICE DEFAULT>',
-        :rabbit_virtual_host                           => '<SERVICE DEFAULT>',
         :rabbit_use_ssl                                => '<SERVICE DEFAULT>',
         :rabbit_heartbeat_timeout_threshold            => '<SERVICE DEFAULT>',
         :rabbit_heartbeat_rate                         => '<SERVICE DEFAULT>',
@@ -82,12 +76,6 @@ describe 'barbican::api' do
         :notification_transport_url                    => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
         :notification_driver                           => 'kombu',
         :notification_topics                           => 'notifications',
-        :rabbit_host                                   => 'rabbithost',
-        :rabbit_hosts                                  => ['rabbithost:1234'],
-        :rabbit_password                               => 'bugs_bunny',
-        :rabbit_port                                   => '1234',
-        :rabbit_userid                                 => 'bugs',
-        :rabbit_virtual_host                           => 'rabbithost',
         :rabbit_use_ssl                                => true,
         :rabbit_heartbeat_timeout_threshold            => '10',
         :rabbit_heartbeat_rate                         => '10',
@@ -172,10 +160,6 @@ describe 'barbican::api' do
           is_expected.to contain_barbican_config('oslo_messaging_notifications/transport_url').with_value(param_hash[:notification_transport_url])
           is_expected.to contain_barbican_config('oslo_messaging_notifications/driver').with_value(param_hash[:notification_driver])
           is_expected.to contain_barbican_config('oslo_messaging_notifications/topics').with_value(param_hash[:notification_topics])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_hosts').with_value(param_hash[:rabbit_hosts])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_password').with_value(param_hash[:rabbit_password]).with_secret(true)
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_userid').with_value(param_hash[:rabbit_userid])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/rabbit_virtual_host').with_value(param_hash[:rabbit_virtual_host])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value(param_hash[:rabbit_heartbeat_timeout_threshold])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_rate').with_value(param_hash[:rabbit_heartbeat_rate])
           is_expected.to contain_oslo__messaging__rabbit('barbican_config').with(

@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    The deprecated parameters barbican::api::rabbit_host, barbican::api::rabbit_hosts,
+    barbican::api::rabbit_password, barbican::api::rabbit_port, barbican::api::rabbit_userid
+    and barbican::api::rabbit_virtual_host is removed.
+    Please use barbican::api::default_transport_url.
+  - |
+    The deprecated parameter barbican::api::rpc_backend is removed.
