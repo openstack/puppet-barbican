@@ -237,38 +237,6 @@
 #   HTTPProxyToWSGI middleware.
 #   Defaults to $::os_service_default.
 #
-# === DEPRECATED PARAMETERS
-#
-# [*rabbit_host*]
-#   (optional) Location of rabbitmq installation.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_hosts*]
-#   (optional) List of clustered rabbit servers.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_port*]
-#   (optional) Port for rabbitmq instance.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_password*]
-#   (optional) Password used to connect to rabbitmq.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_userid*]
-#   (optional) User used to connect to rabbitmq.
-#   Defaults to $::os_service_default
-#
-# [*rabbit_virtual_host*]
-#   (optional) The RabbitMQ virtual host.
-#   Defaults to $::os_service_default
-#
-# [*rpc_backend*]
-#   (optional) The rpc backend implementation to use, can be:
-#     rabbit (for rabbitmq)
-#     zmq (for zeromq)
-#   Defaults to $::os_service_default
-#
 class barbican::api (
   $package_ensure                                = 'present',
   $client_package_ensure                         = 'present',
@@ -319,34 +287,13 @@ class barbican::api (
   $key_file                                      = $::os_service_default,
   $service_name                                  = 'barbican-api',
   $enable_proxy_headers_parsing                  = $::os_service_default,
-  # DEPRECATED
-  $rabbit_host                                   = $::os_service_default,
-  $rabbit_hosts                                  = $::os_service_default,
-  $rabbit_password                               = $::os_service_default,
-  $rabbit_port                                   = $::os_service_default,
-  $rabbit_userid                                 = $::os_service_default,
-  $rabbit_virtual_host                           = $::os_service_default,
-  $rpc_backend                                   = $::os_service_default,
 ) inherits barbican::params {
-
 
   include ::barbican::deps
   include ::barbican::db
   include ::barbican::api::logging
   include ::barbican::client
   include ::barbican::policy
-
-  if !is_service_default($rabbit_host) or
-    !is_service_default($rabbit_hosts) or
-    !is_service_default($rabbit_password) or
-    !is_service_default($rabbit_port) or
-    !is_service_default($rabbit_userid) or
-    !is_service_default($rabbit_virtual_host) or
-    !is_service_default($rpc_backend) {
-    warning("barbican::api::rabbit_host, barbican::api::rabbit_hosts, barbican::api::rabbit_password, \
-barbican::api::rabbit_port, barbican::api::rabbit_userid, barbican::api::rabbit_virtual_host and \
-barbican::rpc_backend are deprecated. Please use barbican::api::default_transport_url instead.")
-  }
 
   # TODO: Remove the posix users and permissions and merge this definition
   # with the previous one, once the barbican package has been updated
@@ -380,9 +327,6 @@ barbican::rpc_backend are deprecated. Please use barbican::api::default_transpor
   }
 
   oslo::messaging::rabbit {'barbican_config':
-    rabbit_password             => $rabbit_password,
-    rabbit_userid               => $rabbit_userid,
-    rabbit_virtual_host         => $rabbit_virtual_host,
     rabbit_use_ssl              => $rabbit_use_ssl,
     heartbeat_timeout_threshold => $rabbit_heartbeat_timeout_threshold,
     heartbeat_rate              => $rabbit_heartbeat_rate,
@@ -394,9 +338,6 @@ barbican::rpc_backend are deprecated. Please use barbican::api::default_transpor
     kombu_ssl_certfile          => $kombu_ssl_certfile,
     kombu_ssl_keyfile           => $kombu_ssl_keyfile,
     kombu_ssl_version           => $kombu_ssl_version,
-    rabbit_hosts                => $rabbit_hosts,
-    rabbit_host                 => $rabbit_host,
-    rabbit_port                 => $rabbit_port,
     rabbit_ha_queues            => $rabbit_ha_queues,
   }
 
