@@ -552,6 +552,8 @@ the future release. Please use barbican::api::package_ensure instead.")
         enable => false,
         tag    => 'barbican-service',
       }
+      Service <| title == 'httpd' |> { tag +> 'barbican-service' }
+
       # we need to make sure barbican-api is stopped before trying to start apache
       Service['barbican-api'] -> Service[$service_name]
     }
