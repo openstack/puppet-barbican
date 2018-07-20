@@ -88,3 +88,9 @@ Contributors
 ------------
 
 * https://github.com/openstack/puppet-barbican/graphs/contributors
+
+Repository
+-------------
+
+* https://git.openstack.org/cgit/openstack/puppet-barbican
+
