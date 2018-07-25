@@ -6,7 +6,7 @@ Team and repository tags
 <!-- Change things from this point on -->
 
 barbican
-=======
+========
 
 #### Table of Contents
 
@@ -55,7 +55,7 @@ Implementation
 barbican is a combination of Puppet manifest and ruby code to delivery configuration and extra functionality through types and providers.
 
 Limitations
-------------
+-----------
 
 * All the barbican types use the CLI tools and so need to be ran on the barbican node.
 
@@ -90,7 +90,7 @@ Contributors
 * https://github.com/openstack/puppet-barbican/graphs/contributors
 
 Repository
--------------
+----------
 
 * https://git.openstack.org/cgit/openstack/puppet-barbican
 
