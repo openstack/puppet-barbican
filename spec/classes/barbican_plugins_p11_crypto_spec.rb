@@ -25,13 +25,17 @@ describe 'barbican::plugins::p11_crypto' do
     describe 'with pk11 plugin' do
       let :params do
         {
-          :p11_crypto_plugin_login        => 'p11_user',
-          :p11_crypto_plugin_mkek_label   => 'mkek_label',
-          :p11_crypto_plugin_mkek_length  => 32,
-          :p11_crypto_plugin_hmac_label   => 'hmac_label',
-          :p11_crypto_plugin_slot_id      => 1,
-          :p11_crypto_plugin_library_path => '/usr/lib/libCryptoki2_64.so',
-          :global_default                 => true,
+          :p11_crypto_plugin_login                     => 'p11_user',
+          :p11_crypto_plugin_mkek_label                => 'mkek_label',
+          :p11_crypto_plugin_mkek_length               => 32,
+          :p11_crypto_plugin_hmac_label                => 'hmac_label',
+          :p11_crypto_plugin_slot_id                   => 1,
+          :p11_crypto_plugin_library_path              => '/usr/lib/libCryptoki2_64.so',
+          :p11_crypto_plugin_encryption_mechanism      => 'CKM_AES_CBC',
+          :p11_crypto_plugin_hmac_key_type             => 'CKK_AES',
+          :p11_crypto_plugin_hmac_keygen_mechanism     => 'CKM_AES_KEY_GEN',
+          :p11_crypto_plugin_aes_gcm_generate_iv       => false,
+          :global_default                              => true,
         }
       end
 
@@ -48,6 +52,14 @@ describe 'barbican::plugins::p11_crypto' do
           .with_value(params[:p11_crypto_plugin_slot_id])
         is_expected.to contain_barbican_config('p11_crypto_plugin/library_path') \
           .with_value(params[:p11_crypto_plugin_library_path])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/encryption_mechanism') \
+          .with_value(params[:p11_crypto_plugin_encryption_mechanism])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/hmac_key_type') \
+          .with_value(params[:p11_crypto_plugin_hmac_key_type])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/hmac_keygen_mechanism') \
+          .with_value(params[:p11_crypto_plugin_hmac_keygen_mechanism])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/aes_gcm_generate_iv') \
+          .with_value(params[:p11_crypto_plugin_aes_gcm_generate_iv])
         is_expected.to contain_barbican_config(
           'secretstore:pkcs11/secret_store_plugin') \
           .with_value('store_crypto')
