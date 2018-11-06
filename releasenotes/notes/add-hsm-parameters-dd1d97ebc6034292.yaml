@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Add parameters for the PKCS#11 plugin to allow integration of the ATOS
+    and Thales HSMs.
