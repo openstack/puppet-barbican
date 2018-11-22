@@ -44,10 +44,8 @@ describe 'barbican::keystone::authtoken' do
         is_expected.to contain_barbican_config('keystone_authtoken/cache').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/cafile').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/certfile').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_barbican_config('keystone_authtoken/check_revocations_for_cached').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/delay_auth_decision').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/enforce_token_bind').with_value('<SERVICE DEFAULT>')
-        is_expected.to contain_barbican_config('keystone_authtoken/hash_algorithms').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/http_connect_timeout').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/http_request_max_retries').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('keystone_authtoken/include_service_catalog').with_value('<SERVICE DEFAULT>')
@@ -83,10 +81,8 @@ describe 'barbican::keystone::authtoken' do
           :cache                                => 'somevalue',
           :cafile                               => '/opt/stack/data/cafile.pem',
           :certfile                             => 'certfile.crt',
-          :check_revocations_for_cached         => false,
           :delay_auth_decision                  => false,
           :enforce_token_bind                   => 'permissive',
-          :hash_algorithms                      => 'md5',
           :http_connect_timeout                 => '300',
           :http_request_max_retries             => '3',
           :include_service_catalog              => true,
@@ -121,10 +117,8 @@ describe 'barbican::keystone::authtoken' do
         is_expected.to contain_barbican_config('keystone_authtoken/cache').with_value(params[:cache])
         is_expected.to contain_barbican_config('keystone_authtoken/cafile').with_value(params[:cafile])
         is_expected.to contain_barbican_config('keystone_authtoken/certfile').with_value(params[:certfile])
-        is_expected.to contain_barbican_config('keystone_authtoken/check_revocations_for_cached').with_value(params[:check_revocations_for_cached])
         is_expected.to contain_barbican_config('keystone_authtoken/delay_auth_decision').with_value(params[:delay_auth_decision])
         is_expected.to contain_barbican_config('keystone_authtoken/enforce_token_bind').with_value(params[:enforce_token_bind])
-        is_expected.to contain_barbican_config('keystone_authtoken/hash_algorithms').with_value(params[:hash_algorithms])
         is_expected.to contain_barbican_config('keystone_authtoken/http_connect_timeout').with_value(params[:http_connect_timeout])
         is_expected.to contain_barbican_config('keystone_authtoken/http_request_max_retries').with_value(params[:http_request_max_retries])
         is_expected.to contain_barbican_config('keystone_authtoken/include_service_catalog').with_value(params[:include_service_catalog])
