@@ -291,7 +291,6 @@ class barbican::api (
 
   include ::barbican::deps
   include ::barbican::db
-  include ::barbican::api::logging
   include ::barbican::client
   include ::barbican::policy
 

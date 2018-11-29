@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    barbican::api::logging is now not included by default in barbican::api
