@@ -5,49 +5,58 @@
 # === Parameters
 #
 # [*password*]
-#   (required) Password for barbican user.
+#   (Required) Password for barbican user.
 #
 # [*auth_name*]
-#   Username for barbican service. Defaults to 'barbican'.
+#   (Optional) Username for barbican service.
+#   Defaults to 'barbican'.
 #
 # [*email*]
-#   Email for barbican user. Defaults to 'barbican@localhost'.
+#   (Optional) Email for barbican user.
+#   Defaults to 'barbican@localhost'.
 #
 # [*tenant*]
-#   Tenant for barbican user. Defaults to 'services'.
+#   (Optional) Tenant for barbican user.
+#   Defaults to 'services'.
 #
 # [*configure_endpoint*]
-#   Should barbican endpoint be configured? Defaults to 'true'.
+#   (Optional) Should barbican endpoint be configured?
+#   Defaults to true.
 #
 # [*configure_user*]
 #   (Optional) Should the service user be configured?
-#   Defaults to 'true'.
+#   Defaults to true.
 #
 # [*configure_user_role*]
 #   (Optional) Should the admin role be configured for the service user?
-#   Defaults to 'true'.
+#   Defaults to true.
 #
 # [*service_type*]
-#   Type of service. Defaults to 'key-manager'.
+#   (Optional) Type of service.
+#   Defaults to 'key-manager'.
 #
 # [*region*]
-#   Region for endpoint. Defaults to 'RegionOne'.
+#   (Optional) Region for endpoint.
+#   Defaults to 'RegionOne'.
 #
 # [*service_name*]
-#   (optional) Name of the service.
+#   (Optional) Name of the service.
 #   Defaults to 'barbican'.
 #
 # [*public_url*]
-#   (optional) The endpoint's public url. (Defaults to 'http://127.0.0.1:9311')
+#   (0ptional) The endpoint's public url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:9311'.
 #
 # [*admin_url*]
-#   (optional) The endpoint's admin url. (Defaults to 'http://127.0.0.1:9311')
+#   (Optional) The endpoint's admin url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:9311'.
 #
 # [*internal_url*]
-#   (optional) The endpoint's internal url. (Defaults to 'http://127.0.0.1:9311')
+#   (Optional) The endpoint's internal url.
 #   This url should *not* contain any trailing '/'.
+#   Defaults to 'http://127.0.0.1:9311'.
 #
 class barbican::keystone::auth (
   $password,

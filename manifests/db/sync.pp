@@ -4,12 +4,12 @@
 # == Parameters
 #
 # [*extra_params*]
-#   (optional) String of extra command line parameters to append
+#   (Optional) String of extra command line parameters to append
 #   to the barbican-db-manage command.
 #   Defaults to undef
 #
 # [*secret_store_extra_params*]
-#   (optional) String of extra command line parameters to append
+#   (Optional) String of extra command line parameters to append
 #   to the barbican-db-manage command.
 #   Defaults to undef
 #
