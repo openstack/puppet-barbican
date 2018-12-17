@@ -43,6 +43,10 @@
 #   (Optional) Name of the service.
 #   Defaults to 'barbican'.
 #
+# [*service_description*]
+#   (Optional) Description of the service.
+#   Default to 'Key management Service'
+#
 # [*public_url*]
 #   (0ptional) The endpoint's public url.
 #   This url should *not* contain any trailing '/'.
@@ -66,6 +70,7 @@ class barbican::keystone::auth (
   $configure_endpoint  = true,
   $configure_user      = true,
   $configure_user_role = true,
+  $service_description = 'Key management Service',
   $service_name        = 'barbican',
   $service_type        = 'key-manager',
   $region              = 'RegionOne',
@@ -87,7 +92,7 @@ class barbican::keystone::auth (
     configure_endpoint  => $configure_endpoint,
     service_name        => $service_name,
     service_type        => $service_type,
-    service_description => 'Key management Service',
+    service_description => $service_description,
     region              => $region,
     auth_name           => $auth_name,
     password            => $password,
