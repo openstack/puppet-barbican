@@ -59,11 +59,7 @@ describe 'barbican::client' do
       let(:platform_params) do
         case facts[:osfamily]
         when 'Debian'
-          if facts[:os_package_type] == 'debian'
-            { :client_package_name => 'python3-barbicanclient' }
-          else
-            { :client_package_name => 'python-barbicanclient' }
-          end
+          { :client_package_name => 'python3-barbicanclient' }
         when 'RedHat'
           { :client_package_name => 'python-barbicanclient' }
         end
