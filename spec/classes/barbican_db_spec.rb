@@ -20,11 +20,8 @@
 require 'spec_helper'
 
 describe 'barbican::db' do
-
   shared_examples 'barbican::db' do
-
     context 'with default parameters' do
-
       it { is_expected.to contain_oslo__db('barbican_config').with(
         :db_max_retries => '<SERVICE DEFAULT>',
         :connection     => 'sqlite:////var/lib/barbican/barbican.sqlite',
@@ -42,7 +39,6 @@ describe 'barbican::db' do
       it { is_expected.to contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_size').with_value('<SERVICE DEFAULT>') }
       it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('<SERVICE DEFAULT>') }
-
     end
 
     context 'with specific parameters' do
@@ -114,48 +110,6 @@ describe 'barbican::db' do
     end
   end
 
-  context 'on Debian platforms' do
-    let :facts do
-      @default_facts.merge({ 
-        :osfamily               => 'Debian',
-        :operatingsystem        => 'Debian',
-        :operatingsystemrelease => 'jessie',
-      })
-    end
-
-    it_configures 'barbican::db'
-
-    context 'with sqlite backend' do
-      let :params do
-        { :database_connection => 'sqlite:///var/lib/barbican/barbican.sqlite', }
-      end
-
-      it 'install the proper backend package' do
-        is_expected.to contain_package('python-pysqlite2').with(
-          :ensure => 'present',
-          :name   => 'python-pysqlite2',
-          :tag    => 'openstack'
-        )
-      end
-
-    end
-
-    context 'using pymysql driver' do
-      let :params do
-        { :database_connection => 'mysql+pymysql://barbican:barbican@localhost/barbican', }
-      end
-
-      it 'install the proper backend package' do
-        is_expected.to contain_package('python-pymysql').with(
-          :ensure => 'present',
-          :name   => 'python-pymysql',
-          :tag    => 'openstack'
-        )
-      end
-    end
-
-  end
-
   shared_examples_for 'barbican db on redhat' do
     context 'using pymysql driver' do
       let :params do
@@ -184,6 +138,4 @@ describe 'barbican::db' do
       end
     end
   end
-
 end
-
