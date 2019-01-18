@@ -22,7 +22,9 @@ require 'spec_helper'
 describe 'barbican::db' do
   shared_examples 'barbican::db' do
     context 'with default parameters' do
-      it { is_expected.to contain_oslo__db('barbican_config').with(
+      it { should contain_class('barbican::deps') }
+
+      it { should contain_oslo__db('barbican_config').with(
         :db_max_retries => '<SERVICE DEFAULT>',
         :connection     => 'sqlite:////var/lib/barbican/barbican.sqlite',
         :idle_timeout   => '<SERVICE DEFAULT>',
@@ -35,15 +37,16 @@ describe 'barbican::db' do
       )}
 
       # TODO(aschultz): remove once oslo is properly used
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_connection').with_value('sqlite:////var/lib/barbican/barbican.sqlite') }
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_size').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('<SERVICE DEFAULT>') }
+      it { should contain_barbican_config('DEFAULT/sql_connection').with_value('sqlite:////var/lib/barbican/barbican.sqlite') }
+      it { should contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('<SERVICE DEFAULT>') }
+      it { should contain_barbican_config('DEFAULT/sql_pool_size').with_value('<SERVICE DEFAULT>') }
+      it { should contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('<SERVICE DEFAULT>') }
     end
 
     context 'with specific parameters' do
       let :params do
-        { :database_connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican',
+        {
+          :database_connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican',
           :database_idle_timeout   => '3601',
           :database_min_pool_size  => '2',
           :database_max_pool_size  => '11',
@@ -56,7 +59,9 @@ describe 'barbican::db' do
         }
       end
 
-      it { is_expected.to contain_oslo__db('barbican_config').with(
+      it { should contain_class('barbican::deps') }
+
+      it { should contain_oslo__db('barbican_config').with(
         :db_max_retries => '-1',
         :connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican',
         :idle_timeout   => '3601',
@@ -69,57 +74,15 @@ describe 'barbican::db' do
       )}
 
       # TODO(aschultz) remove once oslo is properly used
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_connection').with_value('mysql+pymysql://barbican:barbican@localhost/barbican').with_secret(true) }
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('3601') }
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_size').with_value('2') }
-      it { is_expected.to contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('11') }
-    end
-
-    context 'with postgresql backend' do
-      let :params do
-        { :database_connection => 'postgresql://barbican:barbican@localhost/barbican', }
-      end
-
-      it 'install the proper backend package' do
-        is_expected.to contain_package('python-psycopg2').with(:ensure => 'present')
-      end
-    end
-
-    context 'with MySQL-python library as backend package' do
-      let :params do
-        { :database_connection => 'mysql://barbican:barbican@localhost/barbican', }
-      end
-
-      it { is_expected.to contain_package('python-mysqldb').with(:ensure => 'present') }
-    end
-
-    context 'with incorrect database_connection string' do
-      let :params do
-        { :database_connection => 'redis://barbican:barbican@localhost/barbican', }
-      end
-
-      it_raises 'a Puppet::Error', /validate_re/
-    end
-
-    context 'with incorrect pymysql database_connection string' do
-      let :params do
-        { :database_connection => 'foo+pymysql://barbican:barbican@localhost/barbican', }
-      end
-
-      it_raises 'a Puppet::Error', /validate_re/
-    end
-  end
-
-  shared_examples_for 'barbican db on redhat' do
-    context 'using pymysql driver' do
-      let :params do
-        { :database_connection => 'mysql+pymysql://barbican:barbican@localhost/barbican', }
-      end
+      it { should contain_barbican_config('DEFAULT/sql_connection').with_value('mysql+pymysql://barbican:barbican@localhost/barbican').with_secret(true) }
+      it { should contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('3601') }
+      it { should contain_barbican_config('DEFAULT/sql_pool_size').with_value('2') }
+      it { should contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('11') }
     end
   end
 
   on_supported_os({
-    :supported_os   => OSDefaults.get_supported_os
+    :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
@@ -130,12 +93,7 @@ describe 'barbican::db' do
         }))
       end
 
-      it_configures 'barbican::db'
-
-      case facts[:osfamily]
-      when 'RedHat'
-        it_configures 'barbican db on redhat'
-      end
+      it_behaves_like 'barbican::db'
     end
   end
 end
