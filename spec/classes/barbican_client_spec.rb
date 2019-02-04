@@ -28,10 +28,8 @@ describe 'barbican::client' do
         'name'   => platform_params[:client_package_name],
         'tag'    => 'openstack'
       )}
-      it { is_expected.to contain_package('python-openstackclient').with(
-        'ensure' => 'present',
-        'tag'    => 'openstack',
-      )}
+
+      it { should contain_class('openstacklib::openstackclient') }
     end
 
     describe "with specified version" do
