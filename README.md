@@ -35,7 +35,7 @@ Setup
 
 **What the barbican module affects**
 
-* [Barbican](https://wiki.openstack.org/wiki/Barbican), the Key management service for OpenStack.
+* [Barbican](https://docs.openstack.org/barbican/latest/), the Key management service for OpenStack.
 
 ### Installing barbican
 
