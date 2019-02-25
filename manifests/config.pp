@@ -33,8 +33,8 @@ class barbican::config (
 
   include ::barbican::deps
 
-  validate_hash($api_config)
-  validate_hash($api_paste_ini_config)
+  validate_legacy(Hash, 'validate_hash', $api_config)
+  validate_legacy(Hash, 'validate_hash', $api_paste_ini_config)
 
   create_resources('barbican_config', $api_config)
   create_resources('barbican_api_paste_ini', $api_paste_ini_config)

@@ -67,8 +67,8 @@ class barbican::db (
 
   include ::barbican::deps
 
-  validate_re($database_connection,
-    '^(sqlite|mysql(\+pymysql)?|postgresql):\/\/(\S+:\S+@\S+\/\S+)?')
+  validate_legacy(Oslo::Dbconn, 'validate_re', $database_connection,
+    ['^(sqlite|mysql(\+pymysql)?|postgresql):\/\/(\S+:\S+@\S+\/\S+)?'])
 
   oslo::db { 'barbican_config':
     connection     => $database_connection,
