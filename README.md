@@ -98,5 +98,5 @@ Contributors
 Repository
 ----------
 
-* https://git.openstack.org/cgit/openstack/puppet-barbican
+* https://opendev.org/openstack/puppet-barbican
 
