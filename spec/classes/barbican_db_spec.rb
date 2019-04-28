@@ -25,15 +25,15 @@ describe 'barbican::db' do
       it { should contain_class('barbican::deps') }
 
       it { should contain_oslo__db('barbican_config').with(
-        :db_max_retries => '<SERVICE DEFAULT>',
-        :connection     => 'sqlite:////var/lib/barbican/barbican.sqlite',
-        :idle_timeout   => '<SERVICE DEFAULT>',
-        :min_pool_size  => '<SERVICE DEFAULT>',
-        :max_pool_size  => '<SERVICE DEFAULT>',
-        :max_retries    => '<SERVICE DEFAULT>',
-        :retry_interval => '<SERVICE DEFAULT>',
-        :max_overflow   => '<SERVICE DEFAULT>',
-        :pool_timeout   => '<SERVICE DEFAULT>',
+        :db_max_retries          => '<SERVICE DEFAULT>',
+        :connection              => 'sqlite:////var/lib/barbican/barbican.sqlite',
+        :connection_recycle_time => '<SERVICE DEFAULT>',
+        :min_pool_size           => '<SERVICE DEFAULT>',
+        :max_pool_size           => '<SERVICE DEFAULT>',
+        :max_retries             => '<SERVICE DEFAULT>',
+        :retry_interval          => '<SERVICE DEFAULT>',
+        :max_overflow            => '<SERVICE DEFAULT>',
+        :pool_timeout            => '<SERVICE DEFAULT>',
       )}
 
       # TODO(aschultz): remove once oslo is properly used
@@ -46,31 +46,31 @@ describe 'barbican::db' do
     context 'with specific parameters' do
       let :params do
         {
-          :database_connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican',
-          :database_idle_timeout   => '3601',
-          :database_min_pool_size  => '2',
-          :database_max_pool_size  => '11',
-          :database_max_retries    => '11',
-          :database_retry_interval => '11',
-          :database_max_overflow   => '11',
-          :database_pool_timeout   => '11',
-          :database_pool_size      => '2',
-          :database_db_max_retries => '-1',
+          :database_connection              => 'mysql+pymysql://barbican:barbican@localhost/barbican',
+          :database_connection_recycle_time => '3601',
+          :database_min_pool_size           => '2',
+          :database_max_pool_size           => '11',
+          :database_max_retries             => '11',
+          :database_retry_interval          => '11',
+          :database_max_overflow            => '11',
+          :database_pool_timeout            => '11',
+          :database_pool_size               => '2',
+          :database_db_max_retries          => '-1',
         }
       end
 
       it { should contain_class('barbican::deps') }
 
       it { should contain_oslo__db('barbican_config').with(
-        :db_max_retries => '-1',
-        :connection     => 'mysql+pymysql://barbican:barbican@localhost/barbican',
-        :idle_timeout   => '3601',
-        :min_pool_size  => '2',
-        :max_pool_size  => '11',
-        :max_retries    => '11',
-        :retry_interval => '11',
-        :max_overflow   => '11',
-        :pool_timeout   => '11',
+        :db_max_retries          => '-1',
+        :connection              => 'mysql+pymysql://barbican:barbican@localhost/barbican',
+        :connection_recycle_time => '3601',
+        :min_pool_size           => '2',
+        :max_pool_size           => '11',
+        :max_retries             => '11',
+        :retry_interval          => '11',
+        :max_overflow            => '11',
+        :pool_timeout            => '11',
       )}
 
       # TODO(aschultz) remove once oslo is properly used
