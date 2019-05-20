@@ -22,6 +22,10 @@ require 'spec_helper'
 describe 'barbican::client' do
 
   shared_examples_for 'barbican client' do
+
+    it { is_expected.to contain_class('barbican::deps') }
+    it { is_expected.to contain_class('barbican::params') }
+
     describe "with default parameters" do
       it { is_expected.to contain_package('python-barbicanclient').with(
         'ensure' => 'present',
