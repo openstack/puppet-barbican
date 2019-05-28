@@ -74,7 +74,7 @@ describe 'barbican::plugins::dogtag' do
           should contain_barbican_config('dogtag_plugin/simple_cmc_profile').with_value(param_hash[:dogtag_plugin_simple_cmc_profile])
           should contain_barbican_config('dogtag_plugin/ca_expiration_time').with_value(param_hash[:dogtag_plugin_ca_expiration_time])
           should contain_barbican_config('dogtag_plugin/plugin_working_dir').with_value(param_hash[:dogtag_plugin_plugin_working_dir])
-          should contain_barbican_config('secretstore:dogtag/secret_store_plugin').with_value('dogtag_plugin')
+          should contain_barbican_config('secretstore:dogtag/secret_store_plugin').with_value('dogtag_crypto')
           should contain_barbican_config('secretstore:dogtag/global_default').with_value(param_hash[:global_default])
         }
       end

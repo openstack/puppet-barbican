@@ -71,7 +71,7 @@ class barbican::plugins::dogtag (
   }
 
   barbican_config {
-    'secretstore:dogtag/secret_store_plugin': value => 'dogtag_plugin';
+    'secretstore:dogtag/secret_store_plugin': value => 'dogtag_crypto';
     'secretstore:dogtag/global_default':      value => $global_default;
   }
 
