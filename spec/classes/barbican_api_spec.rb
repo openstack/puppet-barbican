@@ -62,6 +62,7 @@ describe 'barbican::api' do
         :retry_scheduler_periodic_interval_max_seconds => '<SERVICE DEFAULT>',
         :service_name                                  => platform_params[:service_name],
         :enable_proxy_headers_parsing                  => '<SERVICE DEFAULT>',
+        :max_request_body_size                         => '<SERVICE DEFAULT>',
         :multiple_secret_stores_enabled                => false,
         :enabled_secret_stores                         => 'simple_crypto',
       }
@@ -103,6 +104,7 @@ describe 'barbican::api' do
         :max_allowed_secret_in_bytes                   => 20000,
         :max_allowed_request_size_in_bytes             => 2000000,
         :enable_proxy_headers_parsing                  => false,
+        :max_request_body_size                         => '102400',
         :multiple_secret_stores_enabled                => true,
         :enabled_secret_stores                         => 'simple_crypto,dogtag,kmip',
       }
@@ -207,6 +209,21 @@ describe 'barbican::api' do
 
       it { is_expected.to contain_oslo__middleware('barbican_config').with(
         :enable_proxy_headers_parsing => true,
+      )}
+    end
+
+    describe 'with max_request_body_size' do
+      let :pre_condition do
+        'class { "barbican::keystone::authtoken": password => "secret", }
+        include ::apache'
+      end
+
+      let :params do
+        default_params.merge!({:max_request_body_size => '102400' })
+      end
+
+      it { is_expected.to contain_oslo__middleware('barbican_config').with(
+        :max_request_body_size => '102400',
       )}
     end
 

@@ -237,6 +237,10 @@
 #   HTTPProxyToWSGI middleware.
 #   Defaults to $::os_service_default.
 #
+# [*max_request_body_size*]
+#   (Optional) Set max request body size
+#   Defaults to $::os_service_default.
+#
 class barbican::api (
   $package_ensure                                = 'present',
   $client_package_ensure                         = 'present',
@@ -287,6 +291,7 @@ class barbican::api (
   $key_file                                      = $::os_service_default,
   $service_name                                  = 'barbican-api',
   $enable_proxy_headers_parsing                  = $::os_service_default,
+  $max_request_body_size                         = $::os_service_default,
 ) inherits barbican::params {
 
   include ::barbican::deps
@@ -490,6 +495,7 @@ class barbican::api (
 
   oslo::middleware { 'barbican_config':
     enable_proxy_headers_parsing => $enable_proxy_headers_parsing,
+    max_request_body_size        => $max_request_body_size,
   }
 
 }
