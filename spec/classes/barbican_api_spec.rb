@@ -36,6 +36,7 @@ describe 'barbican::api' do
         :rabbit_use_ssl                                => '<SERVICE DEFAULT>',
         :rabbit_heartbeat_timeout_threshold            => '<SERVICE DEFAULT>',
         :rabbit_heartbeat_rate                         => '<SERVICE DEFAULT>',
+        :rabbit_heartbeat_in_pthread                   => '<SERVICE DEFAULT>',
         :rabbit_ha_queues                              => '<SERVICE DEFAULT>',
         :amqp_durable_queues                           => '<SERVICE DEFAULT>',
         :max_allowed_secret_in_bytes                   => '<SERVICE DEFAULT>',
@@ -80,6 +81,7 @@ describe 'barbican::api' do
         :rabbit_use_ssl                                => true,
         :rabbit_heartbeat_timeout_threshold            => '10',
         :rabbit_heartbeat_rate                         => '10',
+        :rabbit_heartbeat_in_pthread                   => true,
         :rabbit_ha_queues                              => true,
         :amqp_durable_queues                           => true,
         :enable_queue                                  => true,
@@ -163,6 +165,7 @@ describe 'barbican::api' do
           is_expected.to contain_barbican_config('oslo_messaging_notifications/topics').with_value(param_hash[:notification_topics])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value(param_hash[:rabbit_heartbeat_timeout_threshold])
           is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_rate').with_value(param_hash[:rabbit_heartbeat_rate])
+          is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value(param_hash[:rabbit_heartbeat_in_pthread])
           is_expected.to contain_oslo__messaging__rabbit('barbican_config').with(
             :rabbit_use_ssl     => true,
             :kombu_ssl_ca_certs => 'path_to_certs',
