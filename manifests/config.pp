@@ -27,11 +27,11 @@
 #   or Puppet catalog compilation will fail with duplicate resources.
 #
 class barbican::config (
-  $api_config = {},
+  $api_config           = {},
   $api_paste_ini_config = {},
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   validate_legacy(Hash, 'validate_hash', $api_config)
   validate_legacy(Hash, 'validate_hash', $api_paste_ini_config)

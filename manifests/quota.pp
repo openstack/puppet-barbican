@@ -25,14 +25,14 @@
 #   Defaults to $::os_service_default
 #
 class barbican::quota (
-  $quota_secrets     = $::os_service_default,
-  $quota_orders      = $::os_service_default,
-  $quota_containers  = $::os_service_default,
-  $quota_consumers   = $::os_service_default,
-  $quota_cas         = $::os_service_default,
+  $quota_secrets    = $::os_service_default,
+  $quota_orders     = $::os_service_default,
+  $quota_containers = $::os_service_default,
+  $quota_consumers  = $::os_service_default,
+  $quota_cas        = $::os_service_default,
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   barbican_config {
     'quotas/quota_secrets':      value => $quota_secrets;

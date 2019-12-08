@@ -57,8 +57,8 @@ class barbican::plugins::dogtag (
   $global_default                   = false,
 ) {
 
-  include ::barbican::deps
-  include ::barbican::params
+  include barbican::deps
+  include barbican::params
 
   if $dogtag_plugin_nss_password == undef {
     fail('dogtag_plugin_nss_password must be defined')

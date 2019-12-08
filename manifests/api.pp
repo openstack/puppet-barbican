@@ -305,10 +305,10 @@ class barbican::api (
   $max_request_body_size                         = $::os_service_default,
 ) inherits barbican::params {
 
-  include ::barbican::deps
-  include ::barbican::db
-  include ::barbican::client
-  include ::barbican::policy
+  include barbican::deps
+  include barbican::db
+  include barbican::client
+  include barbican::policy
 
   # TODO: Remove the posix users and permissions and merge this definition
   # with the previous one, once the barbican package has been updated
@@ -410,7 +410,7 @@ class barbican::api (
   # keystone config
   if $auth_strategy == 'keystone' {
 
-    include ::barbican::keystone::authtoken
+    include barbican::keystone::authtoken
 
     barbican_api_paste_ini {
       'pipeline:barbican_api/pipeline': value => 'cors authtoken context apiapp';
@@ -463,7 +463,7 @@ class barbican::api (
   }
 
   if $sync_db {
-    include ::barbican::db::sync
+    include barbican::db::sync
   }
 
   if $service_name == 'barbican-api' {
@@ -487,7 +487,7 @@ class barbican::api (
     }
 
   } elsif $service_name == 'httpd' {
-    include ::apache::params
+    include apache::params
     # Ubuntu packages does not have a barbican-api service
     if $::os_package_type != 'ubuntu' {
       service { 'barbican-api':

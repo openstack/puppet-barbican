@@ -9,81 +9,81 @@
 #
 # == Parameters
 #
-#   [*servername*]
-#     The servername for the virtualhost.
-#     Optional. Defaults to $::fqdn
+# [*servername*]
+#   The servername for the virtualhost.
+#   Optional. Defaults to $::fqdn
 #
-#   [*public_port*]
-#     The public port.
-#     Optional. Defaults to 9311
+# [*public_port*]
+#   The public port.
+#   Optional. Defaults to 9311
 #
-#   [*bind_host*]
-#     The host/ip address Apache will listen on.
-#     Optional. Defaults to undef (listen on all ip addresses).
+# [*bind_host*]
+#   The host/ip address Apache will listen on.
+#   Optional. Defaults to undef (listen on all ip addresses).
 #
-#   [*public_path*]
-#     The prefix for the public endpoint.
-#     Optional. Defaults to '/'
+# [*public_path*]
+#   The prefix for the public endpoint.
+#   Optional. Defaults to '/'
 #
-#   [*ssl*]
-#     Use ssl ? (boolean)
-#     Optional. Defaults to true
+# [*ssl*]
+#   Use ssl ? (boolean)
+#   Optional. Defaults to true
 #
-#   [*workers*]
-#     Number of WSGI workers to spawn.
-#     Optional. Defaults to $::os_workers
+# [*workers*]
+#   Number of WSGI workers to spawn.
+#   Optional. Defaults to $::os_workers
 #
-#   [*ssl_cert*]
-#     (optional) Path to SSL certificate
-#     Default to apache::vhost 'ssl_*' defaults.
+# [*ssl_cert*]
+#   (optional) Path to SSL certificate
+#   Default to apache::vhost 'ssl_*' defaults.
 #
-#   [*ssl_key*]
-#     (optional) Path to SSL key
-#     Default to apache::vhost 'ssl_*' defaults.
+# [*ssl_key*]
+#   (optional) Path to SSL key
+#   Default to apache::vhost 'ssl_*' defaults.
 #
-#   [*ssl_chain*]
-#     (optional) SSL chain
-#     Default to apache::vhost 'ssl_*' defaults.
+# [*ssl_chain*]
+#   (optional) SSL chain
+#   Default to apache::vhost 'ssl_*' defaults.
 #
-#   [*ssl_ca*]
-#     (optional) Path to SSL certificate authority
-#     Default to apache::vhost 'ssl_*' defaults.
+# [*ssl_ca*]
+#   (optional) Path to SSL certificate authority
+#   Default to apache::vhost 'ssl_*' defaults.
 #
-#   [*ssl_crl_path*]
-#     (optional) Path to SSL certificate revocation list
-#     Default to apache::vhost 'ssl_*' defaults.
+# [*ssl_crl_path*]
+#   (optional) Path to SSL certificate revocation list
+#   Default to apache::vhost 'ssl_*' defaults.
 #
-#   [*ssl_crl*]
-#     (optional) SSL certificate revocation list name
-#     Default to apache::vhost 'ssl_*' defaults.
+# [*ssl_crl*]
+#   (optional) SSL certificate revocation list name
+#   Default to apache::vhost 'ssl_*' defaults.
 #
-#   [*ssl_certs_dir*]
-#     apache::vhost ssl parameters.
-#     Optional. Default to apache::vhost 'ssl_*' defaults.
+# [*ssl_certs_dir*]
+#   apache::vhost ssl parameters.
+#   Optional. Default to apache::vhost 'ssl_*' defaults.
 #
-#   [*priority*]
-#     (optional) The priority for the vhost.
-#     Defaults to '10'
+# [*priority*]
+#   (optional) The priority for the vhost.
+#   Defaults to '10'
 #
-#   [*threads*]
-#     (optional) The number of threads for the vhost.
-#     Defaults to 1
+# [*threads*]
+#   (optional) The number of threads for the vhost.
+#   Defaults to 1
 #
-#   [*wsgi_process_display_name*]
-#     (optional) Name of the WSGI process display-name.
-#     Defaults to undef
+# [*wsgi_process_display_name*]
+#   (optional) Name of the WSGI process display-name.
+#   Defaults to undef
 #
-#   [*access_log_file*]
-#     The log file name for the virtualhost.
-#     Optional. Defaults to false.
+# [*access_log_file*]
+#   The log file name for the virtualhost.
+#   Optional. Defaults to false.
 #
-#   [*access_log_format*]
-#     The log format for the virtualhost.
-#     Optional. Defaults to false.
+# [*access_log_format*]
+#   The log format for the virtualhost.
+#   Optional. Defaults to false.
 #
-#   [*error_log_file*]
-#     The error log file name for the virtualhost.
-#     Optional. Defaults to undef.
+# [*error_log_file*]
+#   The error log file name for the virtualhost.
+#   Optional. Defaults to undef.
 #
 # [*custom_wsgi_process_options*]
 #   (optional) gives you the oportunity to add custom process options or to
@@ -92,16 +92,6 @@
 #   you could set it to:
 #   { python-path => '/my/python/virtualenv' }
 #   Defaults to {}
-#
-# == Dependencies
-#
-#   requires Class['apache'] & Class['barbican']
-#
-# == Examples
-#
-#   include apache
-#
-#   class { 'barbican::wsgi::apache': }
 #
 # == Authors
 #
@@ -134,12 +124,12 @@ class barbican::wsgi::apache (
   $custom_wsgi_process_options = {},
 ) {
 
-  include ::barbican::deps
-  include ::barbican::params
-  include ::apache
-  include ::apache::mod::wsgi
+  include barbican::deps
+  include barbican::params
+  include apache
+  include apache::mod::wsgi
   if $ssl {
-    include ::apache::mod::ssl
+    include apache::mod::ssl
   }
 
   Service['httpd'] -> Keystone_endpoint <| |>
@@ -162,7 +152,7 @@ class barbican::wsgi::apache (
   Package<| tag == 'barbican-api' |> -> File[$::barbican::params::httpd_config_file]
   File[$::barbican::params::httpd_config_file] ~> Service['httpd']
 
-  ::openstacklib::wsgi::apache { 'barbican_wsgi_main':
+  openstacklib::wsgi::apache { 'barbican_wsgi_main':
     bind_host                   => $bind_host,
     bind_port                   => $public_port,
     group                       => 'barbican',

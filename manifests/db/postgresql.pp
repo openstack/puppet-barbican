@@ -32,9 +32,9 @@ class barbican::db::postgresql(
   $privileges = 'ALL',
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
-  ::openstacklib::db::postgresql { 'barbican':
+  openstacklib::db::postgresql { 'barbican':
     password_hash => postgresql_password($user, $password),
     dbname        => $dbname,
     user          => $user,

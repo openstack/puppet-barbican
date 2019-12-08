@@ -17,7 +17,7 @@ class barbican::plugins::simple_crypto (
   $global_default           = false,
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   barbican_config {
     'secretstore:simple_crypto/secret_store_plugin': value => 'store_crypto';

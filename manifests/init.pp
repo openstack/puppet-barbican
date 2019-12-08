@@ -9,6 +9,6 @@
 #
 class barbican {
 
-  include ::barbican::params
+  include barbican::params
 
 }

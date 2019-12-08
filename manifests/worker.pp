@@ -39,7 +39,7 @@ class barbican::worker (
   $enabled        = true,
 ) inherits barbican::params {
 
-  include ::barbican::deps
+  include barbican::deps
 
   package { 'barbican-worker':
     ensure => $package_ensure,

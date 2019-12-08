@@ -71,7 +71,7 @@ class barbican::plugins::p11_crypto (
   $global_default                          = false,
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   if $p11_crypto_plugin_library_path == undef {
       fail('p11_crypto_plugin_library_path must be defined')

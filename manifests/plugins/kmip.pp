@@ -49,7 +49,7 @@ class barbican::plugins::kmip (
   $global_default       = false,
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   if $kmip_plugin_host == undef {
     fail('kmip_plugin_host must be defined')

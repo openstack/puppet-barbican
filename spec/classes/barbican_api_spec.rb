@@ -114,7 +114,7 @@ describe 'barbican::api' do
       describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
         let :pre_condition do
           'class { "barbican::keystone::authtoken": password => "secret", }
-          include ::apache'
+          include apache'
         end
 
         let :param_hash do
@@ -203,7 +203,7 @@ describe 'barbican::api' do
     describe 'with enable_proxy_headers_parsing' do
       let :pre_condition do
         'class { "barbican::keystone::authtoken": password => "secret", }
-        include ::apache'
+        include apache'
       end
 
       let :params do
@@ -218,7 +218,7 @@ describe 'barbican::api' do
     describe 'with max_request_body_size' do
       let :pre_condition do
         'class { "barbican::keystone::authtoken": password => "secret", }
-        include ::apache'
+        include apache'
       end
 
       let :params do
@@ -233,7 +233,7 @@ describe 'barbican::api' do
     describe 'with SSL socket options set' do
       let :pre_condition do
           'class { "barbican::keystone::authtoken": password => "secret", }
-           include ::apache'
+           include apache'
       end
 
       let :params do
@@ -253,7 +253,7 @@ describe 'barbican::api' do
     describe 'with SSL socket options left by default' do
       let :pre_condition do
           'class { "barbican::keystone::authtoken": password => "secret", }
-           include ::apache'
+           include apache'
       end
 
       let :params do
@@ -270,7 +270,7 @@ describe 'barbican::api' do
     describe 'with SSL socket options set wrongly configured' do
       let :pre_condition do
           'class { "barbican::keystone::authtoken": password => "secret", }
-           include ::apache'
+           include apache'
       end
 
       let :params do
@@ -287,7 +287,7 @@ describe 'barbican::api' do
     describe 'with keystone auth' do
       let :pre_condition do
           'class { "barbican::keystone::authtoken": password => "secret", }
-           include ::apache'
+           include apache'
       end
 
       let :params do
@@ -367,7 +367,7 @@ describe 'barbican::api' do
         it_behaves_like 'barbican api redhat'
       when 'Debian'
         let :pre_condition do
-          'include ::apache'
+          'include apache'
         end
         let (:platform_params) do
           { :service_name => 'httpd' }

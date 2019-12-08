@@ -21,11 +21,11 @@ require 'spec_helper_acceptance'
 describe 'barbican::api basic test class' do
   context 'default parameters' do
     pp= <<-EOS
-      include ::openstack_integration
-      include ::openstack_integration::repos
-      include ::openstack_integration::mysql
-      include ::openstack_integration::keystone
-      include ::openstack_integration::barbican
+      include openstack_integration
+      include openstack_integration::repos
+      include openstack_integration::mysql
+      include openstack_integration::keystone
+      include openstack_integration::barbican
     EOS
 
     it 'should work with no errors' do

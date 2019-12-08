@@ -32,7 +32,7 @@ class barbican::keystone::notification (
   $keystone_notification_thread_pool_size = $::os_service_default,
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   barbican_config {
     'keystone_notifications/enable':           value => $enable_keystone_notification;

@@ -28,8 +28,8 @@ class barbican::policy (
   $policy_path = '/etc/barbican/policy.json',
 ) {
 
-  include ::barbican::deps
-  include ::barbican::params
+  include barbican::deps
+  include barbican::params
 
   validate_legacy(Hash, 'validate_hash', $policies)
 

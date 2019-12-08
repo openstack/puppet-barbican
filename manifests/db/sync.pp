@@ -18,7 +18,7 @@ class barbican::db::sync(
   $secret_store_extra_params = undef,
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   exec { 'barbican-db-manage':
     command     => "barbican-manage db upgrade ${extra_params}",

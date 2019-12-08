@@ -43,11 +43,11 @@ class barbican::db::mysql(
   $allowed_hosts = undef
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   validate_legacy(String, 'validate_string', $password)
 
-  ::openstacklib::db::mysql { 'barbican':
+  openstacklib::db::mysql { 'barbican':
     user          => $user,
     password_hash => mysql::password($password),
     dbname        => $dbname,

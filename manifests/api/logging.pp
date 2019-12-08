@@ -123,7 +123,7 @@ class barbican::api::logging(
   $log_date_format               = $::os_service_default,
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   oslo::log { 'barbican_config':
     debug                         => $debug,

@@ -12,8 +12,8 @@ class barbican::client (
   $ensure = 'present',
 ) {
 
-  include ::barbican::deps
-  include ::barbican::params
+  include barbican::deps
+  include barbican::params
 
   package { 'python-barbicanclient':
     ensure => $ensure,
@@ -21,5 +21,5 @@ class barbican::client (
     tag    => 'openstack',
   }
 
-  include '::openstacklib::openstackclient'
+  include openstacklib::openstackclient
 }

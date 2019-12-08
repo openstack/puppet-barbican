@@ -79,7 +79,7 @@ class barbican::keystone::auth (
   $admin_url           = 'http://127.0.0.1:9311',
 ) {
 
-  include ::barbican::deps
+  include barbican::deps
 
   if $configure_user_role {
     Keystone_user_role["${auth_name}@${tenant}"] ~> Anchor['barbican::service::end']
