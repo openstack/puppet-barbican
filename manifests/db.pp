@@ -52,12 +52,6 @@
 #   (Optional) If set, use this value for pool_timeout with SQLAlchemy.
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*database_idle_timeout*]
-#   Timeout when db connections should be reaped.
-#   Defaults to undef.
-#
 class barbican::db (
   $database_connection              = 'sqlite:////var/lib/barbican/barbican.sqlite',
   $database_connection_recycle_time = $::os_service_default,
@@ -69,24 +63,16 @@ class barbican::db (
   $database_pool_size               = $::os_service_default,
   $database_db_max_retries          = $::os_service_default,
   $database_pool_timeout            = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $database_idle_timeout            = undef,
 ) {
 
   include barbican::deps
-
-  if $database_idle_timeout {
-    warning('The database_idle_timeout parameter is deprecated. Please use \
-database_connection_recycle_time instead.')
-  }
-  $database_connection_recycle_time_real = pick($database_idle_timeout, $database_connection_recycle_time)
 
   validate_legacy(Oslo::Dbconn, 'validate_re', $database_connection,
     ['^(sqlite|mysql(\+pymysql)?|postgresql):\/\/(\S+:\S+@\S+\/\S+)?'])
 
   oslo::db { 'barbican_config':
     connection              => $database_connection,
-    connection_recycle_time => $database_connection_recycle_time_real,
+    connection_recycle_time => $database_connection_recycle_time,
     min_pool_size           => $database_min_pool_size,
     max_pool_size           => $database_max_pool_size,
     max_retries             => $database_max_retries,
@@ -99,7 +85,7 @@ database_connection_recycle_time instead.')
   # TODO(aschultz): Remove this config once barbican properly leverages oslo
   barbican_config {
     'DEFAULT/sql_connection':        value => $database_connection, secret => true;
-    'DEFAULT/sql_idle_timeout':      value => $database_connection_recycle_time_real;
+    'DEFAULT/sql_idle_timeout':      value => $database_connection_recycle_time;
     'DEFAULT/sql_pool_size':         value => $database_pool_size;
     'DEFAULT/sql_pool_max_overflow': value => $database_max_overflow;
   }
