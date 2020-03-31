@@ -63,7 +63,15 @@ describe 'barbican::client' do
         when 'Debian'
           { :client_package_name => 'python3-barbicanclient' }
         when 'RedHat'
-          { :client_package_name => 'python-barbicanclient' }
+          if facts[:operatingsystem] == 'Fedora'
+            { :client_package_name => 'python3-barbicanclient' }
+          else
+            if facts[:operatingsystemmajrelease] > '7'
+              { :client_package_name => 'python3-barbicanclient' }
+            else
+              { :client_package_name => 'python-barbicanclient' }
+            end
+          end
         end
       end
 
