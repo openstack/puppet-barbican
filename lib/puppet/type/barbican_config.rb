@@ -73,8 +73,8 @@ Puppet::Type.newtype(:barbican_config) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    'barbican'
+  autorequire(:anchor) do
+    ['barbican::install::end']
   end
 
 end
