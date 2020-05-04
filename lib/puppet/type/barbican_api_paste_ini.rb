@@ -62,12 +62,8 @@ Puppet::Type.newtype(:barbican_api_paste_ini) do
     defaultto('<SERVICE DEFAULT>')
   end
 
-  autorequire(:package) do
-    if Facter.value(:osfamily) == 'Debian'
-      'barbican-api'
-    elsif Facter.value(:osfamily) == 'RedHat'
-      'openstack-barbican-api'
-    end
+  autorequire(:anchor) do
+    ['barbican::install::end']
   end
 
 end
