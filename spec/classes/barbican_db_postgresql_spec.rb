@@ -23,7 +23,7 @@ describe 'barbican::db::postgresql' do
 
   shared_examples_for 'barbican::db::postgresql' do
     let :req_params do
-      { :password => 'pw' }
+      { :password => 'barbicanpass' }
     end
 
     let :pre_condition do
@@ -35,9 +35,12 @@ describe 'barbican::db::postgresql' do
         req_params
       end
 
-      it { is_expected.to contain_postgresql__server__db('barbican').with(
-        :user     => 'barbican',
-        :password => 'md5699e09b3c7579f59869b882716fd7299'
+      it { is_expected.to contain_openstacklib__db__postgresql('barbican').with(
+        :user       => 'barbican',
+        :password   => 'barbicanpass',
+        :dbname     => 'barbican',
+        :encoding   => nil,
+        :privileges => 'ALL',
       )}
     end
 
