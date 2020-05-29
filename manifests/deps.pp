@@ -33,6 +33,11 @@ class barbican::deps {
   -> Openstacklib::Policy::Base<||>
   ~> Anchor['barbican::config::end']
 
+  # barbican-api-paste.ini config should occur in the config block also.
+  Anchor['barbican::config::begin']
+  -> Barbican_api_paste_ini<||>
+  ~> Anchor['barbican::config::end']
+
   # Ensure files are modified in the config block
   Anchor['barbican::config::begin']
   -> File_line<| tag == 'modify-bind-port' |>
