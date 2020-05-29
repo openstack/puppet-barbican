@@ -224,7 +224,7 @@
 #   service, and you must use another class to configure that
 #   web service. For example, use class { 'barbican::wsgi::apache'...}
 #   to make barbican-api be a web app using apache mod_wsgi.
-#   Defaults to 'barbican-api'
+#   Defaults to $::barbican::params::api_service_name
 #
 # [*use_ssl*]
 #   (optional) Enable SSL on the API server
@@ -300,7 +300,7 @@ class barbican::api (
   $ca_file                                       = $::os_service_default,
   $cert_file                                     = $::os_service_default,
   $key_file                                      = $::os_service_default,
-  $service_name                                  = 'barbican-api',
+  $service_name                                  = $::barbican::params::api_service_name,
   $enable_proxy_headers_parsing                  = $::os_service_default,
   $max_request_body_size                         = $::os_service_default,
 ) inherits barbican::params {
@@ -466,10 +466,17 @@ class barbican::api (
     include barbican::db::sync
   }
 
-  if $service_name == 'barbican-api' {
+  if $service_name == 'barbican-api' or $service_name == $::barbican::params::api_service_name {
+
     if $::os_package_type == 'ubuntu' {
       fail('With Ubuntu packages the service_name must be set to httpd as there is no eventlet init script.')
     }
+
+    if $::osfamily == 'RedHat' and $service_name == 'barbican-api' {
+      warning('The usage of barbican-api as service_name in Red Hat based OS is \
+deprecated and will be removed in a future release. Use openstack-barbican-api instead.')
+    }
+
     service { 'barbican-api':
       ensure     => $service_ensure,
       name       => $::barbican::params::api_service_name,
