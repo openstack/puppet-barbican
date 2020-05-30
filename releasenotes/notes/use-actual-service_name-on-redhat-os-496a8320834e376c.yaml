@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    The usage of ``barbican-api`` as service_name in Red Hat based OS is
+    deprecated and will be removed in a future release. Use
+    ``openstack-barbican-api``, which is consistent with the actual service
+    name.

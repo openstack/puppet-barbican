@@ -362,7 +362,7 @@ describe 'barbican::api' do
       case facts[:osfamily]
       when 'RedHat'
         let (:platform_params) do
-          { :service_name => 'barbican-api' }
+          { :service_name => 'openstack-barbican-api' }
         end
         it_behaves_like 'barbican api redhat'
       when 'Debian'
