@@ -93,6 +93,11 @@
 #   { python-path => '/my/python/virtualenv' }
 #   Defaults to {}
 #
+# [*vhost_custom_fragment*]
+#   (optional) Passes a string of custom configuration
+#   directives to be placed at the end of the vhost configuration.
+#   Defaults to undef.
+#
 # == Dependencies
 #
 #   requires Class['apache'] & Class['barbican']
@@ -132,6 +137,7 @@ class barbican::wsgi::apache (
   $access_log_format           = false,
   $error_log_file              = undef,
   $custom_wsgi_process_options = {},
+  $vhost_custom_fragment       = undef,
 ) {
 
   include ::barbican::deps
@@ -179,6 +185,7 @@ class barbican::wsgi::apache (
     ssl_key                     => $ssl_key,
     threads                     => $threads,
     user                        => 'barbican',
+    vhost_custom_fragment       => $vhost_custom_fragment,
     workers                     => $workers,
     wsgi_daemon_process         => 'barbican-api',
     wsgi_process_display_name   => $wsgi_process_display_name,

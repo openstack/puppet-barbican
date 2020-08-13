@@ -62,6 +62,7 @@ describe 'barbican::wsgi::apache' do
           :custom_wsgi_process_options => {
             'python_path' => '/my/python/path',
           },
+          :vhost_custom_fragment       => 'Timeout 99',
         }
       end
       it { is_expected.to contain_class('barbican::params') }
@@ -77,6 +78,7 @@ describe 'barbican::wsgi::apache' do
         :ssl                         => false,
         :threads                     => 1,
         :user                        => 'barbican',
+        :vhost_custom_fragment       => 'Timeout 99',
         :workers                     => 37,
         :wsgi_daemon_process         => 'barbican-api',
         :wsgi_process_display_name   => 'barbican-api',
