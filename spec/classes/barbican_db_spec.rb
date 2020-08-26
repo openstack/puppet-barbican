@@ -33,6 +33,7 @@ describe 'barbican::db' do
         :retry_interval          => '<SERVICE DEFAULT>',
         :max_overflow            => '<SERVICE DEFAULT>',
         :pool_timeout            => '<SERVICE DEFAULT>',
+        :mysql_enable_ndb        => '<SERVICE DEFAULT>',
       )}
 
       # TODO(aschultz): remove once oslo is properly used
@@ -52,6 +53,7 @@ describe 'barbican::db' do
           :database_retry_interval          => '11',
           :database_max_overflow            => '11',
           :database_pool_timeout            => '11',
+          :mysql_enable_ndb                 => true,
           :database_pool_size               => '2',
           :database_db_max_retries          => '-1',
         }
@@ -68,6 +70,7 @@ describe 'barbican::db' do
         :retry_interval          => '11',
         :max_overflow            => '11',
         :pool_timeout            => '11',
+        :mysql_enable_ndb        => true,
       )}
 
       # TODO(aschultz) remove once oslo is properly used

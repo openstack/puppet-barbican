@@ -47,6 +47,11 @@
 #   (Optional) If set, use this value for pool_timeout with SQLAlchemy.
 #   Defaults to $::os_service_default
 #
+# [*mysql_enable_ndb*]
+#   (Optional) If True, transparently enables support for handling MySQL
+#   Cluster (NDB).
+#   Defaults to $::os_service_default
+#
 # DEPRECATED PARAMETERS
 #
 # [*database_min_pool_size*]
@@ -64,6 +69,7 @@ class barbican::db (
   $database_pool_size               = $::os_service_default,
   $database_db_max_retries          = $::os_service_default,
   $database_pool_timeout            = $::os_service_default,
+  $mysql_enable_ndb                 = $::os_service_default,
   # DEPRECATED PARAMETERS
   $database_min_pool_size           = undef,
 ) {
@@ -86,6 +92,7 @@ class barbican::db (
     max_overflow            => $database_max_overflow,
     db_max_retries          => $database_db_max_retries,
     pool_timeout            => $database_pool_timeout,
+    mysql_enable_ndb        => $mysql_enable_ndb,
   }
 
   # TODO(aschultz): Remove this config once barbican properly leverages oslo
