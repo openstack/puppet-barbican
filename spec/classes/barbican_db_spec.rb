@@ -34,12 +34,6 @@ describe 'barbican::db' do
         :max_overflow            => '<SERVICE DEFAULT>',
         :pool_timeout            => '<SERVICE DEFAULT>',
       )}
-
-      # TODO(aschultz): remove once oslo is properly used
-      it { should contain_barbican_config('DEFAULT/sql_connection').with_value('sqlite:////var/lib/barbican/barbican.sqlite') }
-      it { should contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('<SERVICE DEFAULT>') }
-      it { should contain_barbican_config('DEFAULT/sql_pool_size').with_value('<SERVICE DEFAULT>') }
-      it { should contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('<SERVICE DEFAULT>') }
     end
 
     context 'with specific parameters' do
@@ -69,12 +63,6 @@ describe 'barbican::db' do
         :max_overflow            => '11',
         :pool_timeout            => '11',
       )}
-
-      # TODO(aschultz) remove once oslo is properly used
-      it { should contain_barbican_config('DEFAULT/sql_connection').with_value('mysql+pymysql://barbican:barbican@localhost/barbican').with_secret(true) }
-      it { should contain_barbican_config('DEFAULT/sql_idle_timeout').with_value('3601') }
-      it { should contain_barbican_config('DEFAULT/sql_pool_size').with_value('2') }
-      it { should contain_barbican_config('DEFAULT/sql_pool_max_overflow').with_value('11') }
     end
   end
 
