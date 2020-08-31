@@ -80,9 +80,6 @@ class barbican::db (
     warning('The database_min_pool_size parameter is deprecated, and will be removed in a future release.')
   }
 
-  validate_legacy(Oslo::Dbconn, 'validate_re', $database_connection,
-    ['^(sqlite|mysql(\+pymysql)?|postgresql):\/\/(\S+:\S+@\S+\/\S+)?'])
-
   oslo::db { 'barbican_config':
     connection              => $database_connection,
     connection_recycle_time => $database_connection_recycle_time,
