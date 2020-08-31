@@ -38,7 +38,7 @@ describe 'barbican::api basic test class' do
     if os[:family].casecmp('RedHat') == 0
       describe 'store a secret' do
         it 'should store a secret' do
-          shell('barbican --os-username barbican --os-password a_big_secret --os-project-name services --os-user-domain-name Default --os-project-domain-name Default --os-auth-url http://127.0.0.1:5000/v3 --endpoint http://localhost:9311 secret store --payload "my big bad secret" --os-identity-api-version 3') do |r|
+          command('barbican --os-username barbican --os-password a_big_secret --os-project-name services --os-user-domain-name Default --os-project-domain-name Default --os-auth-url http://127.0.0.1:5000/v3 --endpoint http://localhost:9311 secret store --payload "my big bad secret" --os-identity-api-version 3') do |r|
             expect(r.stdout).to match(/ACTIVE/)
           end
         end
@@ -46,7 +46,7 @@ describe 'barbican::api basic test class' do
 
       describe 'generate a secret' do
         it 'should generate a secret' do
-          shell('barbican --os-username barbican --os-password a_big_secret --os-project-name services --os-user-domain-name Default --os-project-domain-name Default --os-auth-url http://127.0.0.1:5000/v3 --endpoint http://localhost:9311 secret order create key --name foo --os-identity-api-version 3') do |r|
+          command('barbican --os-username barbican --os-password a_big_secret --os-project-name services --os-user-domain-name Default --os-project-domain-name Default --os-auth-url http://127.0.0.1:5000/v3 --endpoint http://localhost:9311 secret order create key --name foo --os-identity-api-version 3') do |r|
             expect(r.stdout).to match(/Order href/)
           end
         end
