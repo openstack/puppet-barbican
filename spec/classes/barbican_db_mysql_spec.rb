@@ -35,6 +35,8 @@ describe 'barbican::db::mysql' do
       }
     end
 
+    it { is_expected.to contain_class('barbican::deps') }
+
     describe 'with only required params' do
       it { is_expected.to contain_openstacklib__db__mysql('barbican').with(
         'user'     => 'barbican',
