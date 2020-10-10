@@ -35,6 +35,8 @@ describe 'barbican::db::postgresql' do
         req_params
       end
 
+      it { is_expected.to contain_class('barbican::deps') }
+
       it { is_expected.to contain_openstacklib__db__postgresql('barbican').with(
         :user       => 'barbican',
         :password   => 'barbicanpass',
