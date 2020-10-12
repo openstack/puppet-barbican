@@ -4,6 +4,8 @@ describe 'barbican::db::sync' do
 
   shared_examples_for 'barbican-dbsync' do
 
+    it { is_expected.to contain_class('barbican::deps') }
+
     it 'runs barbican-manage db upgrade' do
       is_expected.to contain_exec('barbican-db-manage').with(
         :command     => 'barbican-manage db upgrade ',
