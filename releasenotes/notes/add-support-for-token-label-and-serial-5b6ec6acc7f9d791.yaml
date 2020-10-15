@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Added support for two new options for Barbican's PKCS#11 backend.  The
+    new options are ``[p11_crypto]token_serial_number`` and
+    ``[p11_crypto]token_label``.
+
+  - |
+    The ``barbican::plugins::p11_crypto::p11_crypto_plugin_slot_id`` parameter
+    has become an optional parameter instead of a required one.

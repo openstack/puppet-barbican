@@ -29,6 +29,8 @@ describe 'barbican::plugins::p11_crypto' do
           :p11_crypto_plugin_mkek_label                => 'mkek_label',
           :p11_crypto_plugin_mkek_length               => 32,
           :p11_crypto_plugin_hmac_label                => 'hmac_label',
+          :p11_crypto_plugin_token_serial_number       => 'token_serial',
+          :p11_crypto_plugin_token_label               => 'token_label',
           :p11_crypto_plugin_slot_id                   => 1,
           :p11_crypto_plugin_library_path              => '/usr/lib/libCryptoki2_64.so',
           :p11_crypto_plugin_encryption_mechanism      => 'CKM_AES_CBC',
@@ -48,6 +50,10 @@ describe 'barbican::plugins::p11_crypto' do
           .with_value(params[:p11_crypto_plugin_mkek_length])
         is_expected.to contain_barbican_config('p11_crypto_plugin/hmac_label') \
           .with_value(params[:p11_crypto_plugin_hmac_label])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/token_serial_number') \
+          .with_value(params[:p11_crypto_plugin_token_serial_number])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/token_label') \
+          .with_value(params[:p11_crypto_plugin_token_label])
         is_expected.to contain_barbican_config('p11_crypto_plugin/slot_id') \
           .with_value(params[:p11_crypto_plugin_slot_id])
         is_expected.to contain_barbican_config('p11_crypto_plugin/library_path') \

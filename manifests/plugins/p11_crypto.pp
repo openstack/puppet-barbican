@@ -28,10 +28,17 @@
 #   Required if p11_crypto_plugin is enabled.
 #   Defaults to undef
 #
+# [*p11_crypto_plugin_token_serial_number*]
+#   (optional) Serial number to identify PKCS#11 token
+#   Defaults to $::os_service_default
+#
+# [*p11_crypto_plugin_token_label*]
+#   (optional) Label to identify PKCS#11 token
+#   Defaults to $::os_service_default
+#
 # [*p11_crypto_plugin_slot_id*]
 #   (optional) HSM Slot id
-#   Required if p11_crypto_plugin is enabled.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*p11_crypto_plugin_encryption_mechanism*]
 #   (optional) PKCS#11 Mechanism used for encryption
@@ -63,7 +70,9 @@ class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_mkek_label            = undef,
   $p11_crypto_plugin_mkek_length           = undef,
   $p11_crypto_plugin_hmac_label            = undef,
-  $p11_crypto_plugin_slot_id               = undef,
+  $p11_crypto_plugin_token_serial_number   = $::os_service_default,
+  $p11_crypto_plugin_token_label           = $::os_service_default,
+  $p11_crypto_plugin_slot_id               = $::os_service_default,
   $p11_crypto_plugin_encryption_mechanism  = $::os_service_default,
   $p11_crypto_plugin_hmac_key_type         = $::os_service_default,
   $p11_crypto_plugin_hmac_keygen_mechanism = $::os_service_default,
@@ -88,9 +97,6 @@ class barbican::plugins::p11_crypto (
   if $p11_crypto_plugin_hmac_label == undef {
       fail('p11_crypto_plugin_hmac_label must be defined')
   }
-  if $p11_crypto_plugin_slot_id == undef {
-      fail('p11_crypto_plugin_slot_id must be defined')
-  }
 
   barbican_config {
     'p11_crypto_plugin/library_path':          value => $p11_crypto_plugin_library_path;
@@ -98,6 +104,8 @@ class barbican::plugins::p11_crypto (
     'p11_crypto_plugin/mkek_label':            value => $p11_crypto_plugin_mkek_label;
     'p11_crypto_plugin/mkek_length':           value => $p11_crypto_plugin_mkek_length;
     'p11_crypto_plugin/hmac_label':            value => $p11_crypto_plugin_hmac_label;
+    'p11_crypto_plugin/token_serial_number':   value => $p11_crypto_plugin_token_serial_number;
+    'p11_crypto_plugin/token_label':           value => $p11_crypto_plugin_token_label;
     'p11_crypto_plugin/slot_id':               value => $p11_crypto_plugin_slot_id;
     'p11_crypto_plugin/encryption_mechanism':  value => $p11_crypto_plugin_encryption_mechanism;
     'p11_crypto_plugin/hmac_key_type':         value => $p11_crypto_plugin_hmac_key_type;
