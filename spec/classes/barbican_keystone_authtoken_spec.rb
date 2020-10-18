@@ -105,7 +105,7 @@ describe 'barbican::keystone::authtoken' do
           :token_cache_time                     => '301',
           :service_token_roles                  => ['service'],
           :service_token_roles_required         => false,
-          :service_type                         => 'dentity',
+          :service_type                         => 'identity',
           :interface                            => 'internal',
         })
       end
