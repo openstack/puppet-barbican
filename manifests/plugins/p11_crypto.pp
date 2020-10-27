@@ -5,33 +5,22 @@
 # === Parameters
 #
 # [*p11_crypto_plugin_library_path*]
-#   (optional) Path to vendor PKCS11 library
-#   Defaults to $::os_service_default
+#   (required) Path to vendor PKCS11 library
 #
 # [*p11_crypto_plugin_login*]
-#   (optional) Password to login to PKCS11 session
-#   Required if p11_crypto_plugin is enabled.
-#   Defaults to undef
+#   (required) Password to login to PKCS11 session
 #
 # [*p11_crypto_plugin_mkek_label*]
-#   (optional) Label to identify master KEK in the HSM
-#   Required if p11_crypto_plugin is enabled.
-#   Defaults to undef
+#   (required) Label to identify master KEK in the HSM
 #
 # [*p11_crypto_plugin_mkek_length*]
-#   (optional) Length in bytes of master KEK
-#   Required if p11_crypto_plugin is enabled.
-#   Defaults to undef
+#   (required) Length in bytes of master KEK
 #
 # [*p11_crypto_plugin_hmac_label*]
-#   (optional) Label to identify master KEK in the HSM
-#   Required if p11_crypto_plugin is enabled.
-#   Defaults to undef
+#   (required) Label to identify master KEK in the HSM
 #
 # [*p11_crypto_plugin_slot_id*]
-#   (optional) HSM Slot id
-#   Required if p11_crypto_plugin is enabled.
-#   Defaults to undef
+#   (required) HSM Slot id
 #
 # [*p11_crypto_plugin_encryption_mechanism*]
 #   (optional) PKCS#11 Mechanism used for encryption
