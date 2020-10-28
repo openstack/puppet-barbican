@@ -65,7 +65,7 @@
             "version_requirement": ">= 6.0.0 < 7.0.0"
         }
     ],
-    "source": "git://github.com/openstack/puppet-barbican.git",
+    "source": "https://opendev.org/openstack/puppet-barbican.git",
     "summary": "Puppet module for OpenStack Barbican",
     "version": "18.0.0"
 }
