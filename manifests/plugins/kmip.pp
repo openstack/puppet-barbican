@@ -6,32 +6,32 @@
 #
 # [*kmip_plugin_username*]
 #   (optional) username for KMIP device
-#   Required if kmip_plugin is enabled.
 #   Defaults to undef
 #
 # [*kmip_plugin_password*]
-#   (optional) password for KMIP device
-#   Required if kmip_plugin is enabled.
+#   (optional) password for KMIP device. This parameter is required
+#   when the kmip_plugin_username parameter is set.
 #   Defaults to undef
 #
 # [*kmip_plugin_host*]
-#   (optional) username for KMIP device
-#   Defaults to undef
+#   (required) username for KMIP device
 #
 # [*kmip_plugin_port*]
-#   (optional) port for KMIP device
-#   Defaults to undef
+#   (required) port for KMIP device
 #
 # [*kmip_plugin_keyfile*]
-#   (optional) key file for KMIP device
+#   (optional) key file for KMIP device. This parameter is required when
+#   the kmip_plugin_username parameter is not set.
 #   Defaults to undef
 #
 # [*kmip_plugin_certfile*]
-#   (optional) cert file for KMIP device
+#   (optional) cert file for KMIP device. This parameter is required when
+#   the kmip_plugin_username parameter is not set.
 #   Defaults to undef
 #
 # [*kmip_plugin_ca_certs*]
-#   (optional) ca certs file for KMIP device
+#   (optional) ca certs file for KMIP device. This parameter is required when
+#   the kmip_plugin_username parameter is not set.
 #   Defaults to undef
 #
 # [*global_default*]
