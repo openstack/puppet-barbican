@@ -56,11 +56,11 @@
 #   Defaults to false
 #
 class barbican::plugins::p11_crypto (
-  $p11_crypto_plugin_library_path          = undef,
-  $p11_crypto_plugin_login                 = undef,
-  $p11_crypto_plugin_mkek_label            = undef,
-  $p11_crypto_plugin_mkek_length           = undef,
-  $p11_crypto_plugin_hmac_label            = undef,
+  $p11_crypto_plugin_library_path,
+  $p11_crypto_plugin_login,
+  $p11_crypto_plugin_mkek_label,
+  $p11_crypto_plugin_mkek_length,
+  $p11_crypto_plugin_hmac_label,
   $p11_crypto_plugin_token_serial_number   = $::os_service_default,
   $p11_crypto_plugin_token_label           = $::os_service_default,
   $p11_crypto_plugin_slot_id               = $::os_service_default,
@@ -72,22 +72,6 @@ class barbican::plugins::p11_crypto (
 ) {
 
   include barbican::deps
-
-  if $p11_crypto_plugin_library_path == undef {
-      fail('p11_crypto_plugin_library_path must be defined')
-  }
-  if $p11_crypto_plugin_login == undef {
-      fail('p11_crypto_plugin_login must be defined')
-  }
-  if $p11_crypto_plugin_mkek_label == undef {
-      fail('p11_crypto_plugin_mkek_label must be defined')
-  }
-  if $p11_crypto_plugin_mkek_length == undef {
-      fail('p11_crypto_plugin_mkek_length must be defined')
-  }
-  if $p11_crypto_plugin_hmac_label == undef {
-      fail('p11_crypto_plugin_hmac_label must be defined')
-  }
 
   barbican_config {
     'p11_crypto_plugin/library_path':          value => $p11_crypto_plugin_library_path;

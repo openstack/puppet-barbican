@@ -4,6 +4,12 @@
 #
 # === Parameters
 #
+# [*kmip_plugin_host*]
+#   (required) username for KMIP device
+#
+# [*kmip_plugin_port*]
+#   (required) port for KMIP device
+#
 # [*kmip_plugin_username*]
 #   (optional) username for KMIP device
 #   Defaults to undef
@@ -12,12 +18,6 @@
 #   (optional) password for KMIP device. This parameter is required
 #   when the kmip_plugin_username parameter is set.
 #   Defaults to undef
-#
-# [*kmip_plugin_host*]
-#   (required) username for KMIP device
-#
-# [*kmip_plugin_port*]
-#   (required) port for KMIP device
 #
 # [*kmip_plugin_keyfile*]
 #   (optional) key file for KMIP device. This parameter is required when
@@ -39,10 +39,10 @@
 #   Defaults to false
 #
 class barbican::plugins::kmip (
+  $kmip_plugin_host,
+  $kmip_plugin_port,
   $kmip_plugin_username = undef,
   $kmip_plugin_password = undef,
-  $kmip_plugin_host     = undef,
-  $kmip_plugin_port     = undef,
   $kmip_plugin_keyfile  = undef,
   $kmip_plugin_certfile = undef,
   $kmip_plugin_ca_certs = undef,
@@ -51,12 +51,6 @@ class barbican::plugins::kmip (
 
   include barbican::deps
 
-  if $kmip_plugin_host == undef {
-    fail('kmip_plugin_host must be defined')
-  }
-  if $kmip_plugin_port == undef {
-    fail('kmip_plugin_port must be defined')
-  }
   if $kmip_plugin_username != undef {
     if $kmip_plugin_password == undef {
       fail('kmip_plugin_password must be defined if kmip_plugin_username is defined')
