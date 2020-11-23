@@ -15,6 +15,7 @@ describe 'barbican::db::sync' do
         :try_sleep   => 5,
         :tries       => 10,
         :logoutput   => 'on_failure',
+        :timeout     => 300,
         :subscribe   => ['Anchor[barbican::install::end]',
                          'Anchor[barbican::config::end]',
                          'Anchor[barbican::dbsync::begin]'],
@@ -28,6 +29,7 @@ describe 'barbican::db::sync' do
         :refreshonly => 'true',
         :try_sleep   => 5,
         :tries       => 10,
+        :timeout     => 300,
         :logoutput   => 'on_failure',
         :subscribe   => ['Anchor[barbican::install::end]',
                          'Anchor[barbican::config::end]',
@@ -37,11 +39,12 @@ describe 'barbican::db::sync' do
       )
     end
 
-    describe "overriding extra_params" do
+    describe "overriding params" do
       let :params do
         {
           :extra_params              => '--config-file /etc/barbican/barbican.conf',
           :secret_store_extra_params => '--config-file /etc/barbican/barbican.conf',
+          :db_sync_timeout           => 750,
         }
       end
 
@@ -53,6 +56,7 @@ describe 'barbican::db::sync' do
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
+          :timeout     => 750,
           :logoutput   => 'on_failure',
           :subscribe   => ['Anchor[barbican::install::end]',
                          'Anchor[barbican::config::end]',
@@ -67,6 +71,7 @@ describe 'barbican::db::sync' do
           :refreshonly => 'true',
           :try_sleep   => 5,
           :tries       => 10,
+          :timeout     => 750,
           :logoutput   => 'on_failure',
           :subscribe   => ['Anchor[barbican::install::end]',
                            'Anchor[barbican::config::end]',
