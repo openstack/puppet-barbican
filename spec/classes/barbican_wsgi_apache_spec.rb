@@ -97,6 +97,7 @@ describe 'barbican::wsgi::apache' do
   end
 
   on_supported_os({
+    :supported_os => OSDefaults.get_supported_os
   }).each do |os,facts|
     let (:facts) do
       facts.merge!(OSDefaults.get_facts({
