@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Added support for a couple of new options for the PKCS#11 backend:
+    ``[p11_crypto]\token_labels`` and ``[p11_crypto]\os_locking_ok``.
