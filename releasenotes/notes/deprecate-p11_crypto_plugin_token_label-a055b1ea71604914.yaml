@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    The ``barbican::plugins::p11_crypto::p11_crypto_plugin_token_label``
+    parameter has been deprecated. Use the ``p11_crypto_plugin_token_labels``
+    parameter instead.
