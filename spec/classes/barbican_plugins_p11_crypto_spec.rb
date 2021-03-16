@@ -82,6 +82,17 @@ describe 'barbican::plugins::p11_crypto' do
           'secretstore:pkcs11/global_default') \
           .with_value('true')
       end
+
+      context 'when p11_crypto_plugin_token_labels is a list' do
+        before do
+          params.merge!( :p11_crypto_plugin_token_labels => ['token_label1', 'token_label2'] )
+        end
+
+        it 'is_expected.to set p11 parameters' do
+          is_expected.to contain_barbican_config('p11_crypto_plugin/token_labels') \
+            .with_value('token_label1,token_label2')
+        end
+      end
     end
   end
 
