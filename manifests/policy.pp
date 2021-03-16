@@ -4,6 +4,10 @@
 #
 # === Parameters
 #
+# [*enforce_scope*]
+#  (Optional) Whether or not to enforce scope when evaluating policies.
+#  Defaults to $::os_service_default.
+#
 # [*policies*]
 #   (Optional) Set of policies to configure for barbican
 #   Example :
@@ -20,12 +24,13 @@
 #   Defaults to empty hash.
 #
 # [*policy_path*]
-#   (Optional) Path to the nova policy.yaml file
+#   (Optional) Path to the barbican policy.yaml file
 #   Defaults to /etc/barbican/policy.yaml
 #
 class barbican::policy (
-  $policies    = {},
-  $policy_path = '/etc/barbican/policy.yaml',
+  $enforce_scope = $::os_service_default,
+  $policies      = {},
+  $policy_path   = '/etc/barbican/policy.yaml',
 ) {
 
   include barbican::deps
@@ -42,6 +47,9 @@ class barbican::policy (
 
   create_resources('openstacklib::policy::base', $policies)
 
-  oslo::policy { 'barbican_config': policy_file => $policy_path }
+  oslo::policy { 'barbican_config':
+    enforce_scope => $enforce_scope,
+    policy_file   => $policy_path
+  }
 
 }
