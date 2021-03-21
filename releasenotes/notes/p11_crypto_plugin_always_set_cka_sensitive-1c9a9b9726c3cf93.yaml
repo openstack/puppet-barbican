@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Support for the ``[p11_crypto_plugin] always_set_cka_sensitive`` parameter
+    has been added.
+
