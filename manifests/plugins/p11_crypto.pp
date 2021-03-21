@@ -70,26 +70,32 @@
 #   the PKCS#11 client library.
 #   Defaults to $::os_service_default
 #
+# [*p11_crypto_plugin_always_set_cka_sensitive*]
+#   (optional) Always set CKA_SENSITIVE when generating keys.
+#   In some HSMs extractable keys cannot be marked sensitive.
+#   Defaults to $::os_service_default
+#
 # [*global_default*]
 #   (optional) set plugin as global default
 #   Defaults to false
 #
 class barbican::plugins::p11_crypto (
-  $p11_crypto_plugin_library_path          = undef,
-  $p11_crypto_plugin_login                 = undef,
-  $p11_crypto_plugin_mkek_label            = undef,
-  $p11_crypto_plugin_mkek_length           = undef,
-  $p11_crypto_plugin_hmac_label            = undef,
-  $p11_crypto_plugin_token_serial_number   = $::os_service_default,
-  $p11_crypto_plugin_token_label           = $::os_service_default,
-  $p11_crypto_plugin_token_labels          = $::os_service_default,
-  $p11_crypto_plugin_slot_id               = $::os_service_default,
-  $p11_crypto_plugin_encryption_mechanism  = $::os_service_default,
-  $p11_crypto_plugin_hmac_key_type         = $::os_service_default,
-  $p11_crypto_plugin_hmac_keygen_mechanism = $::os_service_default,
-  $p11_crypto_plugin_aes_gcm_generate_iv   = $::os_service_default,
-  $p11_crypto_plugin_os_locking_ok         = $::os_service_default,
-  $global_default                          = false,
+  $p11_crypto_plugin_library_path             = undef,
+  $p11_crypto_plugin_login                    = undef,
+  $p11_crypto_plugin_mkek_label               = undef,
+  $p11_crypto_plugin_mkek_length              = undef,
+  $p11_crypto_plugin_hmac_label               = undef,
+  $p11_crypto_plugin_token_serial_number      = $::os_service_default,
+  $p11_crypto_plugin_token_label              = $::os_service_default,
+  $p11_crypto_plugin_token_labels             = $::os_service_default,
+  $p11_crypto_plugin_slot_id                  = $::os_service_default,
+  $p11_crypto_plugin_encryption_mechanism     = $::os_service_default,
+  $p11_crypto_plugin_hmac_key_type            = $::os_service_default,
+  $p11_crypto_plugin_hmac_keygen_mechanism    = $::os_service_default,
+  $p11_crypto_plugin_aes_gcm_generate_iv      = $::os_service_default,
+  $p11_crypto_plugin_os_locking_ok            = $::os_service_default,
+  $p11_crypto_plugin_always_set_cka_sensitive = $::os_service_default,
+  $global_default                             = false,
 ) {
 
   include ::barbican::deps
@@ -111,20 +117,21 @@ class barbican::plugins::p11_crypto (
   }
 
   barbican_config {
-    'p11_crypto_plugin/library_path':          value => $p11_crypto_plugin_library_path;
-    'p11_crypto_plugin/login':                 value => $p11_crypto_plugin_login;
-    'p11_crypto_plugin/mkek_label':            value => $p11_crypto_plugin_mkek_label;
-    'p11_crypto_plugin/mkek_length':           value => $p11_crypto_plugin_mkek_length;
-    'p11_crypto_plugin/hmac_label':            value => $p11_crypto_plugin_hmac_label;
-    'p11_crypto_plugin/token_serial_number':   value => $p11_crypto_plugin_token_serial_number;
-    'p11_crypto_plugin/token_label':           value => $p11_crypto_plugin_token_label;
-    'p11_crypto_plugin/token_labels':          value => $p11_crypto_plugin_token_labels;
-    'p11_crypto_plugin/slot_id':               value => $p11_crypto_plugin_slot_id;
-    'p11_crypto_plugin/encryption_mechanism':  value => $p11_crypto_plugin_encryption_mechanism;
-    'p11_crypto_plugin/hmac_key_type':         value => $p11_crypto_plugin_hmac_key_type;
-    'p11_crypto_plugin/hmac_keygen_mechanism': value => $p11_crypto_plugin_hmac_keygen_mechanism;
-    'p11_crypto_plugin/aes_gcm_generate_iv':   value => $p11_crypto_plugin_aes_gcm_generate_iv;
-    'p11_crypto_plugin/os_locking_ok':         value => $p11_crypto_plugin_os_locking_ok;
+    'p11_crypto_plugin/library_path':             value => $p11_crypto_plugin_library_path;
+    'p11_crypto_plugin/login':                    value => $p11_crypto_plugin_login;
+    'p11_crypto_plugin/mkek_label':               value => $p11_crypto_plugin_mkek_label;
+    'p11_crypto_plugin/mkek_length':              value => $p11_crypto_plugin_mkek_length;
+    'p11_crypto_plugin/hmac_label':               value => $p11_crypto_plugin_hmac_label;
+    'p11_crypto_plugin/token_serial_number':      value => $p11_crypto_plugin_token_serial_number;
+    'p11_crypto_plugin/token_label':              value => $p11_crypto_plugin_token_label;
+    'p11_crypto_plugin/token_labels':             value => $p11_crypto_plugin_token_labels;
+    'p11_crypto_plugin/slot_id':                  value => $p11_crypto_plugin_slot_id;
+    'p11_crypto_plugin/encryption_mechanism':     value => $p11_crypto_plugin_encryption_mechanism;
+    'p11_crypto_plugin/hmac_key_type':            value => $p11_crypto_plugin_hmac_key_type;
+    'p11_crypto_plugin/hmac_keygen_mechanism':    value => $p11_crypto_plugin_hmac_keygen_mechanism;
+    'p11_crypto_plugin/aes_gcm_generate_iv':      value => $p11_crypto_plugin_aes_gcm_generate_iv;
+    'p11_crypto_plugin/os_locking_ok':            value => $p11_crypto_plugin_os_locking_ok;
+    'p11_crypto_plugin/always_set_cka_sensitive': value => $p11_crypto_plugin_always_set_cka_sensitive;
   }
 
   barbican_config {
