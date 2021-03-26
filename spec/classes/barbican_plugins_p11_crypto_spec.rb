@@ -39,6 +39,7 @@ describe 'barbican::plugins::p11_crypto' do
           :p11_crypto_plugin_hmac_keygen_mechanism     => 'CKM_AES_KEY_GEN',
           :p11_crypto_plugin_aes_gcm_generate_iv       => false,
           :p11_crypto_plugin_os_locking_ok             => false,
+          :p11_crypto_plugin_always_set_cka_sensitive  => true,
           :global_default                              => true,
         }
       end
@@ -70,6 +71,8 @@ describe 'barbican::plugins::p11_crypto' do
           .with_value(params[:p11_crypto_plugin_hmac_keygen_mechanism])
         is_expected.to contain_barbican_config('p11_crypto_plugin/aes_gcm_generate_iv') \
           .with_value(params[:p11_crypto_plugin_aes_gcm_generate_iv])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/always_set_cka_sensitive') \
+          .with_value(params[:p11_crypto_plugin_always_set_cka_sensitive])
         is_expected.to contain_barbican_config('p11_crypto_plugin/os_locking_ok') \
           .with_value(params[:p11_crypto_plugin_os_locking_ok])
         is_expected.to contain_barbican_config(
