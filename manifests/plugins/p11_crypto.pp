@@ -110,7 +110,7 @@ Use the p11_crypto_plugin_token_labels parameter instead')
     'p11_crypto_plugin/hmac_label':               value => $p11_crypto_plugin_hmac_label;
     'p11_crypto_plugin/token_serial_number':      value => $p11_crypto_plugin_token_serial_number;
     'p11_crypto_plugin/token_label':              value => $p11_crypto_plugin_token_label_real;
-    'p11_crypto_plugin/token_labels':             value => $p11_crypto_plugin_token_labels;
+    'p11_crypto_plugin/token_labels':             value => join(any2array($p11_crypto_plugin_token_labels), ',');
     'p11_crypto_plugin/slot_id':                  value => $p11_crypto_plugin_slot_id;
     'p11_crypto_plugin/encryption_mechanism':     value => $p11_crypto_plugin_encryption_mechanism;
     'p11_crypto_plugin/hmac_key_type':            value => $p11_crypto_plugin_hmac_key_type;
