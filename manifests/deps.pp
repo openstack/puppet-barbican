@@ -38,6 +38,11 @@ class barbican::deps {
   -> Barbican_api_paste_ini<||>
   ~> Anchor['barbican::config::end']
 
+  # On any uwsgi config change, we must restart Barbican API.
+  Anchor['barbican::config::begin']
+  -> Barbican_api_uwsgi_config<||>
+  ~> Anchor['barbican::config::end']
+
   # Ensure files are modified in the config block
   Anchor['barbican::config::begin']
   -> File_line<| tag == 'modify-bind-port' |>
