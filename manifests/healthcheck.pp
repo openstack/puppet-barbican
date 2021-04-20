@@ -1,4 +1,4 @@
-# == Define: barbican::healthcheck
+# == Class: barbican::healthcheck
 #
 # Configure oslo_middleware options in healthcheck section
 #
