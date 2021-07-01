@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``barbican::cors`` class has been added.
