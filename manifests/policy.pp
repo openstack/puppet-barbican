@@ -33,8 +33,13 @@
 #   Defaults to /etc/barbican/policy.yaml
 #
 # [*policy_dirs*]
-#   (Optional) Path to the keystone policy folder
+#   (Optional) Path to the barbican policy folder
 #   Defaults to $::os_service_default
+#
+# [*purge_config*]
+#   (optional) Whether to set only the specified policy rules in the policy
+#    file.
+#    Defaults to false.
 #
 class barbican::policy (
   $enforce_scope        = $::os_service_default,
@@ -42,6 +47,7 @@ class barbican::policy (
   $policies             = {},
   $policy_path          = '/etc/barbican/policy.yaml',
   $policy_dirs          = $::os_service_default,
+  $purge_config         = false,
 ) {
 
   include barbican::deps
@@ -49,14 +55,16 @@ class barbican::policy (
 
   validate_legacy(Hash, 'validate_hash', $policies)
 
-  Openstacklib::Policy::Base {
-    file_path   => $policy_path,
-    file_user   => 'root',
-    file_group  => $::barbican::params::group,
-    file_format => 'yaml',
+  $policy_parameters = {
+    policies     => $policies,
+    policy_path  => $policy_path,
+    file_user    => 'root',
+    file_group   => $::barbican::params::group,
+    file_format  => 'yaml',
+    purge_config => $purge_config,
   }
 
-  create_resources('openstacklib::policy::base', $policies)
+  create_resources('openstacklib::policy', { $policy_path => $policy_parameters })
 
   oslo::policy { 'barbican_config':
     enforce_scope        => $enforce_scope,
