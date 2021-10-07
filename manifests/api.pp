@@ -407,30 +407,25 @@ class barbican::api (
     'secretstore/stores_lookup_suffix':          value => $enabled_secret_stores;
   }
 
+  # TODO(tkajinam): Make sure the barbican_api pipeline is reset from the wrong
+  #                 value defined because of bug 1946378.
+  #                 This logic should be removed after Yoga cycle
+  barbican_api_paste_ini {
+    'pipeline:barbican_api/pipeline': value => 'cors http_proxy_to_wsgi unauthenticated-context apiapp';
+  }
+
   # keystone config
   if $auth_strategy == 'keystone' {
-
     include barbican::keystone::authtoken
-
-    barbican_api_paste_ini {
-      'pipeline:barbican_api/pipeline': value => 'cors authtoken context apiapp';
-    }
-
   } else {
-    barbican_api_paste_ini {
-      'pipeline:barbican_api/pipeline': value => 'cors unauthenticated-context apiapp';
-    }
-
-    barbican_config {
-      'keystone_authtoken/auth_plugin':          ensure => 'absent';
-      'keystone_authtoken/auth_type':            ensure => 'absent';
-      'keystone_authtoken/www_authenticate_uri': ensure => 'absent';
-      'keystone_authtoken/project_name':         ensure => 'absent';
-      'keystone_authtoken/username':             ensure => 'absent';
-      'keystone_authtoken/password':             ensure => 'absent';
-      'keystone_authtoken/user_domain_id':       ensure => 'absent';
-      'keystone_authtoken/project_domain_id':    ensure => 'absent';
-    }
+    # TODO(tkajinam): We need to fix the barbican_api_paste_ini provider to
+    #                 support the following configuration.
+    #
+    #                 [composite:main]
+    #                 ...
+    #                 /v1: barbican_api
+    #
+    warning('The pipeline definiton should be updated manually when keystone is not used')
   }
 
 
