@@ -417,15 +417,13 @@ class barbican::api (
   # keystone config
   if $auth_strategy == 'keystone' {
     include barbican::keystone::authtoken
+    barbican_api_paste_ini {
+      'composite:main//v1': value => 'barbican-api-keystone', key_val_separator => ':';
+    }
   } else {
-    # TODO(tkajinam): We need to fix the barbican_api_paste_ini provider to
-    #                 support the following configuration.
-    #
-    #                 [composite:main]
-    #                 ...
-    #                 /v1: barbican_api
-    #
-    warning('The pipeline definiton should be updated manually when keystone is not used')
+    barbican_api_paste_ini {
+      'composite:main//v1': value => 'barbican_api', key_val_separator => ':';
+    }
   }
 
 
