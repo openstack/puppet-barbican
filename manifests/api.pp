@@ -251,6 +251,14 @@
 #   (Optional) Set max request body size
 #   Defaults to $::os_service_default.
 #
+# [*max_limit_paging*]
+#   (Optional) Maximum page size for the 'limit' paging URL parameter.
+#   Defaults to $::os_service_default
+#
+# [*default_limit_paging*]
+#   (Optional) Default page size for the 'limit' paging URL parameter.
+#   Defaults to $::os_service_default
+#
 class barbican::api (
   $package_ensure                                = 'present',
   $client_package_ensure                         = 'present',
@@ -303,6 +311,8 @@ class barbican::api (
   $service_name                                  = $::barbican::params::api_service_name,
   $enable_proxy_headers_parsing                  = $::os_service_default,
   $max_request_body_size                         = $::os_service_default,
+  $max_limit_paging                              = $::os_service_default,
+  $default_limit_paging                          = $::os_service_default,
 ) inherits barbican::params {
 
   include barbican::deps
@@ -513,4 +523,9 @@ deprecated and will be removed in a future release. Use openstack-barbican-api i
     max_request_body_size        => $max_request_body_size,
   }
 
+  # limit paging options
+  barbican_config {
+    'DEFAULT/max_limit_paging':     value => $max_limit_paging;
+    'DEFAULT/default_limit_paging': value => $default_limit_paging;
+  }
 }

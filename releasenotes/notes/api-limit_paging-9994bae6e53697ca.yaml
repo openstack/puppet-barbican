@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    The following two new parameters have been added to the ``barbican::api``
+    class.
+
+    - ``max_limit_paging``
+    - ``default_limit_paging``
