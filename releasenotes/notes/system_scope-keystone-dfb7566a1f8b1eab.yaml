@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    The ``system_scope`` parameter has been added to
+    the ``barbican::keystone::authtoken`` class.
+
+  - |
+    The ``barbican::keystone::auth`` class now supports customizing roles
+    assigned to the barbican service user.
+
+  - |
+    The ``barbican::keystone::auth`` class now supports defining assignmet of
+    system-scoped roles to the barbican service user.
