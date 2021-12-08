@@ -500,7 +500,6 @@ deprecated and will be removed in a future release. Use openstack-barbican-api i
     }
 
   } elsif $service_name == 'httpd' {
-    include apache::params
     # Ubuntu packages does not have a barbican-api service
     if $::os_package_type != 'ubuntu' {
       service { 'barbican-api':

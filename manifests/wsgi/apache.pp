@@ -137,11 +137,6 @@ class barbican::wsgi::apache (
 
   include barbican::deps
   include barbican::params
-  include apache
-  include apache::mod::wsgi
-  if $ssl_real {
-    include apache::mod::ssl
-  }
 
   file { $::barbican::params::httpd_config_file:
     ensure  => present,

@@ -24,9 +24,6 @@ describe 'barbican::wsgi::apache' do
   shared_examples_for 'apache serving barbican with mod_wsgi' do
     context 'with default parameters' do
       it { is_expected.to contain_class('barbican::params') }
-      it { is_expected.to contain_class('apache') }
-      it { is_expected.to contain_class('apache::mod::wsgi') }
-      it { is_expected.to contain_class('apache::mod::ssl') }
       it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
         :bind_port                   => 9311,
         :group                       => 'barbican',
@@ -66,9 +63,6 @@ describe 'barbican::wsgi::apache' do
         }
       end
       it { is_expected.to contain_class('barbican::params') }
-      it { is_expected.to contain_class('apache') }
-      it { is_expected.to contain_class('apache::mod::wsgi') }
-      it { is_expected.to_not contain_class('apache::mod::ssl') }
       it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
         :bind_host                   => '10.42.51.1',
         :bind_port                   => 12345,
@@ -111,17 +105,11 @@ describe 'barbican::wsgi::apache' do
       case facts[:osfamily]
       when 'Debian'
         {
-          :httpd_service_name => 'apache2',
-          :httpd_ports_file   => '/etc/apache2/ports.conf',
-          :wsgi_script_path   => '/usr/lib/cgi-bin/barbican',
-          :httpd_config_file  => '/etc/apache2/conf-available/barbican-api.conf',
+          :wsgi_script_path => '/usr/lib/cgi-bin/barbican',
         }
       when 'RedHat'
         {
-          :httpd_service_name => 'httpd',
-          :httpd_ports_file   => '/etc/httpd/conf/ports.conf',
-          :wsgi_script_path   => '/var/www/cgi-bin/barbican',
-          :httpd_config_file  => '/etc/httpd/conf.d/barbican-api.conf',
+          :wsgi_script_path => '/var/www/cgi-bin/barbican',
         }
       end
     end
