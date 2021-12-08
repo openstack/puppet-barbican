@@ -143,13 +143,6 @@ class barbican::wsgi::apache (
     include apache::mod::ssl
   }
 
-  Service['httpd'] -> Keystone_endpoint <| |>
-  Service['httpd'] -> Keystone_role <| |>
-  Service['httpd'] -> Keystone_service <| |>
-  Service['httpd'] -> Keystone_tenant <| |>
-  Service['httpd'] -> Keystone_user <| |>
-  Service['httpd'] -> Keystone_user_role <| |>
-
   file { $::barbican::params::httpd_config_file:
     ensure  => present,
     content => "#
