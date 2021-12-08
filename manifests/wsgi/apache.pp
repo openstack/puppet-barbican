@@ -155,7 +155,7 @@ class barbican::wsgi::apache (
     content => "#
 # This file has been cleaned by Puppet.
 #
-# OpenStack Horizon configuration has been moved to:
+# OpenStack Barbican configuration has been moved to:
 # - ${priority}-barbican_wsgi_main.conf
 #",
   }
