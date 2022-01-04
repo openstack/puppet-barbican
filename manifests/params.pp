@@ -19,7 +19,6 @@ class barbican::params {
       $keystone_listener_service_name = 'openstack-barbican-keystone-listener'
       $barbican_wsgi_script_path      = '/var/www/cgi-bin/barbican'
       $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
-      $httpd_config_file              = '/etc/httpd/conf.d/barbican-api.conf'
     }
     'Debian': {
       $api_service_name               = 'barbican-api'
@@ -30,7 +29,6 @@ class barbican::params {
       $keystone_listener_service_name = 'barbican-keystone-listener'
       $barbican_wsgi_script_path      = '/usr/lib/cgi-bin/barbican'
       $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
-      $httpd_config_file              = '/etc/apache2/conf-available/barbican-api.conf'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operating system")

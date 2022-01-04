@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The default vhost config file is no longer managed. Make sure
+    the parameters of the ``apache`` class are properly defined and
+    the default vhost file is deleted.

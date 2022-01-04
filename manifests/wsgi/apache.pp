@@ -138,19 +138,6 @@ class barbican::wsgi::apache (
   include barbican::deps
   include barbican::params
 
-  file { $::barbican::params::httpd_config_file:
-    ensure  => present,
-    content => "#
-# This file has been cleaned by Puppet.
-#
-# OpenStack Barbican configuration has been moved to:
-# - ${priority}-barbican_wsgi_main.conf
-#",
-  }
-
-  Anchor['barbican::install::end'] -> File[$::barbican::params::httpd_config_file]
-  File[$::barbican::params::httpd_config_file] ~> Service['httpd']
-
   openstacklib::wsgi::apache { 'barbican_wsgi_main':
     bind_host                   => $bind_host,
     bind_port                   => $public_port,
@@ -180,5 +167,6 @@ class barbican::wsgi::apache (
     access_log_format           => $access_log_format,
     error_log_file              => $error_log_file,
     custom_wsgi_process_options => $custom_wsgi_process_options,
+    require                     => Anchor['barbican::install::end']
   }
 }
