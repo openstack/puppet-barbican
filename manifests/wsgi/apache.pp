@@ -155,7 +155,7 @@ class barbican::wsgi::apache (
 #",
   }
 
-  Package<| tag == 'barbican-api' |> -> File[$::barbican::params::httpd_config_file]
+  Anchor['barbican::install::end'] -> File[$::barbican::params::httpd_config_file]
   File[$::barbican::params::httpd_config_file] ~> Service['httpd']
 
   openstacklib::wsgi::apache { 'barbican_wsgi_main':
