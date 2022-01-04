@@ -24,15 +24,28 @@
 #   (optional) max threads to be used for notification server
 #   Defaults to $::os_service_default
 #
+# [*package_ensure*]
+#   (Optional) The state of the barbican-keystone-listener package.
+#   Defaults to 'present'
+#
+# [*manage_service*]
+#   (Optional) If we should manage the barbican-keystone-listener service.
+#   Defaults to true
+#
 class barbican::keystone::notification (
   $enable_keystone_notification           = $::os_service_default,
   $keystone_notification_control_exchange = $::os_service_default,
   $keystone_notification_topic            = $::os_service_default,
   $keystone_notification_allow_requeue    = $::os_service_default,
   $keystone_notification_thread_pool_size = $::os_service_default,
+  $package_ensure                         = 'present',
+  $manage_service                         = true,
 ) {
 
   include barbican::deps
+  include barbican::params
+
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
 
   barbican_config {
     'keystone_notifications/enable':           value => $enable_keystone_notification;
@@ -40,5 +53,35 @@ class barbican::keystone::notification (
     'keystone_notifications/topic':            value => $keystone_notification_topic;
     'keystone_notifications/allow_requeue':    value => $keystone_notification_allow_requeue;
     'keystone_notifications/thread_pool_size': value => $keystone_notification_thread_pool_size;
+  }
+
+  package { 'barbican-keystone-listener':
+    ensure => $package_ensure,
+    name   => $::barbican::params::keystone_listener_package_name,
+    tag    => ['openstack', 'barbican-package'],
+  }
+
+  if is_service_default($enable_keystone_notification) {
+    $service_enabled = false
+  } else {
+    validate_legacy(Boolean, 'validate_bool', $enable_keystone_notification)
+    $service_enabled = $enable_keystone_notification
+  }
+
+  if $manage_service {
+    if $service_enabled {
+      $service_ensure = 'running'
+    } else {
+      $service_ensure = 'stopped'
+    }
+
+    service { 'barbican-keystone-listener':
+      ensure     => $service_ensure,
+      name       => $::barbican::params::keystone_listener_service_name,
+      enable     => $service_enabled,
+      hasstatus  => true,
+      hasrestart => true,
+      tag        => 'barbican-service',
+    }
   }
 }

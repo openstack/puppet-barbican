@@ -53,7 +53,7 @@ describe 'barbican::keystone::notification' do
           param_set
         end
 
-        it 'is_expected.to set keystone notification parameters' do
+        it 'configures keystone notification parameters' do
           is_expected.to contain_barbican_config('keystone_notifications/enable')\
             .with_value(param_hash[:enable_keystone_notification])
           is_expected.to contain_barbican_config('keystone_notifications/allow_requeue')\
@@ -65,6 +65,36 @@ describe 'barbican::keystone::notification' do
           is_expected.to contain_barbican_config('keystone_notifications/control_exchange')\
             .with_value(param_hash[:keystone_notification_control_exchange])
         end
+
+        it 'installs the keystone listner package' do
+          is_expected.to contain_package('barbican-keystone-listener').with(
+            :ensure => 'present',
+            :name   => platform_params[:keystone_listener_package_name],
+            :tag    => ['openstack', 'barbican-package']
+          )
+        end
+
+        it 'manages the keystone listener service' do
+          if params[:enable_keystone_notification] == true
+            is_expected.to contain_service('barbican-keystone-listener').with(
+              :ensure     => 'running',
+              :name       => platform_params[:keystone_listener_service_name],
+              :enable     => true,
+              :hasstatus  => true,
+              :hasrestart => true,
+              :tag        => 'barbican-service',
+            )
+          else
+            is_expected.to contain_service('barbican-keystone-listener').with(
+              :ensure     => 'stopped',
+              :name       => platform_params[:keystone_listener_service_name],
+              :enable     => false,
+              :hasstatus  => true,
+              :hasrestart => true,
+              :tag        => 'barbican-service',
+            )
+          end
+        end
       end
     end
   end
@@ -74,11 +104,22 @@ describe 'barbican::keystone::notification' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge(OSDefaults.get_facts({
-          :processorcount => 8,
-          :fqdn           => 'some.host.tld',
-          :concat_basedir => '/var/lib/puppet/concat',
-        }))
+        facts.merge(OSDefaults.get_facts())
+      end
+
+      let (:platform_params) do
+        case facts[:osfamily]
+        when 'RedHat'
+          {
+            :keystone_listener_package_name => 'openstack-barbican-keystone-listener',
+            :keystone_listener_service_name => 'openstack-barbican-keystone-listener',
+          }
+        when 'Debian'
+          {
+            :keystone_listener_package_name => 'barbican-keystone-listener',
+            :keystone_listener_service_name => 'barbican-keystone-listener',
+          }
+        end
       end
 
       it_configures 'barbican keystone notification'
