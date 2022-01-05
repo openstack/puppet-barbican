@@ -471,7 +471,7 @@ class barbican::api (
 
   if $service_name == 'barbican-api' or $service_name == $::barbican::params::api_service_name {
 
-    if $::os_package_type == 'ubuntu' {
+    if $::operatingsystem == 'Ubuntu' {
       fail('With Ubuntu packages the service_name must be set to httpd as there is no eventlet init script.')
     }
 
@@ -490,7 +490,7 @@ deprecated and will be removed in a future release. Use openstack-barbican-api i
     }
 
     # Debian is using UWSGI, not gunicorn
-    if $::os_package_type != 'debian' {
+    if $::operatingsystem != 'Debian' {
       file_line { 'Modify bind_port in gunicorn-config.py':
         path  => '/etc/barbican/gunicorn-config.py',
         line  => "bind = '${bind_host}:${bind_port}'",
@@ -501,7 +501,7 @@ deprecated and will be removed in a future release. Use openstack-barbican-api i
 
   } elsif $service_name == 'httpd' {
     # Ubuntu packages does not have a barbican-api service
-    if $::os_package_type != 'ubuntu' {
+    if $::operatingsystem != 'Ubuntu' {
       service { 'barbican-api':
         ensure => 'stopped',
         name   => $::barbican::params::api_service_name,
