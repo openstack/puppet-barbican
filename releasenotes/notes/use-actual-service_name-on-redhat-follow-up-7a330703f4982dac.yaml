@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The ``barbican::api::service_name`` no longer accetps ``barbican-api``
+    as a valid service name in RHEL/CentOS. Use the actual service name,
+    ``openstack-barbican-api`` instead.
