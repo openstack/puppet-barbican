@@ -19,6 +19,18 @@
 #   (Optional) Tenant for barbican user.
 #   Defaults to 'services'.
 #
+# [*roles*]
+#   (Optional) List of roles assigned to barbican user.
+#   Defaults to ['admin']
+#
+# [*system_scope*]
+#   (Optional) Scope for system operations.
+#   Defaults to 'all'
+#
+# [*system_roles*]
+#   (Optional) List of system roles assigned to barbican user.
+#   Defaults to []
+#
 # [*configure_endpoint*]
 #   (Optional) Should barbican endpoint be configured?
 #   Defaults to true.
@@ -67,6 +79,9 @@ class barbican::keystone::auth (
   $auth_name           = 'barbican',
   $email               = 'barbican@localhost',
   $tenant              = 'services',
+  $roles               = ['admin'],
+  $system_scope        = 'all',
+  $system_roles        = [],
   $configure_endpoint  = true,
   $configure_user      = true,
   $configure_user_role = true,
@@ -81,11 +96,11 @@ class barbican::keystone::auth (
 
   include barbican::deps
 
-  if $configure_user_role {
-    Keystone_user_role["${auth_name}@${tenant}"] ~> Anchor['barbican::service::end']
-  }
+  Keystone_user_role<| name == "${auth_name}@${tenant}" |> -> Anchor['barbican::service::end']
+  Keystone_user_role<| name == "${auth_name}@::::${system_scope}" |> -> Anchor['barbican::service::end']
+
   if $configure_endpoint {
-    Keystone_endpoint["${region}/${service_name}::${service_type}"] ~> Anchor['barbican::service::end']
+    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Anchor['barbican::service::end']
   }
 
   keystone::resource::service_identity { 'barbican':
@@ -100,6 +115,9 @@ class barbican::keystone::auth (
     password            => $password,
     email               => $email,
     tenant              => $tenant,
+    roles               => $roles,
+    system_scope        => $system_scope,
+    system_roles        => $system_roles,
     public_url          => $public_url,
     internal_url        => $internal_url,
     admin_url           => $admin_url,
