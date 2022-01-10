@@ -467,15 +467,10 @@ class barbican::api (
       $service_ensure = 'stopped'
     }
 
-    if $service_name == 'barbican-api' or $service_name == $::barbican::params::api_service_name {
+    if $service_name == $::barbican::params::api_service_name {
 
       if $::operatingsystem == 'Ubuntu' {
         fail('With Ubuntu packages the service_name must be set to httpd as there is no eventlet init script.')
-      }
-
-      if $::osfamily == 'RedHat' and $service_name == 'barbican-api' {
-        warning('The usage of barbican-api as service_name in Red Hat based OS is \
-deprecated and will be removed in a future release. Use openstack-barbican-api instead.')
       }
 
       service { 'barbican-api':
@@ -512,7 +507,7 @@ deprecated and will be removed in a future release. Use openstack-barbican-api i
         Service['barbican-api'] -> Service[$service_name]
       }
     } else {
-      fail('Invalid service_name. Use barbican-api for stand-alone or httpd')
+      fail('Invalid service_name.')
     }
   }
 
