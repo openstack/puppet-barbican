@@ -339,17 +339,10 @@ describe 'barbican::api' do
           {
             :manage_service => false,
             :enabled        => false,
-            :auth_strategy  => 'keystone',
           }
         end
 
-        it { is_expected.to contain_service('barbican-api').with(
-          'ensure'     => nil,
-          'enable'     => false,
-          'hasstatus'  => true,
-          'hasrestart' => true,
-          'tag'        => 'barbican-service',
-        )}
+        it { is_expected.to_not contain_service('barbican-api') }
       end
     end
   end
