@@ -138,6 +138,8 @@ class barbican::wsgi::apache (
   include barbican::deps
   include barbican::params
 
+  Anchor['barbican::install::end'] -> Class['apache']
+
   openstacklib::wsgi::apache { 'barbican_wsgi_main':
     bind_host                   => $bind_host,
     bind_port                   => $public_port,
@@ -167,6 +169,5 @@ class barbican::wsgi::apache (
     access_log_format           => $access_log_format,
     error_log_file              => $error_log_file,
     custom_wsgi_process_options => $custom_wsgi_process_options,
-    require                     => Anchor['barbican::install::end']
   }
 }
