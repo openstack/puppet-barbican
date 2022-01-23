@@ -52,6 +52,7 @@ describe 'barbican::api' do
         :kombu_ssl_version                             => '<SERVICE DEFAULT>',
         :kombu_reconnect_delay                         => '<SERVICE DEFAULT>',
         :kombu_failover_strategy                       => '<SERVICE DEFAULT>',
+        :kombu_compression                             => '<SERVICE DEFAULT>',
         :manage_service                                => true,
         :enabled                                       => true,
         :enabled_secretstore_plugins                   => ['<SERVICE DEFAULT>'],
@@ -99,6 +100,7 @@ describe 'barbican::api' do
         :kombu_ssl_version                             => '1.2',
         :kombu_reconnect_delay                         => '10',
         :kombu_failover_strategy                       => 'shuffle',
+        :kombu_compression                             => 'gzip',
         :enabled_secretstore_plugins                   => ['dogtag_crypto', 'store_crypto', 'kmip'],
         :enabled_crypto_plugins                        => ['simple_crypto'],
         :enabled_certificate_plugins                   => ['simple_certificate', 'dogtag'],
@@ -161,27 +163,31 @@ describe 'barbican::api' do
         end
 
         it 'configures rabbit' do
-          is_expected.to contain_barbican_config('DEFAULT/transport_url').with_value(param_hash[:default_transport_url])
-          is_expected.to contain_barbican_config('DEFAULT/rpc_response_timeout').with_value(param_hash[:rpc_response_timeout])
-          is_expected.to contain_barbican_config('DEFAULT/control_exchange').with_value(param_hash[:control_exchange])
-          is_expected.to contain_barbican_config('oslo_messaging_notifications/transport_url').with_value(param_hash[:notification_transport_url])
-          is_expected.to contain_barbican_config('oslo_messaging_notifications/driver').with_value(param_hash[:notification_driver])
-          is_expected.to contain_barbican_config('oslo_messaging_notifications/topics').with_value(param_hash[:notification_topics])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_timeout_threshold').with_value(param_hash[:rabbit_heartbeat_timeout_threshold])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_rate').with_value(param_hash[:rabbit_heartbeat_rate])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/heartbeat_in_pthread').with_value(param_hash[:rabbit_heartbeat_in_pthread])
-          is_expected.to contain_oslo__messaging__rabbit('barbican_config').with(
-            :rabbit_use_ssl     => true,
-            :kombu_ssl_ca_certs => 'path_to_certs',
-            :kombu_ssl_certfile => 'path_to_certfile',
-            :kombu_ssl_keyfile  => 'path_to_keyfile',
-            :kombu_ssl_version  => '1.2',
+          is_expected.to contain_oslo__messaging__default('barbican_config').with(
+            :transport_url        => param_hash[:default_transport_url],
+            :rpc_response_timeout => param_hash[:rpc_response_timeout],
+            :control_exchange     => param_hash[:control_exchange]
           )
-        end
-
-        it 'configures kombu params' do
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_reconnect_delay').with_value(param_hash[:kombu_reconnect_delay])
-          is_expected.to contain_barbican_config('oslo_messaging_rabbit/kombu_failover_strategy').with_value(param_hash[:kombu_failover_strategy])
+          is_expected.to contain_oslo__messaging__notifications('barbican_config').with(
+            :transport_url => param_hash[:notification_transport_url],
+            :driver        => param_hash[:notification_driver],
+            :topics        => param_hash[:notification_topics]
+          )
+          is_expected.to contain_oslo__messaging__rabbit('barbican_config').with(
+            :rabbit_use_ssl              => param_hash[:rabbit_use_ssl],
+            :heartbeat_timeout_threshold => param_hash[:rabbit_heartbeat_timeout_threshold],
+            :heartbeat_rate              => param_hash[:rabbit_heartbeat_rate],
+            :heartbeat_in_pthread        => param_hash[:rabbit_heartbeat_in_pthread],
+            :kombu_reconnect_delay       => param_hash[:kombu_reconnect_delay],
+            :kombu_failover_strategy     => param_hash[:kombu_failover_strategy],
+            :amqp_durable_queues         => param_hash[:amqp_durable_queues],
+            :kombu_compression           => param_hash[:kombu_compression],
+            :kombu_ssl_ca_certs          => param_hash[:kombu_ssl_ca_certs],
+            :kombu_ssl_certfile          => param_hash[:kombu_ssl_certfile],
+            :kombu_ssl_keyfile           => param_hash[:kombu_ssl_keyfile],
+            :kombu_ssl_version           => param_hash[:kombu_ssl_version],
+            :rabbit_ha_queues            => param_hash[:rabbit_ha_queues],
+          )
         end
 
         it 'configures enabled plugins' do
