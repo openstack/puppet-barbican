@@ -96,12 +96,7 @@ class barbican::keystone::auth (
 
   include barbican::deps
 
-  Keystone_user_role<| name == "${auth_name}@${tenant}" |> -> Anchor['barbican::service::end']
-  Keystone_user_role<| name == "${auth_name}@::::${system_scope}" |> -> Anchor['barbican::service::end']
-
-  if $configure_endpoint {
-    Keystone_endpoint["${region}/${service_name}::${service_type}"] -> Anchor['barbican::service::end']
-  }
+  Keystone::Resource::Service_identity['barbican'] -> Anchor['barbican::service::end']
 
   keystone::resource::service_identity { 'barbican':
     configure_user      => $configure_user,
