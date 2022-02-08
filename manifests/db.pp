@@ -52,13 +52,6 @@
 #   Cluster (NDB).
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*database_min_pool_size*]
-#   Minimum number of SQL connections to keep open in a pool.
-#   NOTE: This is currently NOT used until barbican correctly leverages oslo.
-#   (Optional) Defaults to undef
-#
 class barbican::db (
   $database_connection              = 'sqlite:////var/lib/barbican/barbican.sqlite',
   $database_connection_recycle_time = $::os_service_default,
@@ -70,15 +63,9 @@ class barbican::db (
   $database_db_max_retries          = $::os_service_default,
   $database_pool_timeout            = $::os_service_default,
   $mysql_enable_ndb                 = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $database_min_pool_size           = undef,
 ) {
 
   include barbican::deps
-
-  if $database_min_pool_size {
-    warning('The database_min_pool_size parameter is deprecated, and will be removed in a future release.')
-  }
 
   oslo::db { 'barbican_config':
     connection              => $database_connection,
