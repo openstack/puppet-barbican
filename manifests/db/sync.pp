@@ -24,11 +24,12 @@ class barbican::db::sync(
 ) {
 
   include barbican::deps
+  include barbican::params
 
   exec { 'barbican-db-manage':
     command     => "barbican-manage db upgrade ${extra_params}",
     path        => ['/bin', '/usr/bin', ],
-    user        => 'barbican',
+    user        => $::barbican::params::user,
     refreshonly => true,
     try_sleep   => 5,
     tries       => 10,
@@ -46,7 +47,7 @@ class barbican::db::sync(
   exec { 'barbican-db-manage sync secret stores':
     command     => "barbican-manage db sync_secret_stores ${secret_store_extra_params}",
     path        => ['/bin', '/usr/bin', ],
-    user        => 'barbican',
+    user        => $::barbican::params::user,
     refreshonly => true,
     try_sleep   => 5,
     tries       => 10,
