@@ -6,6 +6,7 @@ class barbican::params {
   include openstacklib::defaults
 
   $client_package_name   = 'python3-barbicanclient'
+  $user                  = 'barbican'
   $group                 = 'barbican'
   $dogtag_client_package = 'pki-base'
 

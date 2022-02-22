@@ -143,7 +143,7 @@ class barbican::wsgi::apache (
   openstacklib::wsgi::apache { 'barbican_wsgi_main':
     bind_host                   => $bind_host,
     bind_port                   => $public_port,
-    group                       => 'barbican',
+    group                       => $::barbican::params::group,
     path                        => $public_path,
     priority                    => $priority,
     servername                  => $servername,
@@ -156,7 +156,7 @@ class barbican::wsgi::apache (
     ssl_crl_path                => $ssl_crl_path,
     ssl_key                     => $ssl_key,
     threads                     => $threads,
-    user                        => 'barbican',
+    user                        => $::barbican::params::user,
     vhost_custom_fragment       => $vhost_custom_fragment,
     workers                     => $workers,
     wsgi_daemon_process         => 'barbican-api',

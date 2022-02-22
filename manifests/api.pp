@@ -327,7 +327,7 @@ class barbican::api (
     ensure  => directory,
     mode    => '0770',
     owner   => 'root',
-    group   => 'barbican',
+    group   => $::barbican::params::group,
     require => Anchor['barbican::install::end'],
     notify  => Anchor['barbican::service::end'],
   }
