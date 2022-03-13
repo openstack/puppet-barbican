@@ -72,7 +72,9 @@ describe 'barbican::api' do
       }
     end
 
-    [{
+    [
+      {},
+      {
         :bind_host                                     => '127.0.0.1',
         :bind_port                                     => '9312',
         :default_transport_url                         => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
@@ -105,8 +107,8 @@ describe 'barbican::api' do
         :enabled_crypto_plugins                        => ['simple_crypto'],
         :enabled_certificate_plugins                   => ['simple_certificate', 'dogtag'],
         :enabled_certificate_event_plugins             => ['simple_certificate_event', 'foo_event'],
-        :retry_scheduler_initial_delay_seconds         => 20.0,
-        :retry_scheduler_periodic_interval_max_seconds => 20.0,
+        :retry_scheduler_initial_delay_seconds         => 10,
+        :retry_scheduler_periodic_interval_max_seconds => 11,
         :max_allowed_secret_in_bytes                   => 20000,
         :max_allowed_request_size_in_bytes             => 2000000,
         :enable_proxy_headers_parsing                  => false,
@@ -208,6 +210,13 @@ describe 'barbican::api' do
             .with_value(param_hash[:multiple_secret_stores_enabled])
         end
 
+        it 'configures retry scheduler' do
+          is_expected.to contain_barbican_config('retry_scheduler/initial_delay_seconds') \
+            .with_value(param_hash[:retry_scheduler_initial_delay_seconds])
+          is_expected.to contain_barbican_config('retry_scheduler/periodic_interval_max_seconds') \
+            .with_value(param_hash[:retry_scheduler_periodic_interval_max_seconds])
+        end
+
         it 'resets the barbican_api pipeline' do
           is_expected.to contain_barbican_api_paste_ini('pipeline:barbican_api/pipeline')\
             .with_value('cors http_proxy_to_wsgi unauthenticated-context apiapp')
@@ -247,8 +256,8 @@ describe 'barbican::api' do
 
     describe 'with SSL socket options set' do
       let :pre_condition do
-          'class { "barbican::keystone::authtoken": password => "secret", }
-           include apache'
+        'class { "barbican::keystone::authtoken": password => "secret", }
+         include apache'
       end
 
       let :params do
@@ -267,8 +276,8 @@ describe 'barbican::api' do
 
     describe 'with SSL socket options left by default' do
       let :pre_condition do
-          'class { "barbican::keystone::authtoken": password => "secret", }
-           include apache'
+        'class { "barbican::keystone::authtoken": password => "secret", }
+         include apache'
       end
 
       let :params do
@@ -284,8 +293,8 @@ describe 'barbican::api' do
 
     describe 'with SSL socket options set wrongly configured' do
       let :pre_condition do
-          'class { "barbican::keystone::authtoken": password => "secret", }
-           include apache'
+        'class { "barbican::keystone::authtoken": password => "secret", }
+         include apache'
       end
 
       let :params do
@@ -301,8 +310,8 @@ describe 'barbican::api' do
 
     describe 'with keystone auth' do
       let :pre_condition do
-          'class { "barbican::keystone::authtoken": password => "secret", }
-           include apache'
+        'class { "barbican::keystone::authtoken": password => "secret", }
+         include apache'
       end
 
       let :params do
@@ -372,9 +381,6 @@ describe 'barbican::api' do
         end
         it_behaves_like 'barbican api redhat'
       when 'Debian'
-        let :pre_condition do
-          'include apache'
-        end
         let (:platform_params) do
           { :service_name => 'httpd' }
         end
