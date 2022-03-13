@@ -120,14 +120,6 @@
 #   (optional) Server name for RPC service
 #   Defaults to $::os_service_default
 #
-# [*retry_scheduler_initial_delay_seconds*]
-#   (optional) Seconds (float) to wait before starting retry scheduler
-#   Defaults to $::os_service_default
-#
-# [*retry_scheduler_periodic_interval_max_seconds*]
-#   (optional) Seconds (float) to wait between starting retry scheduler
-#   Defaults to $::os_service_default
-#
 # [*enabled_secretstore_plugins*]
 #   (optional) Enabled secretstore plugins. Multiple plugins
 #   are defined in a list eg. ['store_crypto', dogtag_crypto']
@@ -259,6 +251,16 @@
 #   (Optional) Default page size for the 'limit' paging URL parameter.
 #   Defaults to $::os_service_default
 #
+# DEPRECATED PARAMETERS
+#
+# [*retry_scheduler_initial_delay_seconds*]
+#   (optional) Seconds (float) to wait before starting retry scheduler
+#   Defaults to undef
+#
+# [*retry_scheduler_periodic_interval_max_seconds*]
+#   (optional) Seconds (float) to wait between starting retry scheduler
+#   Defaults to undef
+#
 class barbican::api (
   $package_ensure                                = 'present',
   $client_package_ensure                         = 'present',
@@ -284,8 +286,6 @@ class barbican::api (
   $queue_topic                                   = $::os_service_default,
   $queue_version                                 = $::os_service_default,
   $queue_server_name                             = $::os_service_default,
-  $retry_scheduler_initial_delay_seconds         = $::os_service_default,
-  $retry_scheduler_periodic_interval_max_seconds = $::os_service_default,
   $enabled_secretstore_plugins                   = $::os_service_default,
   $enabled_crypto_plugins                        = $::os_service_default,
   $enabled_secret_stores                         = 'simple_crypto',
@@ -313,6 +313,9 @@ class barbican::api (
   $max_request_body_size                         = $::os_service_default,
   $max_limit_paging                              = $::os_service_default,
   $default_limit_paging                          = $::os_service_default,
+  # DEPRECATED PARAMETERS
+  $retry_scheduler_initial_delay_seconds         = undef,
+  $retry_scheduler_periodic_interval_max_seconds = undef,
 ) inherits barbican::params {
 
   include barbican::deps
@@ -388,12 +391,15 @@ class barbican::api (
     'queue/server_name': value => $queue_server_name;
   }
 
-  # retry scheduler and max allowed secret options
+  if $retry_scheduler_initial_delay_seconds != undef or $retry_scheduler_periodic_interval_max_seconds != undef {
+    warning('The retry_scheduler_* parameters are deprecated. Use barbican::retry_scheduler instead')
+    include barbican::retry_scheduler
+  }
+
+  # max allowed secret options
   barbican_config {
-    'retry_scheduler/initial_delay_seconds':         value => $retry_scheduler_initial_delay_seconds;
-    'retry_scheduler/periodic_interval_max_seconds': value => $retry_scheduler_periodic_interval_max_seconds;
-    'DEFAULT/max_allowed_secret_in_bytes':           value => $max_allowed_secret_in_bytes;
-    'DEFAULT/max_allowed_request_size_in_bytes':     value => $max_allowed_request_size_in_bytes;
+    'DEFAULT/max_allowed_secret_in_bytes':       value => $max_allowed_secret_in_bytes;
+    'DEFAULT/max_allowed_request_size_in_bytes': value => $max_allowed_request_size_in_bytes;
   }
 
   if $multiple_secret_stores_enabled and !is_service_default($enabled_secretstore_plugins) {
