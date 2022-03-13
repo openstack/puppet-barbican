@@ -320,18 +320,6 @@ class barbican::api (
   include barbican::client
   include barbican::policy
 
-  # TODO: Remove the posix users and permissions and merge this definition
-  # with the previous one, once the barbican package has been updated
-  # with the correct ownership for this directory.
-  file { ['/var/lib/barbican']:
-    ensure  => directory,
-    mode    => '0770',
-    owner   => 'root',
-    group   => $::barbican::params::group,
-    require => Anchor['barbican::install::end'],
-    notify  => Anchor['barbican::service::end'],
-  }
-
   package { 'barbican-api':
     ensure => $package_ensure,
     name   => $::barbican::params::api_package_name,
