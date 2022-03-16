@@ -60,8 +60,6 @@ describe 'barbican::api' do
         :enabled_certificate_plugins                   => ['<SERVICE DEFAULT>'],
         :enabled_certificate_event_plugins             => ['<SERVICE DEFAULT>'],
         :auth_strategy                                 => 'keystone',
-        :retry_scheduler_initial_delay_seconds         => '<SERVICE DEFAULT>',
-        :retry_scheduler_periodic_interval_max_seconds => '<SERVICE DEFAULT>',
         :service_name                                  => platform_params[:service_name],
         :enable_proxy_headers_parsing                  => '<SERVICE DEFAULT>',
         :max_request_body_size                         => '<SERVICE DEFAULT>',
@@ -107,8 +105,6 @@ describe 'barbican::api' do
         :enabled_crypto_plugins                        => ['simple_crypto'],
         :enabled_certificate_plugins                   => ['simple_certificate', 'dogtag'],
         :enabled_certificate_event_plugins             => ['simple_certificate_event', 'foo_event'],
-        :retry_scheduler_initial_delay_seconds         => 10,
-        :retry_scheduler_periodic_interval_max_seconds => 11,
         :max_allowed_secret_in_bytes                   => 20000,
         :max_allowed_request_size_in_bytes             => 2000000,
         :enable_proxy_headers_parsing                  => false,
@@ -208,13 +204,6 @@ describe 'barbican::api' do
             .with_value(param_hash[:enabled_secret_stores])
           is_expected.to contain_barbican_config('secretstore/enable_multiple_secret_stores') \
             .with_value(param_hash[:multiple_secret_stores_enabled])
-        end
-
-        it 'configures retry scheduler' do
-          is_expected.to contain_barbican_config('retry_scheduler/initial_delay_seconds') \
-            .with_value(param_hash[:retry_scheduler_initial_delay_seconds])
-          is_expected.to contain_barbican_config('retry_scheduler/periodic_interval_max_seconds') \
-            .with_value(param_hash[:retry_scheduler_periodic_interval_max_seconds])
         end
 
         it 'resets the barbican_api pipeline' do

@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    The new ``barbican::retry_scheduler`` class has been added.
+
+deprecations:
+  - |
+    The following parameters of the ``barbican`` class have been deprecated in
+    favor of the new ``barbican::retry_scheduler`` class.
+
+    - ``retry_scheduler_initial_delay_seconds``
+    - ``retry_scheduler_periodic_interval_max_seconds``
