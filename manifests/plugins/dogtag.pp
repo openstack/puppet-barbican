@@ -4,6 +4,9 @@
 #
 # === Parameters
 #
+# [*dogtag_plugin_nss_password*]
+#   (required) Password for plugin NSS DB
+#
 # [*dogtag_plugin_ensure_package*]
 #   (optional) State of the dogtag client packages
 #   Defaults to 'present'
@@ -24,10 +27,6 @@
 #   (optional) Path to plugin NSS DB
 #   Defaults to $::os_service_default
 #
-# [*dogtag_plugin_nss_password*]
-#   Password for plugin NSS DB
-#   Defaults to undef
-#
 # [*dogtag_plugin_simple_cmc_profile*]
 #   (optional) Profile for simple CMC enrollment.
 #   Defaults to $::os_service_default
@@ -45,12 +44,12 @@
 #   Defaults to false
 #
 class barbican::plugins::dogtag (
+  $dogtag_plugin_nss_password,
   $dogtag_plugin_ensure_package     = 'present',
   $dogtag_plugin_pem_path           = $::os_service_default,
   $dogtag_plugin_dogtag_host        = $::os_service_default,
   $dogtag_plugin_dogtag_port        = $::os_service_default,
   $dogtag_plugin_nss_db_path        = $::os_service_default,
-  $dogtag_plugin_nss_password       = undef,
   $dogtag_plugin_simple_cmc_profile = $::os_service_default,
   $dogtag_plugin_ca_expiration_time = $::os_service_default,
   $dogtag_plugin_plugin_working_dir = $::os_service_default,
@@ -59,10 +58,6 @@ class barbican::plugins::dogtag (
 
   include barbican::deps
   include barbican::params
-
-  if $dogtag_plugin_nss_password == undef {
-    fail('dogtag_plugin_nss_password must be defined')
-  }
 
   package {'dogtag-client':
     ensure => $dogtag_plugin_ensure_package,
