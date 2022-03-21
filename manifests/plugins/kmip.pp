@@ -12,27 +12,27 @@
 #
 # [*kmip_plugin_username*]
 #   (optional) username for KMIP device
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*kmip_plugin_password*]
 #   (optional) password for KMIP device. This parameter is required
 #   when the kmip_plugin_username parameter is set.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*kmip_plugin_keyfile*]
 #   (optional) key file for KMIP device. This parameter is required when
 #   the kmip_plugin_username parameter is not set.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*kmip_plugin_certfile*]
 #   (optional) cert file for KMIP device. This parameter is required when
 #   the kmip_plugin_username parameter is not set.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*kmip_plugin_ca_certs*]
 #   (optional) ca certs file for KMIP device. This parameter is required when
 #   the kmip_plugin_username parameter is not set.
-#   Defaults to undef
+#   Defaults to $::os_service_default
 #
 # [*global_default*]
 #   (optional) set plugin as global default
@@ -41,47 +41,40 @@
 class barbican::plugins::kmip (
   $kmip_plugin_host,
   $kmip_plugin_port,
-  $kmip_plugin_username = undef,
-  $kmip_plugin_password = undef,
-  $kmip_plugin_keyfile  = undef,
-  $kmip_plugin_certfile = undef,
-  $kmip_plugin_ca_certs = undef,
+  $kmip_plugin_username = $::os_service_default,
+  $kmip_plugin_password = $::os_service_default,
+  $kmip_plugin_keyfile  = $::os_service_default,
+  $kmip_plugin_certfile = $::os_service_default,
+  $kmip_plugin_ca_certs = $::os_service_default,
   $global_default       = false,
 ) {
 
   include barbican::deps
 
-  if $kmip_plugin_username != undef {
-    if $kmip_plugin_password == undef {
+  if !is_service_default($kmip_plugin_username) {
+    if is_service_default($kmip_plugin_password) {
       fail('kmip_plugin_password must be defined if kmip_plugin_username is defined')
     }
   } else {
-    if $kmip_plugin_certfile == undef {
+    if is_service_default($kmip_plugin_certfile) {
       fail('kmip_plugin_certfile must be defined')
     }
-    if $kmip_plugin_keyfile == undef {
+    if is_service_default($kmip_plugin_keyfile) {
       fail('kmip_plugin_keyfile must be defined')
     }
-    if $kmip_plugin_ca_certs == undef {
+    if is_service_default($kmip_plugin_ca_certs) {
       fail('kmip_plugin_ca_certs must be defined')
     }
   }
 
-  if $kmip_plugin_username != undef {
-    barbican_config {
-      'kmip_plugin/username': value => $kmip_plugin_username;
-      'kmip_plugin/password': value => $kmip_plugin_password, secret => true;
-      'kmip_plugin/host':     value => $kmip_plugin_host;
-      'kmip_plugin/port':     value => $kmip_plugin_port;
-    }
-  } else {
-    barbican_config {
-      'kmip_plugin/keyfile':  value => $kmip_plugin_keyfile;
-      'kmip_plugin/certfile': value => $kmip_plugin_certfile;
-      'kmip_plugin/ca_certs': value => $kmip_plugin_ca_certs;
-      'kmip_plugin/host':     value => $kmip_plugin_host;
-      'kmip_plugin/port':     value => $kmip_plugin_port;
-    }
+  barbican_config {
+    'kmip_plugin/username': value => $kmip_plugin_username;
+    'kmip_plugin/password': value => $kmip_plugin_password, secret => true;
+    'kmip_plugin/keyfile':  value => $kmip_plugin_keyfile;
+    'kmip_plugin/certfile': value => $kmip_plugin_certfile;
+    'kmip_plugin/ca_certs': value => $kmip_plugin_ca_certs;
+    'kmip_plugin/host':     value => $kmip_plugin_host;
+    'kmip_plugin/port':     value => $kmip_plugin_port;
   }
 
   barbican_config {
