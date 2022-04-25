@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*simple_crypto_plugin_kek*]
-#   (optional) base64 encoded 32-byte value
+#   (optional) Key encryption key to be used by Simple Crypto Pluging.
 #   Defaults to $::os_service_default
 #
 # [*global_default*]
@@ -26,6 +26,6 @@ class barbican::plugins::simple_crypto (
   }
 
   barbican_config {
-    'simple_crypto_plugin/kek':  value => $simple_crypto_plugin_kek;
+    'simple_crypto_plugin/kek': value => $simple_crypto_plugin_kek, secret => true;
   }
 }
