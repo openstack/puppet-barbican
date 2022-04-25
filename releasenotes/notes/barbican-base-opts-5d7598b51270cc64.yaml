@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The ``barbican`` class now installs the ``barbican-common`` package. Status
+    of the package can be customized by the ``barbican::package_ensure``
+    parameter.
+
+  - |
+    The ``barbican::purge_config`` parameter has been added.

@@ -12,6 +12,7 @@ class barbican::params {
 
   case $::osfamily {
     'RedHat': {
+      $common_package_name            = 'openstack-barbican-common'
       $api_package_name               = 'openstack-barbican-api'
       $api_service_name               = 'openstack-barbican-api'
       $worker_package_name            = 'openstack-barbican-worker'
@@ -22,6 +23,7 @@ class barbican::params {
       $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
     }
     'Debian': {
+      $common_package_name            = 'barbican-common'
       $api_service_name               = 'barbican-api'
       $api_package_name               = 'barbican-api'
       $worker_package_name            = 'barbican-worker'
