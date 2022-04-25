@@ -1,0 +1,5 @@
+---
+deprecations:
+  - |
+    The ``barbican::api::client_package_ensure`` parameter has been deprecated
+    and will be removed in a future release. This parameter has had no effect.
