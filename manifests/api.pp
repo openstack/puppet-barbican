@@ -485,7 +485,7 @@ class barbican::api (
         file_line { 'Modify bind_port in gunicorn-config.py':
           path  => '/etc/barbican/gunicorn-config.py',
           line  => "bind = '${bind_host}:${bind_port}'",
-          match => '.*bind = .*',
+          match => '^bind = .*',
           tag   => 'modify-bind-port',
         }
       }
