@@ -9,11 +9,6 @@
 #   (optional) The state of barbican packages
 #   Defaults to 'present'
 #
-# [*client_package_ensure*]
-#   (optional) Desired ensure state of the client package.
-#   accepts latest or specific versions.
-#   Defaults to 'present'.
-#
 # [*bind_host*]
 #   (optional) The IP address of the network interface to listen on
 #   Default to '0.0.0.0'.
@@ -261,9 +256,13 @@
 #   (optional) Seconds (float) to wait between starting retry scheduler
 #   Defaults to undef
 #
+# [*client_package_ensure*]
+#   (optional) Desired ensure state of the client package.
+#   accepts latest or specific versions.
+#   Defaults to undef
+#
 class barbican::api (
   $package_ensure                                = 'present',
-  $client_package_ensure                         = 'present',
   $bind_host                                     = '0.0.0.0',
   $bind_port                                     = '9311',
   $host_href                                     = undef,
@@ -316,12 +315,17 @@ class barbican::api (
   # DEPRECATED PARAMETERS
   $retry_scheduler_initial_delay_seconds         = undef,
   $retry_scheduler_periodic_interval_max_seconds = undef,
+  $client_package_ensure                         = undef,
 ) inherits barbican::params {
 
   include barbican::deps
   include barbican::db
   include barbican::client
   include barbican::policy
+
+  if $client_package_ensure != undef {
+    warning('The client_package_ensure is deprecated and has no effect.')
+  }
 
   package { 'barbican-api':
     ensure => $package_ensure,
