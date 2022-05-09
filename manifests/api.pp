@@ -337,8 +337,11 @@ class barbican::api (
   }
 
   barbican_config {
-    'DEFAULT/bind_host': value => $bind_host;
-    'DEFAULT/bind_port': value => $bind_port;
+    'DEFAULT/bind_host': ensure => absent;
+    'DEFAULT/bind_port': ensure => absent;
+  }
+
+  barbican_config {
     'DEFAULT/host_href': value => $host_href_real;
   }
 
