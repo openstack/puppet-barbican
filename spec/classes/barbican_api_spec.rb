@@ -143,8 +143,6 @@ describe 'barbican::api' do
 
         it 'is_expected.to set default parameters' do
           [
-            'bind_host',
-            'bind_port',
             'max_allowed_secret_in_bytes',
             'max_allowed_request_size_in_bytes',
           ].each do |config|
