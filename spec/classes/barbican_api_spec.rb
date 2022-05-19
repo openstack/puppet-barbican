@@ -241,60 +241,6 @@ describe 'barbican::api' do
       )}
     end
 
-    describe 'with SSL socket options set' do
-      let :pre_condition do
-        'class { "barbican::keystone::authtoken": password => "secret", }
-         include apache'
-      end
-
-      let :params do
-        default_params.merge({
-          :use_ssl   => true,
-          :cert_file => '/path/to/cert',
-          :ca_file   => '/path/to/ca',
-          :key_file  => '/path/to/key',
-        })
-      end
-
-      it { is_expected.to contain_barbican_config('DEFAULT/ca_file').with_value('/path/to/ca') }
-      it { is_expected.to contain_barbican_config('DEFAULT/cert_file').with_value('/path/to/cert') }
-      it { is_expected.to contain_barbican_config('DEFAULT/key_file').with_value('/path/to/key') }
-    end
-
-    describe 'with SSL socket options left by default' do
-      let :pre_condition do
-        'class { "barbican::keystone::authtoken": password => "secret", }
-         include apache'
-      end
-
-      let :params do
-        default_params.merge({
-          :use_ssl => false,
-        })
-      end
-
-      it { is_expected.to contain_barbican_config('DEFAULT/ca_file').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_barbican_config('DEFAULT/cert_file').with_value('<SERVICE DEFAULT>') }
-      it { is_expected.to contain_barbican_config('DEFAULT/key_file').with_value('<SERVICE DEFAULT>') }
-    end
-
-    describe 'with SSL socket options set wrongly configured' do
-      let :pre_condition do
-        'class { "barbican::keystone::authtoken": password => "secret", }
-         include apache'
-      end
-
-      let :params do
-        default_params.merge({
-          :use_ssl  => true,
-          :ca_file  => '/path/to/ca',
-          :key_file => '/path/to/key',
-        })
-      end
-
-      it_raises 'a Puppet::Error', /The cert_file parameter is required when use_ssl is set to true/
-    end
-
     describe 'with keystone auth' do
       let :pre_condition do
         'class { "barbican::keystone::authtoken": password => "secret", }

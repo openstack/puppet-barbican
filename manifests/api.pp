@@ -213,22 +213,6 @@
 #   to make barbican-api be a web app using apache mod_wsgi.
 #   Defaults to $::barbican::params::api_service_name
 #
-# [*use_ssl*]
-#   (optional) Enable SSL on the API server
-#   Defaults to false, not set
-#
-# [*cert_file*]
-#   (optinal) Certificate file to use when starting API server securely
-#   Defaults to $::os_service_default
-#
-# [*key_file*]
-#   (optional) Private key file to use when starting API server securely
-#   Defaults to $::os_service_default
-#
-# [*ca_file*]
-#   (optional) CA certificate file to use to verify connecting clients
-#   Defaults to $::os_service_default
-#
 # [*enable_proxy_headers_parsing*]
 #   (Optional) Enable paste middleware to handle SSL requests through
 #   HTTPProxyToWSGI middleware.
@@ -259,6 +243,22 @@
 # [*client_package_ensure*]
 #   (optional) Desired ensure state of the client package.
 #   accepts latest or specific versions.
+#   Defaults to undef
+#
+# [*use_ssl*]
+#   (optional) Enable SSL on the API server
+#   Defaults to undef
+#
+# [*cert_file*]
+#   (optinal) Certificate file to use when starting API server securely
+#   Defaults to undef
+#
+# [*key_file*]
+#   (optional) Private key file to use when starting API server securely
+#   Defaults to undef
+#
+# [*ca_file*]
+#   (optional) CA certificate file to use to verify connecting clients
 #   Defaults to undef
 #
 class barbican::api (
@@ -303,10 +303,6 @@ class barbican::api (
   $enabled                                       = true,
   $sync_db                                       = true,
   $db_auto_create                                = $::os_service_default,
-  $use_ssl                                       = false,
-  $ca_file                                       = $::os_service_default,
-  $cert_file                                     = $::os_service_default,
-  $key_file                                      = $::os_service_default,
   $service_name                                  = $::barbican::params::api_service_name,
   $enable_proxy_headers_parsing                  = $::os_service_default,
   $max_request_body_size                         = $::os_service_default,
@@ -316,6 +312,10 @@ class barbican::api (
   $retry_scheduler_initial_delay_seconds         = undef,
   $retry_scheduler_periodic_interval_max_seconds = undef,
   $client_package_ensure                         = undef,
+  $use_ssl                                       = undef,
+  $ca_file                                       = undef,
+  $cert_file                                     = undef,
+  $key_file                                      = undef,
 ) inherits barbican::params {
 
   include barbican::deps
@@ -441,20 +441,16 @@ class barbican::api (
   # instead of using db_sync
   barbican_config { 'DEFAULT/db_auto_create': value => $db_auto_create }
 
-  if $use_ssl {
-    if is_service_default($cert_file) {
-      fail('The cert_file parameter is required when use_ssl is set to true')
-    }
-    if is_service_default($key_file) {
-      fail('The key_file parameter is required when use_ssl is set to true')
+  [ 'use_ssl', 'cert_file', 'key_file', 'ca_file' ].each |String $ssl_opt| {
+    if getvar($ssl_opt) != undef {
+      warning("The ${ssl_opt} parameter has been deprecated and has no effect.")
     }
   }
-
   # SSL Options
   barbican_config {
-    'DEFAULT/cert_file': value => $cert_file;
-    'DEFAULT/key_file':  value => $key_file;
-    'DEFAULT/ca_file':   value => $ca_file;
+    'DEFAULT/cert_file': ensure => absent;
+    'DEFAULT/key_file':  ensure => absent;
+    'DEFAULT/ca_file':   ensure => absent;
   }
 
   if $sync_db {
