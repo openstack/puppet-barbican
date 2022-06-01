@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    CentOS 8 Stream and Red Hat Enterprise Linux 8 are no longer supported by
+    this module.
