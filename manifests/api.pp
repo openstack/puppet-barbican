@@ -250,7 +250,7 @@
 #   Defaults to undef
 #
 # [*cert_file*]
-#   (optinal) Certificate file to use when starting API server securely
+#   (optional) Certificate file to use when starting API server securely
 #   Defaults to undef
 #
 # [*key_file*]

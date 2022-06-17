@@ -66,7 +66,7 @@ describe 'barbican::keystone::notification' do
             .with_value(param_hash[:keystone_notification_control_exchange])
         end
 
-        it 'installs the keystone listner package' do
+        it 'installs the keystone listener package' do
           is_expected.to contain_package('barbican-keystone-listener').with(
             :ensure => 'present',
             :name   => platform_params[:keystone_listener_package_name],

@@ -5,7 +5,7 @@
 # === Parameters
 #
 # [*simple_crypto_plugin_kek*]
-#   (optional) Key encryption key to be used by Simple Crypto Pluging.
+#   (optional) Key encryption key to be used by Simple Crypto Plugin.
 #   Defaults to $::os_service_default
 #
 # [*global_default*]

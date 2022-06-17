@@ -24,7 +24,7 @@ class barbican::retry_scheduler (
     'retry_scheduler/periodic_interval_max_seconds': value => $periodic_interval_max_seconds;
   }
 
-  # TODO(tkajinam): Currently NO DISTRO provides the pachage to install
+  # TODO(tkajinam): Currently NO DISTRO provides the package to install
   #                 the retry daemon service. Once that is fixed, install
   #                 a separate package and enable the service.
 }

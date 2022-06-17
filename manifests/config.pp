@@ -2,7 +2,7 @@
 #
 # This class is used to manage arbitrary barbican configurations.
 #
-# examle xxx_config
+# example xxx_config
 #   (optional) Allow configuration of arbitrary barbican configurations.
 #   The value is an hash of barbican_config resources. Example:
 #   { 'DEFAULT/foo' => { value => 'fooValue'},
