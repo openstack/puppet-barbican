@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``barbican::plugins::p11_crypto::token_label`` parameter has been
+    removed. Use the ``token_labels`` parameter instead.

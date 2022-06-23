@@ -66,12 +66,6 @@
 #   (optional) set plugin as global default
 #   Defaults to false
 #
-# DEPRECATED PARAMETERS
-#
-# [*p11_crypto_plugin_token_label*]
-#   (optional) Label to identify PKCS#11 token
-#   Defaults to undef
-#
 class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_library_path,
   $p11_crypto_plugin_login,
@@ -88,19 +82,9 @@ class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_os_locking_ok            = $::os_service_default,
   $p11_crypto_plugin_always_set_cka_sensitive = $::os_service_default,
   $global_default                             = false,
-  # DEPRECATED PARAMETERS
-  $p11_crypto_plugin_token_label              = undef,
 ) {
 
   include barbican::deps
-
-  if $p11_crypto_plugin_token_label != undef {
-    warning('The p11_crypto_plugin_token_label parameter has been deprecated. \
-Use the p11_crypto_plugin_token_labels parameter instead')
-    $p11_crypto_plugin_token_label_real = $p11_crypto_plugin_token_label
-  } else {
-    $p11_crypto_plugin_token_label_real = $::os_service_default
-  }
 
   barbican_config {
     'p11_crypto_plugin/library_path':             value => $p11_crypto_plugin_library_path;
@@ -109,7 +93,6 @@ Use the p11_crypto_plugin_token_labels parameter instead')
     'p11_crypto_plugin/mkek_length':              value => $p11_crypto_plugin_mkek_length;
     'p11_crypto_plugin/hmac_label':               value => $p11_crypto_plugin_hmac_label;
     'p11_crypto_plugin/token_serial_number':      value => $p11_crypto_plugin_token_serial_number;
-    'p11_crypto_plugin/token_label':              value => $p11_crypto_plugin_token_label_real;
     'p11_crypto_plugin/token_labels':             value => join(any2array($p11_crypto_plugin_token_labels), ',');
     'p11_crypto_plugin/slot_id':                  value => $p11_crypto_plugin_slot_id;
     'p11_crypto_plugin/encryption_mechanism':     value => $p11_crypto_plugin_encryption_mechanism;
