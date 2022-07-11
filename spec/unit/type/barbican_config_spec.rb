@@ -33,7 +33,7 @@ describe 'Puppet::Type.type(:barbican_config)' do
     expect(@barbican_config[:value]).to eq(['bar'])
   end
 
-  it 'should not accept a value with whitespace' do
+  it 'should accept a value with whitespace' do
     @barbican_config[:value] = 'b ar'
     expect(@barbican_config[:value]).to eq(['b ar'])
   end
