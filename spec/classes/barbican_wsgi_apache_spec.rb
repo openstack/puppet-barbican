@@ -28,6 +28,7 @@ describe 'barbican::wsgi::apache' do
         :bind_port                   => 9311,
         :group                       => 'barbican',
         :path                        => '/',
+        :priority                    => 10,
         :servername                  => facts[:fqdn],
         :ssl                         => false,
         :threads                     => 1,
@@ -41,8 +42,8 @@ describe 'barbican::wsgi::apache' do
         :headers                     => nil,
         :request_headers             => nil,
         :custom_wsgi_process_options => {},
-        :access_log_file             => false,
-        :access_log_format           => false,
+        :access_log_file             => nil,
+        :access_log_format           => nil,
       )}
     end
 
