@@ -232,14 +232,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*retry_scheduler_initial_delay_seconds*]
-#   (optional) Seconds (float) to wait before starting retry scheduler
-#   Defaults to undef
-#
-# [*retry_scheduler_periodic_interval_max_seconds*]
-#   (optional) Seconds (float) to wait between starting retry scheduler
-#   Defaults to undef
-#
 # [*client_package_ensure*]
 #   (optional) Desired ensure state of the client package.
 #   accepts latest or specific versions.
@@ -309,8 +301,6 @@ class barbican::api (
   $max_limit_paging                              = $::os_service_default,
   $default_limit_paging                          = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $retry_scheduler_initial_delay_seconds         = undef,
-  $retry_scheduler_periodic_interval_max_seconds = undef,
   $client_package_ensure                         = undef,
   $use_ssl                                       = undef,
   $ca_file                                       = undef,
@@ -384,11 +374,6 @@ class barbican::api (
     'queue/topic':       value => $queue_topic;
     'queue/version':     value => $queue_version;
     'queue/server_name': value => $queue_server_name;
-  }
-
-  if $retry_scheduler_initial_delay_seconds != undef or $retry_scheduler_periodic_interval_max_seconds != undef {
-    warning('The retry_scheduler_* parameters are deprecated. Use barbican::retry_scheduler instead')
-    include barbican::retry_scheduler
   }
 
   # max allowed secret options

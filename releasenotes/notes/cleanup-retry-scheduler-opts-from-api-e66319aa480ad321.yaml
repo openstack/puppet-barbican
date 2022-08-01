@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    The following parameters of the ``barbican::api`` class have been removed.
+
+    - ``retry_scheduler_initial_delay_seconds``
+    - ``retry_scheduler_periodic_interval_max_seconds``
