@@ -203,11 +203,6 @@ describe 'barbican::api' do
           is_expected.to contain_barbican_config('secretstore/enable_multiple_secret_stores') \
             .with_value(param_hash[:multiple_secret_stores_enabled])
         end
-
-        it 'resets the barbican_api pipeline' do
-          is_expected.to contain_barbican_api_paste_ini('pipeline:barbican_api/pipeline')\
-            .with_value('cors http_proxy_to_wsgi unauthenticated-context apiapp')
-        end
       end
     end
 

@@ -403,13 +403,6 @@ class barbican::api (
     'secretstore/stores_lookup_suffix':          value => $enabled_secret_stores;
   }
 
-  # TODO(tkajinam): Make sure the barbican_api pipeline is reset from the wrong
-  #                 value defined because of bug 1946378.
-  #                 This logic should be removed after Yoga cycle
-  barbican_api_paste_ini {
-    'pipeline:barbican_api/pipeline': value => 'cors http_proxy_to_wsgi unauthenticated-context apiapp';
-  }
-
   # keystone config
   if $auth_strategy == 'keystone' {
     include barbican::keystone::authtoken
