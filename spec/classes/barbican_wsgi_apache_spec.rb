@@ -24,7 +24,7 @@ describe 'barbican::wsgi::apache' do
   shared_examples_for 'apache serving barbican with mod_wsgi' do
     context 'with default parameters' do
       it { is_expected.to contain_class('barbican::params') }
-      it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+      it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi').with(
         :bind_port                   => 9311,
         :group                       => 'barbican',
         :path                        => '/',
@@ -57,7 +57,7 @@ describe 'barbican::wsgi::apache' do
         {
           :servername                  => 'dummy.host',
           :bind_host                   => '10.42.51.1',
-          :public_port                 => 12345,
+          :port                        => 12345,
           :ssl                         => true,
           :wsgi_process_display_name   => 'barbican-api',
           :workers                     => 37,
@@ -70,7 +70,7 @@ describe 'barbican::wsgi::apache' do
         }
       end
       it { is_expected.to contain_class('barbican::params') }
-      it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+      it { is_expected.to contain_openstacklib__wsgi__apache('barbican_wsgi').with(
         :bind_host                   => '10.42.51.1',
         :bind_port                   => 12345,
         :group                       => 'barbican',
@@ -104,7 +104,7 @@ describe 'barbican::wsgi::apache' do
         }
       end
 
-      it { should contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+      it { should contain_openstacklib__wsgi__apache('barbican_wsgi').with(
         :access_log_format => params[:access_log_format],
         :access_log_syslog => params[:access_log_syslog],
         :error_log_syslog  => params[:error_log_syslog],
@@ -118,7 +118,7 @@ describe 'barbican::wsgi::apache' do
         }
       end
 
-      it { should contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+      it { should contain_openstacklib__wsgi__apache('barbican_wsgi').with(
         :access_log_file => params[:access_log_file],
       )}
     end
@@ -130,7 +130,7 @@ describe 'barbican::wsgi::apache' do
         }
       end
 
-      it { should contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+      it { should contain_openstacklib__wsgi__apache('barbican_wsgi').with(
         :access_log_pipe => params[:access_log_pipe],
       )}
     end
@@ -142,7 +142,7 @@ describe 'barbican::wsgi::apache' do
         }
       end
 
-      it { should contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+      it { should contain_openstacklib__wsgi__apache('barbican_wsgi').with(
         :error_log_file => params[:error_log_file],
       )}
     end
@@ -154,7 +154,7 @@ describe 'barbican::wsgi::apache' do
         }
       end
 
-      it { should contain_openstacklib__wsgi__apache('barbican_wsgi_main').with(
+      it { should contain_openstacklib__wsgi__apache('barbican_wsgi').with(
         :error_log_pipe => params[:error_log_pipe],
       )}
     end

@@ -1,0 +1,9 @@
+---
+deprecations:
+  - |
+    The ``barbican::wsgi::apache::public_port`` parameter has been deprecated.
+    Use the ``port`` prameter instead.
+
+  - |
+    The ``barbican::wsgi::apache::public_path`` parameter has been deprecated.
+    Use the ``path`` prameter instead.

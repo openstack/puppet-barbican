@@ -13,16 +13,16 @@
 #   (Optional) The servername for the virtualhost.
 #   Defaults to $::fqdn
 #
-# [*public_port*]
-#   (Optional) The public port.
+# [*port*]
+#   (Optional) The port.
 #   Defaults to 9311
 #
 # [*bind_host*]
 #   (Optional) The host/ip address Apache will listen on.
 #   Defaults to undef (listen on all ip addresses).
 #
-# [*public_path*]
-#   (Optional) The prefix for the public endpoint.
+# [*path*]
+#   (Optional) The prefix for the endpoint.
 #   Defaults to '/'
 #
 # [*ssl*]
@@ -106,6 +106,16 @@
 #   directives to be placed at the end of the vhost configuration.
 #   Defaults to undef.
 #
+# DEPRECATED PARAMETERS
+#
+# [*public_port*]
+#   (Optional) The public port.
+#   Defaults to undef
+#
+# [*public_path*]
+#   (Optional) The prefix for the public endpoint.
+#   Defaults to undef
+#
 # == Authors
 #
 #   Ade Lee <alee@redhat.com>
@@ -116,9 +126,9 @@
 #
 class barbican::wsgi::apache (
   $servername                  = $::fqdn,
-  $public_port                 = 9311,
+  $port                        = 9311,
   $bind_host                   = undef,
-  $public_path                 = '/',
+  $path                        = '/',
   $ssl                         = false,
   $workers                     = $::os_workers,
   $ssl_cert                    = undef,
@@ -142,6 +152,9 @@ class barbican::wsgi::apache (
   $headers                     = undef,
   $request_headers             = undef,
   $vhost_custom_fragment       = undef,
+  # DEPRECATED PARAMETERS
+  $public_port                 = undef,
+  $public_path                 = undef
 ) {
 
   include barbican::deps
@@ -149,11 +162,18 @@ class barbican::wsgi::apache (
 
   Anchor['barbican::install::end'] -> Class['apache']
 
-  openstacklib::wsgi::apache { 'barbican_wsgi_main':
+  if $public_port {
+    warning('The public_port parameter is deprecated. Use the port parameter')
+  }
+  if $public_path {
+    warning('The public_path parameter is deprecated. Use the path parameter')
+  }
+
+  openstacklib::wsgi::apache { 'barbican_wsgi':
     bind_host                   => $bind_host,
-    bind_port                   => $public_port,
+    bind_port                   => pick($public_port, $port),
     group                       => $::barbican::params::group,
-    path                        => $public_path,
+    path                        => pick($public_path, $path),
     priority                    => $priority,
     servername                  => $servername,
     ssl                         => $ssl,
