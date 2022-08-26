@@ -10,99 +10,83 @@
 # == Parameters
 #
 # [*servername*]
-#   The servername for the virtualhost.
-#   Optional. Defaults to $::fqdn
+#   (Optional) The servername for the virtualhost.
+#   Defaults to $::fqdn
 #
 # [*public_port*]
-#   The public port.
-#   Optional. Defaults to 9311
+#   (Optional) The public port.
+#   Defaults to 9311
 #
 # [*bind_host*]
-#   The host/ip address Apache will listen on.
-#   Optional. Defaults to undef (listen on all ip addresses).
+#   (Optional) The host/ip address Apache will listen on.
+#   Defaults to undef (listen on all ip addresses).
 #
 # [*public_path*]
-#   The prefix for the public endpoint.
-#   Optional. Defaults to '/'
+#   (Optional) The prefix for the public endpoint.
+#   Defaults to '/'
 #
 # [*ssl*]
-#   Use ssl ? (boolean)
-#   Optional. Defaults to false
+#   (Optional) Use ssl ? (boolean)
+#   Defaults to false
 #
 # [*workers*]
-#   Number of WSGI workers to spawn.
-#   Optional. Defaults to $::os_workers
-#
-# [*ssl_cert*]
-#   (optional) Path to SSL certificate
-#   Default to apache::vhost 'ssl_*' defaults.
-#
-# [*ssl_key*]
-#   (optional) Path to SSL key
-#   Default to apache::vhost 'ssl_*' defaults.
-#
-# [*ssl_chain*]
-#   (optional) SSL chain
-#   Default to apache::vhost 'ssl_*' defaults.
-#
-# [*ssl_ca*]
-#   (optional) Path to SSL certificate authority
-#   Default to apache::vhost 'ssl_*' defaults.
-#
-# [*ssl_crl_path*]
-#   (optional) Path to SSL certificate revocation list
-#   Default to apache::vhost 'ssl_*' defaults.
-#
-# [*ssl_crl*]
-#   (optional) SSL certificate revocation list name
-#   Default to apache::vhost 'ssl_*' defaults.
-#
-# [*ssl_certs_dir*]
-#   apache::vhost ssl parameters.
-#   Optional. Default to apache::vhost 'ssl_*' defaults.
+#   (Optional) Number of WSGI workers to spawn.
+#   Defaults to $::os_workers
 #
 # [*priority*]
-#   (optional) The priority for the vhost.
+#   (Optional) The priority for the vhost.
 #   Defaults to 10
 #
 # [*threads*]
-#   (optional) The number of threads for the vhost.
+#   (Optional) The number of threads for the vhost.
 #   Defaults to 1
 #
 # [*wsgi_process_display_name*]
-#   (optional) Name of the WSGI process display-name.
+#   (Optional) Name of the WSGI process display-name.
 #   Defaults to undef
 #
+# [*ssl_cert*]
+# [*ssl_key*]
+# [*ssl_chain*]
+# [*ssl_ca*]
+# [*ssl_crl_path*]
+# [*ssl_crl*]
+# [*ssl_certs_dir*]
+#   (Optional) apache::vhost ssl parameters.
+#   Default to apache::vhost 'ssl_*' defaults.
+#
 # [*access_log_file*]
-#   The log file name for the virtualhost.
-#   Optional. Defaults to undef.
+#   (Optional) The log file name for the virtualhost.
+#   Defaults to undef.
 #
 # [*access_log_pipe*]
-#   Specifies a pipe where Apache sends access logs for the virtualhost.
-#   Optional. Defaults to undef.
+#   (Optional) Specifies a pipe where Apache sends access logs for
+#   the virtualhost.
+#   Defaults to undef.
 #
 # [*access_log_syslog*]
-#   Sends the virtualhost access log messages to syslog.
-#   Optional. Defaults to undef.
+#   (Optional) Sends the virtualhost access log messages to syslog.
+#   Defaults to undef.
 #
 # [*access_log_format*]
-#   The log format for the virtualhost.
-#   Optional. Defaults to undef.
+#   (Optional) The log format for the virtualhost.
+#   Defaults to undef.
 #
 # [*error_log_file*]
-#   The error log file name for the virtualhost.
-#   Optional. Defaults to undef.
+#   (Optional) The error log file name for the virtualhost.
+#   Defaults to undef.
 #
 # [*error_log_pipe*]
-#   Specifies a pipe where Apache sends error logs for the virtualhost.
-#   Optional. Defaults to undef.
+#   (Optional) Specifies a pipe where Apache sends error logs for
+#   the virtualhost.
+#   Defaults to undef.
 #
 # [*error_log_syslog*]
-#   Sends the virtualhost error log messages to syslog.
-#   Optional. Defaults to undef.
+#   (Optional) Sends the virtualhost error log messages to syslog.
+#   Defaults to undef.
 #
 # [*custom_wsgi_process_options*]
-#   (optional) gives you the opportunity to add custom process options or to
+#   (Optional) gives you the opportunity to add custom process options or to
 #   overwrite the default options for the WSGI main process.
 #   eg. to use a virtual python environment for the WSGI process
 #   you could set it to:
@@ -110,15 +94,15 @@
 #   Defaults to {}
 #
 # [*headers*]
-#   (optional) Headers for the vhost.
+#   (Optional) Headers for the vhost.
 #   Defaults to undef
 #
 # [*request_headers*]
-#   (optional) Modifies collected request headers in various ways.
+#   (Optional) Modifies collected request headers in various ways.
 #   Defaults to undef
 #
 # [*vhost_custom_fragment*]
-#   (optional) Passes a string of custom configuration
+#   (Optional) Passes a string of custom configuration
 #   directives to be placed at the end of the vhost configuration.
 #   Defaults to undef.
 #
