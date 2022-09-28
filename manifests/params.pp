@@ -19,6 +19,8 @@ class barbican::params {
       $worker_service_name            = 'openstack-barbican-worker'
       $keystone_listener_package_name = 'openstack-barbican-keystone-listener'
       $keystone_listener_service_name = 'openstack-barbican-keystone-listener'
+      $retry_package_name             = 'openstack-barbican-retry'
+      $retry_service_name             = 'openstack-barbican-retry'
       $barbican_wsgi_script_path      = '/var/www/cgi-bin/barbican'
       $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
     }
@@ -30,6 +32,8 @@ class barbican::params {
       $worker_service_name            = 'barbican-worker'
       $keystone_listener_package_name = 'barbican-keystone-listener'
       $keystone_listener_service_name = 'barbican-keystone-listener'
+      $retry_package_name             = false
+      $retry_service_name             = false
       $barbican_wsgi_script_path      = '/usr/lib/cgi-bin/barbican'
       $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
     }

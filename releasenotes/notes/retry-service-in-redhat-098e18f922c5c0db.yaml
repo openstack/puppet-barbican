@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``barbican::retry_scheduler`` class now manages the package and
+    the service to set up the ``barbican-retry`` service in CentOS and RHEL.
