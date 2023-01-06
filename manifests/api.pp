@@ -230,24 +230,6 @@
 #   (Optional) Default page size for the 'limit' paging URL parameter.
 #   Defaults to $::os_service_default
 #
-# DEPRECATED PARAMETERS
-#
-# [*use_ssl*]
-#   (optional) Enable SSL on the API server
-#   Defaults to undef
-#
-# [*cert_file*]
-#   (optional) Certificate file to use when starting API server securely
-#   Defaults to undef
-#
-# [*key_file*]
-#   (optional) Private key file to use when starting API server securely
-#   Defaults to undef
-#
-# [*ca_file*]
-#   (optional) CA certificate file to use to verify connecting clients
-#   Defaults to undef
-#
 class barbican::api (
   $package_ensure                                = 'present',
   $bind_host                                     = '0.0.0.0',
@@ -295,11 +277,6 @@ class barbican::api (
   $max_request_body_size                         = $::os_service_default,
   $max_limit_paging                              = $::os_service_default,
   $default_limit_paging                          = $::os_service_default,
-  # DEPRECATED PARAMETERS
-  $use_ssl                                       = undef,
-  $ca_file                                       = undef,
-  $cert_file                                     = undef,
-  $key_file                                      = undef,
 ) inherits barbican::params {
 
   include barbican::deps
@@ -408,18 +385,6 @@ class barbican::api (
   # set value to have the server auto-create the database on startup
   # instead of using db_sync
   barbican_config { 'DEFAULT/db_auto_create': value => $db_auto_create }
-
-  [ 'use_ssl', 'cert_file', 'key_file', 'ca_file' ].each |String $ssl_opt| {
-    if getvar($ssl_opt) != undef {
-      warning("The ${ssl_opt} parameter has been deprecated and has no effect.")
-    }
-  }
-  # SSL Options
-  barbican_config {
-    'DEFAULT/cert_file': ensure => absent;
-    'DEFAULT/key_file':  ensure => absent;
-    'DEFAULT/ca_file':   ensure => absent;
-  }
 
   if $sync_db {
     include barbican::db::sync

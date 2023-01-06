@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    The following parameters of the ``barbican::api`` class have been removed.
+
+    - ``use_ssl``
+    - ``cert_file``
+    - ``key_file``
+    - ``ca_file``
+
