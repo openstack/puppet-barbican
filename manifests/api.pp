@@ -232,11 +232,6 @@
 #
 # DEPRECATED PARAMETERS
 #
-# [*client_package_ensure*]
-#   (optional) Desired ensure state of the client package.
-#   accepts latest or specific versions.
-#   Defaults to undef
-#
 # [*use_ssl*]
 #   (optional) Enable SSL on the API server
 #   Defaults to undef
@@ -301,7 +296,6 @@ class barbican::api (
   $max_limit_paging                              = $::os_service_default,
   $default_limit_paging                          = $::os_service_default,
   # DEPRECATED PARAMETERS
-  $client_package_ensure                         = undef,
   $use_ssl                                       = undef,
   $ca_file                                       = undef,
   $cert_file                                     = undef,
@@ -312,10 +306,6 @@ class barbican::api (
   include barbican::db
   include barbican::client
   include barbican::policy
-
-  if $client_package_ensure != undef {
-    warning('The client_package_ensure is deprecated and has no effect.')
-  }
 
   package { 'barbican-api':
     ensure => $package_ensure,

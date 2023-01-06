@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``barbican::api::client_package_ensure`` parameter has been removed.
