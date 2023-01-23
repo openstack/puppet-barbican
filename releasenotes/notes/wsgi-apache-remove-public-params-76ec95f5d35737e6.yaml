@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The follwoing parameters of the ``barbican::wsgi::apache`` class have been
+    removed.
+
+    - ``public_port``
+    - ``public_path``
