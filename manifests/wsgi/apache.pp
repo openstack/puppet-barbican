@@ -106,16 +106,6 @@
 #   directives to be placed at the end of the vhost configuration.
 #   Defaults to undef.
 #
-# DEPRECATED PARAMETERS
-#
-# [*public_port*]
-#   (Optional) The public port.
-#   Defaults to undef
-#
-# [*public_path*]
-#   (Optional) The prefix for the public endpoint.
-#   Defaults to undef
-#
 # == Authors
 #
 #   Ade Lee <alee@redhat.com>
@@ -152,9 +142,6 @@ class barbican::wsgi::apache (
   $headers                     = undef,
   $request_headers             = undef,
   $vhost_custom_fragment       = undef,
-  # DEPRECATED PARAMETERS
-  $public_port                 = undef,
-  $public_path                 = undef
 ) {
 
   include barbican::deps
@@ -162,18 +149,11 @@ class barbican::wsgi::apache (
 
   Anchor['barbican::install::end'] -> Class['apache']
 
-  if $public_port {
-    warning('The public_port parameter is deprecated. Use the port parameter')
-  }
-  if $public_path {
-    warning('The public_path parameter is deprecated. Use the path parameter')
-  }
-
   openstacklib::wsgi::apache { 'barbican_wsgi':
     bind_host                   => $bind_host,
-    bind_port                   => pick($public_port, $port),
+    bind_port                   => $port,
     group                       => $::barbican::params::group,
-    path                        => pick($public_path, $path),
+    path                        => $path,
     priority                    => $priority,
     servername                  => $servername,
     ssl                         => $ssl,
