@@ -35,6 +35,9 @@ class barbican::retry_scheduler (
   include barbican::deps
   include barbican::params
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   barbican_config {
     'retry_scheduler/initial_delay_seconds':         value => $initial_delay_seconds;
     'retry_scheduler/periodic_interval_max_seconds': value => $periodic_interval_max_seconds;

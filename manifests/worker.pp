@@ -41,6 +41,9 @@ class barbican::worker (
 
   include barbican::deps
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+
   package { 'barbican-worker':
     ensure => $package_ensure,
     name   => $::barbican::params::worker_package_name,

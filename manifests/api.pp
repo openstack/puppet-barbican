@@ -284,6 +284,11 @@ class barbican::api (
   include barbican::client
   include barbican::policy
 
+  validate_legacy(Boolean, 'validate_bool', $manage_service)
+  validate_legacy(Boolean, 'validate_bool', $enabled)
+  validate_legacy(Boolean, 'validate_bool', $sync_db)
+  validate_legacy(Boolean, 'validate_bool', $multiple_secret_stores_enabled)
+
   package { 'barbican-api':
     ensure => $package_ensure,
     name   => $::barbican::params::api_package_name,
