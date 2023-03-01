@@ -12,27 +12,27 @@
 #
 # [*kmip_plugin_username*]
 #   (optional) username for KMIP device
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kmip_plugin_password*]
 #   (optional) password for KMIP device. This parameter is required
 #   when the kmip_plugin_username parameter is set.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kmip_plugin_keyfile*]
 #   (optional) key file for KMIP device. This parameter is required when
 #   the kmip_plugin_username parameter is not set.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kmip_plugin_certfile*]
 #   (optional) cert file for KMIP device. This parameter is required when
 #   the kmip_plugin_username parameter is not set.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kmip_plugin_ca_certs*]
 #   (optional) ca certs file for KMIP device. This parameter is required when
 #   the kmip_plugin_username parameter is not set.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*global_default*]
 #   (optional) set plugin as global default
@@ -41,11 +41,11 @@
 class barbican::plugins::kmip (
   $kmip_plugin_host,
   $kmip_plugin_port,
-  $kmip_plugin_username = $::os_service_default,
-  $kmip_plugin_password = $::os_service_default,
-  $kmip_plugin_keyfile  = $::os_service_default,
-  $kmip_plugin_certfile = $::os_service_default,
-  $kmip_plugin_ca_certs = $::os_service_default,
+  $kmip_plugin_username = $facts['os_service_default'],
+  $kmip_plugin_password = $facts['os_service_default'],
+  $kmip_plugin_keyfile  = $facts['os_service_default'],
+  $kmip_plugin_certfile = $facts['os_service_default'],
+  $kmip_plugin_ca_certs = $facts['os_service_default'],
   $global_default       = false,
 ) {
 

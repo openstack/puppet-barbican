@@ -6,30 +6,30 @@
 #
 # [*quota_secrets*]
 #   (optional) default number of secrets allowed per project
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_orders*]
 #   (optional) default number of orders allowed per project
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_containers*]
 #   (optional) default number of containers allowed per project
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_consumers*]
 #   (optional) default number of consumers allowed per project
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*quota_cas*]
 #   (optional) default number of CAs allowed per project
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class barbican::quota (
-  $quota_secrets    = $::os_service_default,
-  $quota_orders     = $::os_service_default,
-  $quota_containers = $::os_service_default,
-  $quota_consumers  = $::os_service_default,
-  $quota_cas        = $::os_service_default,
+  $quota_secrets    = $facts['os_service_default'],
+  $quota_orders     = $facts['os_service_default'],
+  $quota_containers = $facts['os_service_default'],
+  $quota_consumers  = $facts['os_service_default'],
+  $quota_cas        = $facts['os_service_default'],
 ) {
 
   include barbican::deps

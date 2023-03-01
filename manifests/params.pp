@@ -10,7 +10,7 @@ class barbican::params {
   $group                 = 'barbican'
   $dogtag_client_package = 'pki-base'
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       $common_package_name            = 'openstack-barbican-common'
       $api_package_name               = 'openstack-barbican-api'
@@ -38,8 +38,7 @@ class barbican::params {
       $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
     }
     default: {
-      fail("Unsupported osfamily: ${::osfamily} operating system")
+      fail("Unsupported osfamily: ${facts['os']['family']}")
     }
-
-  } # Case $::osfamily
+  }
 }

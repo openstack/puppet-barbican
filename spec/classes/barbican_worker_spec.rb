@@ -76,7 +76,7 @@ describe 'barbican::worker' do
         facts.merge(OSDefaults.get_facts())
       end
 
-      case facts[:osfamily]
+      case facts[:os]['family']
       when 'RedHat'
         let (:platform_params) do
           {

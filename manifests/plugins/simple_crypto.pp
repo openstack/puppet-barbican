@@ -6,14 +6,14 @@
 #
 # [*simple_crypto_plugin_kek*]
 #   (optional) Key encryption key to be used by Simple Crypto Plugin.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*global_default*]
 #   (optional) set plugin as global default
 #   Defaults to false
 #
 class barbican::plugins::simple_crypto (
-  $simple_crypto_plugin_kek = $::os_service_default,
+  $simple_crypto_plugin_kek = $facts['os_service_default'],
   $global_default           = false,
 ) {
 

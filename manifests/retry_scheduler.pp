@@ -18,18 +18,18 @@
 #
 # [*initial_delay_seconds*]
 #   (optional) Seconds (float) to wait before starting retry scheduler
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*periodic_interval_max_seconds*]
 #   (optional) Seconds (float) to wait between starting retry scheduler
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 class barbican::retry_scheduler (
   $package_ensure                = 'present',
   $manage_service                = true,
   $enabled                       = true,
-  $initial_delay_seconds         = $::os_service_default,
-  $periodic_interval_max_seconds = $::os_service_default,
+  $initial_delay_seconds         = $facts['os_service_default'],
+  $periodic_interval_max_seconds = $facts['os_service_default'],
 ){
 
   include barbican::deps
@@ -40,7 +40,7 @@ class barbican::retry_scheduler (
     'retry_scheduler/periodic_interval_max_seconds': value => $periodic_interval_max_seconds;
   }
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       package { 'barbican-retry':
         ensure => $package_ensure,

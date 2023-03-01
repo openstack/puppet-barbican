@@ -61,7 +61,7 @@ describe 'barbican::retry_scheduler' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           {}
         when 'RedHat'
@@ -73,7 +73,7 @@ describe 'barbican::retry_scheduler' do
       end
 
       it_behaves_like 'barbican::retry_scheduler'
-      if facts[:osfamily] == 'RedHat'
+      if facts[:os]['family'] == 'RedHat'
         it_behaves_like 'barbican::retry_scheduler in RedHat'
       end
     end

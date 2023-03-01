@@ -6,23 +6,23 @@
 #
 # [*vault_url*]
 #   (optional) The Vault URL.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*root_token_id*]
 #   (optional) Vault Root Token ID.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*approle_role_id*]
 #   (optional) Set the approle role ID.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*approle_secret_id*]
 #   (optional) Set the approle secret ID.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*kv_mountpoint*]
 #   (optional) Set the mountpoint of the KV.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*use_ssl*]
 #   (optional) Enable or disable SSL
@@ -30,20 +30,20 @@
 #
 # [*ssl_ca_crt_file*]
 #   (optional) Set the ssl CA cert file
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*global_default*]
 #   (optional) set plugin as global default
 #   Defaults to false
 #
 class barbican::plugins::vault (
-  $vault_url         = $::os_service_default,
-  $root_token_id     = $::os_service_default,
-  $approle_role_id   = $::os_service_default,
-  $approle_secret_id = $::os_service_default,
-  $kv_mountpoint     = $::os_service_default,
+  $vault_url         = $facts['os_service_default'],
+  $root_token_id     = $facts['os_service_default'],
+  $approle_role_id   = $facts['os_service_default'],
+  $approle_secret_id = $facts['os_service_default'],
+  $kv_mountpoint     = $facts['os_service_default'],
   $use_ssl           = false,
-  $ssl_ca_crt_file   = $::os_service_default,
+  $ssl_ca_crt_file   = $facts['os_service_default'],
   $global_default    = false,
 ) {
 

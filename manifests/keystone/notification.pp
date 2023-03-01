@@ -6,23 +6,23 @@
 #
 # [*enable_keystone_notification*]
 #   (optional) Enable keystone notification listener functionality
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*keystone_notification_control_exchange*]
 #   (optional) The default exchange under which topics are scoped.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*keystone_notification_topic*]
 #   (optional) Keystone notification queue topic name.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*keystone_notification_allow_requeue*]
 #   (optional) Requeues notification in case of notification processing error.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*keystone_notification_thread_pool_size*]
 #   (optional) max threads to be used for notification server
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*package_ensure*]
 #   (Optional) The state of the barbican-keystone-listener package.
@@ -33,11 +33,11 @@
 #   Defaults to true
 #
 class barbican::keystone::notification (
-  $enable_keystone_notification           = $::os_service_default,
-  $keystone_notification_control_exchange = $::os_service_default,
-  $keystone_notification_topic            = $::os_service_default,
-  $keystone_notification_allow_requeue    = $::os_service_default,
-  $keystone_notification_thread_pool_size = $::os_service_default,
+  $enable_keystone_notification           = $facts['os_service_default'],
+  $keystone_notification_control_exchange = $facts['os_service_default'],
+  $keystone_notification_topic            = $facts['os_service_default'],
+  $keystone_notification_allow_requeue    = $facts['os_service_default'],
+  $keystone_notification_thread_pool_size = $facts['os_service_default'],
   $package_ensure                         = 'present',
   $manage_service                         = true,
 ) {

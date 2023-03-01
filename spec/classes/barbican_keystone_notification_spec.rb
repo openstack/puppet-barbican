@@ -108,7 +108,7 @@ describe 'barbican::keystone::notification' do
       end
 
       let (:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'RedHat'
           {
             :keystone_listener_package_name => 'openstack-barbican-keystone-listener',

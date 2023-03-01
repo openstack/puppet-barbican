@@ -86,7 +86,7 @@ describe 'barbican::plugins::dogtag' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge!(OSDefaults.get_facts( :os_workers => '7' ))
+        facts.merge!(OSDefaults.get_facts())
       end
 
       it_behaves_like 'barbican::plugins::dogtag'

@@ -36,7 +36,7 @@ describe 'barbican' do
       end
 
       let(:platform_params) do
-        case facts[:osfamily]
+        case facts[:os]['family']
         when 'Debian'
           { :barbican_common_package => 'barbican-common' }
         when 'RedHat'

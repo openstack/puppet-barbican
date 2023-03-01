@@ -13,31 +13,31 @@
 #
 # [*dogtag_plugin_pem_path*]
 #   (optional) Path to KRA agent PEM file
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dogtag_plugin_dogtag_host*]
 #   (optional) Host for the Dogtag server
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dogtag_plugin_dogtag_port*]
 #   (optional) Host for the Dogtag server
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dogtag_plugin_nss_db_path*]
 #   (optional) Path to plugin NSS DB
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dogtag_plugin_simple_cmc_profile*]
 #   (optional) Profile for simple CMC enrollment.
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dogtag_plugin_ca_expiration_time*]
 #   (optional) Expiration time for the Dogtag CA entry in days
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*dogtag_plugin_plugin_working_dir*]
 #   (optional) Working directory for Dogtag plugin
-#   Defaults to $::os_service_default
+#   Defaults to $facts['os_service_default']
 #
 # [*global_default*]
 #   (optional) set plugin as global default
@@ -46,13 +46,13 @@
 class barbican::plugins::dogtag (
   $dogtag_plugin_nss_password,
   $dogtag_plugin_ensure_package     = 'present',
-  $dogtag_plugin_pem_path           = $::os_service_default,
-  $dogtag_plugin_dogtag_host        = $::os_service_default,
-  $dogtag_plugin_dogtag_port        = $::os_service_default,
-  $dogtag_plugin_nss_db_path        = $::os_service_default,
-  $dogtag_plugin_simple_cmc_profile = $::os_service_default,
-  $dogtag_plugin_ca_expiration_time = $::os_service_default,
-  $dogtag_plugin_plugin_working_dir = $::os_service_default,
+  $dogtag_plugin_pem_path           = $facts['os_service_default'],
+  $dogtag_plugin_dogtag_host        = $facts['os_service_default'],
+  $dogtag_plugin_dogtag_port        = $facts['os_service_default'],
+  $dogtag_plugin_nss_db_path        = $facts['os_service_default'],
+  $dogtag_plugin_simple_cmc_profile = $facts['os_service_default'],
+  $dogtag_plugin_ca_expiration_time = $facts['os_service_default'],
+  $dogtag_plugin_plugin_working_dir = $facts['os_service_default'],
   $global_default                   = false,
 ) {
 

@@ -24,21 +24,21 @@ describe 'barbican::quota' do
   shared_examples_for 'barbican quota' do
     let :default_params do
       {
-        :quota_secrets                      => '<SERVICE DEFAULT>',
-        :quota_orders                       => '<SERVICE DEFAULT>',
-        :quota_containers                   => '<SERVICE DEFAULT>',
-        :quota_consumers                    => '<SERVICE DEFAULT>',
-        :quota_cas                          => '<SERVICE DEFAULT>',
+        :quota_secrets    => '<SERVICE DEFAULT>',
+        :quota_orders     => '<SERVICE DEFAULT>',
+        :quota_containers => '<SERVICE DEFAULT>',
+        :quota_consumers  => '<SERVICE DEFAULT>',
+        :quota_cas        => '<SERVICE DEFAULT>',
       }
     end
 
     [{},
       {
-         :quota_secrets                      => 100,
-         :quota_orders                       => 100,
-         :quota_containers                   => 100,
-         :quota_consumers                    => 100,
-         :quota_cas                          => 10,
+         :quota_secrets    => 100,
+         :quota_orders     => 100,
+         :quota_containers => 100,
+         :quota_consumers  => 100,
+         :quota_cas        => 10,
       }
     ].each do |param_set|
 
@@ -72,11 +72,7 @@ describe 'barbican::quota' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge(OSDefaults.get_facts({
-          :processorcount => 8,
-          :fqdn           => 'some.host.tld',
-          :concat_basedir => '/var/lib/puppet/concat',
-        }))
+        facts.merge(OSDefaults.get_facts())
       end
 
       it_configures 'barbican quota'

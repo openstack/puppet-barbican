@@ -129,10 +129,6 @@ describe 'barbican::api' do
           default_params.merge(param_set)
         end
 
-        let :host_ref do
-          "http://${::fqdn}:$param_hash[:bind_port]"
-        end
-
         it { is_expected.to contain_class('barbican::deps') }
         it { is_expected.to contain_class('barbican::db') }
         it { is_expected.to contain_class('barbican::policy') }
@@ -295,14 +291,10 @@ describe 'barbican::api' do
   }).each do |os,facts|
     context "on #{os}" do
       let (:facts) do
-        facts.merge(OSDefaults.get_facts({
-          :processorcount => 7,
-          :fqdn           => 'some.host.tld',
-          :concat_basedir => '/var/lib/puppet/concat',
-        }))
+        facts.merge(OSDefaults.get_facts())
       end
 
-      case facts[:osfamily]
+      case facts[:os]['family']
       when 'RedHat'
         let (:platform_params) do
           { :service_name => 'openstack-barbican-api' }
