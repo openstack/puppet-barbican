@@ -65,5 +65,5 @@
     ],
     "source": "https://opendev.org/openstack/puppet-barbican.git",
     "summary": "Puppet module for OpenStack Barbican",
-    "version": "19.4.0"
+    "version": "19.4.1"
 }
