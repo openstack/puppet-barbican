@@ -257,7 +257,7 @@ class barbican::api (
   $enabled_secretstore_plugins                   = $facts['os_service_default'],
   $enabled_crypto_plugins                        = $facts['os_service_default'],
   $enabled_secret_stores                         = 'simple_crypto',
-  $multiple_secret_stores_enabled                = false,
+  Boolean $multiple_secret_stores_enabled        = false,
   $enabled_certificate_plugins                   = $facts['os_service_default'],
   $enabled_certificate_event_plugins             = $facts['os_service_default'],
   $kombu_ssl_ca_certs                            = $facts['os_service_default'],
@@ -268,9 +268,9 @@ class barbican::api (
   $kombu_failover_strategy                       = $facts['os_service_default'],
   $kombu_compression                             = $facts['os_service_default'],
   $auth_strategy                                 = 'keystone',
-  $manage_service                                = true,
-  $enabled                                       = true,
-  $sync_db                                       = true,
+  Boolean $manage_service                        = true,
+  Boolean $enabled                               = true,
+  Boolean $sync_db                               = true,
   $db_auto_create                                = $facts['os_service_default'],
   $service_name                                  = $::barbican::params::api_service_name,
   $enable_proxy_headers_parsing                  = $facts['os_service_default'],
@@ -283,11 +283,6 @@ class barbican::api (
   include barbican::db
   include barbican::client
   include barbican::policy
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
-  validate_legacy(Boolean, 'validate_bool', $sync_db)
-  validate_legacy(Boolean, 'validate_bool', $multiple_secret_stores_enabled)
 
   package { 'barbican-api':
     ensure => $package_ensure,

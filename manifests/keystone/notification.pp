@@ -39,13 +39,11 @@ class barbican::keystone::notification (
   $keystone_notification_allow_requeue    = $facts['os_service_default'],
   $keystone_notification_thread_pool_size = $facts['os_service_default'],
   $package_ensure                         = 'present',
-  $manage_service                         = true,
+  Boolean $manage_service                 = true,
 ) {
 
   include barbican::deps
   include barbican::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
 
   barbican_config {
     'keystone_notifications/enable':           value => $enable_keystone_notification;
@@ -64,8 +62,7 @@ class barbican::keystone::notification (
   if is_service_default($enable_keystone_notification) {
     $service_enabled = false
   } else {
-    validate_legacy(Boolean, 'validate_bool', $enable_keystone_notification)
-    $service_enabled = $enable_keystone_notification
+    $service_enabled = Boolean($enable_keystone_notification)
   }
 
   if $manage_service {

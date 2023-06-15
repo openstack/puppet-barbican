@@ -26,17 +26,14 @@
 #
 class barbican::retry_scheduler (
   $package_ensure                = 'present',
-  $manage_service                = true,
-  $enabled                       = true,
+  Boolean $manage_service        = true,
+  Boolean $enabled               = true,
   $initial_delay_seconds         = $facts['os_service_default'],
   $periodic_interval_max_seconds = $facts['os_service_default'],
 ){
 
   include barbican::deps
   include barbican::params
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   barbican_config {
     'retry_scheduler/initial_delay_seconds':         value => $initial_delay_seconds;

@@ -34,7 +34,7 @@
 #   Defaults to 'utf8_general_ci'
 #
 class barbican::db::mysql(
-  $password,
+  String[1] $password,
   $dbname        = 'barbican',
   $user          = 'barbican',
   $host          = '127.0.0.1',
@@ -44,8 +44,6 @@ class barbican::db::mysql(
 ) {
 
   include barbican::deps
-
-  validate_legacy(String, 'validate_string', $password)
 
   openstacklib::db::mysql { 'barbican':
     user          => $user,
