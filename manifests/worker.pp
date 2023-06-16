@@ -34,15 +34,12 @@
 #   Defaults to true
 #
 class barbican::worker (
-  $package_ensure = 'present',
-  $manage_service = true,
-  $enabled        = true,
+  $package_ensure         = 'present',
+  Boolean $manage_service = true,
+  Boolean $enabled        = true,
 ) inherits barbican::params {
 
   include barbican::deps
-
-  validate_legacy(Boolean, 'validate_bool', $manage_service)
-  validate_legacy(Boolean, 'validate_bool', $enabled)
 
   package { 'barbican-worker':
     ensure => $package_ensure,
