@@ -4,13 +4,12 @@
 #
 # === Parameters
 #
+# [*password*]
+#   (Required) Password to create for the service user
+#
 # [*username*]
 #   (Optional) The name of the service user
 #   Defaults to 'barbican'
-#
-# [*password*]
-#   (Optional) Password to create for the service user
-#   Defaults to $facts['os_service_default']
 #
 # [*auth_url*]
 #   (Optional) The URL to use for authentication.
@@ -196,7 +195,7 @@
 #  authtoken class. Values set here override the individual parameters above.
 #
 class barbican::keystone::authtoken(
-  $password                       = $facts['os_service_default'],
+  String[1] $password,
   $username                       = 'barbican',
   $auth_url                       = 'http://localhost:5000',
   $project_name                   = 'services',
@@ -237,10 +236,6 @@ class barbican::keystone::authtoken(
 ) {
 
   include barbican::deps
-
-  if is_service_default($password) {
-    fail('Please set password for barbican service user')
-  }
 
   keystone::resource::authtoken {
     'barbican_config':
