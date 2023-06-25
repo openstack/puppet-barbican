@@ -33,6 +33,7 @@ describe 'barbican::policy' do
           :file_group   => 'barbican',
           :file_format  => 'yaml',
           :purge_config => false,
+          :tag          => 'barbican',
         )
         is_expected.to contain_oslo__policy('barbican_config').with(
           :enforce_scope        => false,
@@ -63,6 +64,7 @@ describe 'barbican::policy' do
           :file_group   => 'barbican',
           :file_format  => 'yaml',
           :purge_config => true,
+          :tag          => 'barbican',
         )
         is_expected.to contain_oslo__policy('barbican_config').with(
           :enforce_scope        => false,
