@@ -30,7 +30,7 @@ class barbican::deps {
 
   # policy config should occur in the config block also.
   Anchor['barbican::config::begin']
-  -> Openstacklib::Policy<||>
+  -> Openstacklib::Policy<| tag == 'barbican' |>
   ~> Anchor['barbican::config::end']
 
   # barbican-api-paste.ini config should occur in the config block also.
