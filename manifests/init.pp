@@ -14,8 +14,8 @@
 #   Defaults to false.
 #
 class barbican(
-  $package_ensure = 'present',
-  $purge_config   = false,
+  $package_ensure       = 'present',
+  Boolean $purge_config = false,
 ) {
 
   include barbican::deps
