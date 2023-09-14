@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The ``barbican::api`` class now supports options for quorum queues in
+    RabbitMQ.
