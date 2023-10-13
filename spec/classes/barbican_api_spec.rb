@@ -25,8 +25,6 @@ describe 'barbican::api' do
 
     let :default_params do
       {
-        :bind_host                                     => '0.0.0.0',
-        :bind_port                                     => '9311',
         :default_transport_url                         => '<SERVICE DEFAULT>',
         :rpc_response_timeout                          => '<SERVICE DEFAULT>',
         :control_exchange                              => '<SERVICE DEFAULT>',
@@ -77,8 +75,6 @@ describe 'barbican::api' do
     [
       {},
       {
-        :bind_host                                     => '127.0.0.1',
-        :bind_port                                     => '9312',
         :default_transport_url                         => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
         :rpc_response_timeout                          => '120',
         :control_exchange                              => 'barbican',
