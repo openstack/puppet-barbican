@@ -388,7 +388,7 @@ class barbican::api (
   # enabled plugins when multiple plugins is enabled
   barbican_config {
     'secretstore/enable_multiple_secret_stores': value => $multiple_secret_stores_enabled;
-    'secretstore/stores_lookup_suffix':          value => $enabled_secret_stores;
+    'secretstore/stores_lookup_suffix':          value => join(any2array($enabled_secret_stores), ',');
   }
 
   # keystone config
