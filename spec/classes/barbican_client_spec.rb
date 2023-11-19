@@ -30,7 +30,7 @@ describe 'barbican::client' do
       it { is_expected.to contain_package('python-barbicanclient').with(
         'ensure' => 'present',
         'name'   => platform_params[:client_package_name],
-        'tag'    => 'openstack'
+        'tag'    => ['openstack', 'openstackclient']
       )}
 
       it { should contain_class('openstacklib::openstackclient') }
@@ -43,7 +43,7 @@ describe 'barbican::client' do
 
       it { is_expected.to contain_package('python-barbicanclient').with(
         'ensure' => '2013.1',
-        'tag'    => 'openstack'
+        'tag'    => ['openstack', 'openstackclient']
       )}
     end
   end

@@ -18,7 +18,7 @@ class barbican::client (
   package { 'python-barbicanclient':
     ensure => $ensure,
     name   => $::barbican::params::client_package_name,
-    tag    => 'openstack',
+    tag    => ['openstack', 'openstackclient'],
   }
 
   include openstacklib::openstackclient
