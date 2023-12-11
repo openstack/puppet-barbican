@@ -40,33 +40,32 @@ class barbican::retry_scheduler (
     'retry_scheduler/periodic_interval_max_seconds': value => $periodic_interval_max_seconds;
   }
 
-  case $facts['os']['family'] {
-    'RedHat': {
-      package { 'barbican-retry':
-        ensure => $package_ensure,
-        name   => $::barbican::params::retry_package_name,
-        tag    => ['openstack', 'barbican-package'],
+  if $::barbican::params::retry_package_name {
+    package { 'barbican-retry':
+      ensure => $package_ensure,
+      name   => $::barbican::params::retry_package_name,
+      tag    => ['openstack', 'barbican-package'],
+    }
+  }
+
+  if $::barbican::params::retry_service_name {
+    if $manage_service {
+      if $enabled {
+        $service_ensure = 'running'
+      } else {
+        $service_ensure = 'stopped'
       }
 
-      if $manage_service {
-        if $enabled {
-          $service_ensure = 'running'
-        } else {
-          $service_ensure = 'stopped'
-        }
-
-        service { 'barbican-retry':
-          ensure     => $service_ensure,
-          name       => $::barbican::params::retry_service_name,
-          enable     => $enabled,
-          hasstatus  => true,
-          hasrestart => true,
-          tag        => 'barbican-service',
-        }
+      service { 'barbican-retry':
+        ensure     => $service_ensure,
+        name       => $::barbican::params::retry_service_name,
+        enable     => $enabled,
+        hasstatus  => true,
+        hasrestart => true,
+        tag        => 'barbican-service',
       }
     }
-    default: {
-      warning('barbican-retry package/service is not available')
-    }
+  } else {
+    warning('barbican-retry service is not available')
   }
 }
