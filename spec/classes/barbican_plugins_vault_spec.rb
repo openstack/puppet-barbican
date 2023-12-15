@@ -91,7 +91,7 @@ describe 'barbican::plugins::vault' do
         is_expected.to contain_barbican_config('vault_plugin/kv_mountpoint') \
           .with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('vault_plugin/use_ssl') \
-          .with_value('false')
+          .with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('vault_plugin/ssl_ca_crt_file') \
           .with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config(
