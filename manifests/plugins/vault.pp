@@ -26,7 +26,7 @@
 #
 # [*use_ssl*]
 #   (optional) Enable or disable SSL
-#   Defaults to false
+#   Defaults to $facts['os_service_default']
 #
 # [*ssl_ca_crt_file*]
 #   (optional) Set the ssl CA cert file
@@ -42,7 +42,7 @@ class barbican::plugins::vault (
   $approle_role_id   = $facts['os_service_default'],
   $approle_secret_id = $facts['os_service_default'],
   $kv_mountpoint     = $facts['os_service_default'],
-  $use_ssl           = false,
+  $use_ssl           = $facts['os_service_default'],
   $ssl_ca_crt_file   = $facts['os_service_default'],
   $global_default    = false,
 ) {
