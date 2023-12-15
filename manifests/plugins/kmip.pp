@@ -8,7 +8,8 @@
 #   (required) username for KMIP device
 #
 # [*kmip_plugin_port*]
-#   (required) port for KMIP device
+#   (optional) port for KMIP device
+#   Defaults to $facts['os_service_default']
 #
 # [*kmip_plugin_username*]
 #   (optional) username for KMIP device
@@ -40,7 +41,7 @@
 #
 class barbican::plugins::kmip (
   $kmip_plugin_host,
-  $kmip_plugin_port,
+  $kmip_plugin_port     = $facts['os_service_default'],
   $kmip_plugin_username = $facts['os_service_default'],
   $kmip_plugin_password = $facts['os_service_default'],
   $kmip_plugin_keyfile  = $facts['os_service_default'],

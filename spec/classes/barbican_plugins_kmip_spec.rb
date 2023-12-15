@@ -29,7 +29,6 @@ describe 'barbican::plugins::kmip' do
           :kmip_plugin_username => 'kmip_user',
           :kmip_plugin_password => 'kmip_password',
           :kmip_plugin_host     => 'kmip_host',
-          :kmip_plugin_port     => 9000,
           :global_default       => true
         }
       end
@@ -48,7 +47,7 @@ describe 'barbican::plugins::kmip' do
         is_expected.to contain_barbican_config('kmip_plugin/host')\
           .with_value(params[:kmip_plugin_host])
         is_expected.to contain_barbican_config('kmip_plugin/port')\
-          .with_value(params[:kmip_plugin_port])
+          .with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config(
           'secretstore:kmip/secret_store_plugin') \
           .with_value('kmip_plugin')
