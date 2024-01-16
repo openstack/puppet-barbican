@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``barbican::healthcheck::allowed_source_ranges`` parameter has been
+    added.
