@@ -20,7 +20,7 @@ Puppet::Type.type(:barbican_config).provide(
   :parent => Puppet::Type.type(:openstack_config).provider(:ruby)
 ) do
 
-  def file_path
+  def self.file_path
     '/etc/barbican/barbican.conf'
   end
 
