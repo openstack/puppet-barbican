@@ -79,12 +79,12 @@ class barbican::db (
     mysql_enable_ndb        => $mysql_enable_ndb,
   }
 
-  # TODO(aschultz): Remove this config once barbican properly leverages oslo
+  # TODO(tkajinam): Remove this after 2024.1 release
   barbican_config {
-    'DEFAULT/sql_connection':        value => $database_connection, secret => true;
-    'DEFAULT/sql_idle_timeout':      value => $database_connection_recycle_time;
-    'DEFAULT/sql_pool_size':         value => $database_pool_size;
-    'DEFAULT/sql_pool_max_overflow': value => $database_max_overflow;
+    'DEFAULT/sql_connection':        ensure => absent;
+    'DEFAULT/sql_idle_timeout':      ensure => absent;
+    'DEFAULT/sql_pool_size':         ensure => absent;
+    'DEFAULT/sql_pool_max_overflow': ensure => absent;
   }
 
   # all db settings should be applied and all packages should be installed
