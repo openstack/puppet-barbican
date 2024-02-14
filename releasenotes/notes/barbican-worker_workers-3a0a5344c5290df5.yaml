@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``barbican::worker::workers`` parameter has been added.

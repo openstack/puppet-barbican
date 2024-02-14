@@ -33,10 +33,15 @@
 #   (Optional) Whether to enable the barbican-worker service.
 #   Defaults to true
 #
+# [*workers*]
+#   (Optional) Number of asynchronous worker process.
+#   Defaults to $facts['os_service_default']
+#
 class barbican::worker (
   $package_ensure         = 'present',
   Boolean $manage_service = true,
   Boolean $enabled        = true,
+  $workers                = $facts['os_service_default'],
 ) inherits barbican::params {
 
   include barbican::deps
@@ -45,6 +50,10 @@ class barbican::worker (
     ensure => $package_ensure,
     name   => $::barbican::params::worker_package_name,
     tag    => ['openstack', 'barbican-package'],
+  }
+
+  barbican_config {
+    'queue/asynchronous_workers': value => $workers;
   }
 
   if $manage_service {

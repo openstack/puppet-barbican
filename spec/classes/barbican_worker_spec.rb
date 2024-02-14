@@ -19,10 +19,6 @@
 require 'spec_helper'
 
 describe 'barbican::worker' do
-  let :params do
-    {}
-  end
-
   shared_examples 'barbican::worker' do
     context 'with default parameters' do
       it { should contain_package('barbican-worker').with(
@@ -30,6 +26,8 @@ describe 'barbican::worker' do
         :name   => platform_params[:worker_package_name],
         :tag    => ['openstack', 'barbican-package']
       )}
+
+      it { should contain_barbican_config('queue/asynchronous_workers').with_value('<SERVICE DEFAULT>') }
 
       it { should contain_service('barbican-worker').with(
         :ensure     => 'running',
@@ -41,17 +39,24 @@ describe 'barbican::worker' do
       )}
     end
 
+    context 'with parameters' do
+      let :params do
+        { :workers => 2 }
+      end
+      it { should contain_barbican_config('queue/asynchronous_workers').with_value(2) }
+    end
+
     context 'with package_ensure set to absent' do
-      before do
-        params.merge!( :package_ensure => 'absent' )
+      let :params do
+        { :package_ensure => 'absent' }
       end
 
       it { should contain_package('barbican-worker').with_ensure('absent') }
     end
 
     context 'with manage_service set to false' do
-      before do
-        params.merge!( :manage_service => false )
+      let :params do
+        { :manage_service => false }
       end
 
       it { should contain_package('barbican-worker').with_ensure('present') }
@@ -59,8 +64,8 @@ describe 'barbican::worker' do
     end
 
     context 'with enabled set to false' do
-      before do
-        params.merge!( :enabled => false )
+     let :params do
+        { :enabled => false }
       end
 
       it { should contain_package('barbican-worker').with_ensure('present') }
