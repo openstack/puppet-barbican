@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    The new ``barbican::healthcheck::ignore_proxied_requests`` parameter has
+    been added.
