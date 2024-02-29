@@ -436,12 +436,20 @@ class barbican::api (
       # Debian is using UWSGI, not gunicorn
       if $facts['os']['name'] != 'Debian' {
         file_line { 'Modify bind_port in gunicorn-config.py':
-          path  => '/etc/barbican/gunicorn-config.py',
-          line  => "bind = '${bind_host}:${bind_port}'",
-          match => '^bind = .*',
-          tag   => 'modify-bind-port',
+          path    => '/etc/barbican/gunicorn-config.py',
+          line    => "bind = '${bind_host}:${bind_port}'",
+          match   => '^bind = .*',
+          tag     => 'modify-bind-port',
+          require => Anchor['barbican::config::begin'],
+          before  => Anchor['barbican::config::end'],
+          notify  => Service['barbican-api'],
         }
       }
+
+      # On any paste-api.ini config change, we must restart Barbican API.
+      Barbican_api_paste_ini<||> ~> Service['barbican-api']
+      # On any uwsgi config change, we must restart Barbican API.
+      Barbican_api_uwsgi_config<||> ~> Service['barbican-api']
 
     } elsif $service_name == 'httpd' {
       # Ubuntu packages does not have a barbican-api service
@@ -456,7 +464,12 @@ class barbican::api (
 
         # we need to make sure barbican-api is stopped before trying to start apache
         Service['barbican-api'] -> Service[$service_name]
+
       }
+
+      # On any paste-api.ini config change, we must restart Barbican API.
+      Barbican_api_paste_ini<||> ~> Service[$service_name]
+
     } else {
       fail('Invalid service_name.')
     }

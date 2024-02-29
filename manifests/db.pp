@@ -87,4 +87,7 @@ class barbican::db (
     'DEFAULT/sql_pool_max_overflow': value => $database_max_overflow;
   }
 
+  # all db settings should be applied and all packages should be installed
+  # before dbsync starts
+  Oslo::Db['barbican_config'] -> Anchor['barbican::dbsync::begin']
 }

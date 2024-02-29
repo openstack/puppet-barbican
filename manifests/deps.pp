@@ -24,29 +24,13 @@ class barbican::deps {
   ~> Service<| tag == 'barbican-service' |>
   ~> anchor { 'barbican::service::end': }
 
-  # all db settings should be applied and all packages should be installed
-  # before dbsync starts
-  Oslo::Db<||> -> Anchor['barbican::dbsync::begin']
-
-  # policy config should occur in the config block also.
-  Anchor['barbican::config::begin']
-  -> Openstacklib::Policy<| tag == 'barbican' |>
-  -> Anchor['barbican::config::end']
-
-  # barbican-api-paste.ini config should occur in the config block also.
   Anchor['barbican::config::begin']
   -> Barbican_api_paste_ini<||>
-  ~> Anchor['barbican::config::end']
+  -> Anchor['barbican::config::end']
 
-  # On any uwsgi config change, we must restart Barbican API.
   Anchor['barbican::config::begin']
   -> Barbican_api_uwsgi_config<||>
-  ~> Anchor['barbican::config::end']
-
-  # Ensure files are modified in the config block
-  Anchor['barbican::config::begin']
-  -> File_line<| tag == 'modify-bind-port' |>
-  ~> Anchor['barbican::config::end']
+  -> Anchor['barbican::config::end']
 
   # Installation or config changes will always restart services.
   Anchor['barbican::install::end'] ~> Anchor['barbican::service::begin']

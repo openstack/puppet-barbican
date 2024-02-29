@@ -65,10 +65,14 @@ class barbican::policy (
     file_group   => $::barbican::params::group,
     file_format  => 'yaml',
     purge_config => $purge_config,
-    tag          => 'barbican',
   }
 
   create_resources('openstacklib::policy', { $policy_path => $policy_parameters })
+
+  # policy config should occur in the config block also.
+  Anchor['barbican::config::begin']
+  -> Openstacklib::Policy[$policy_path]
+  -> Anchor['barbican::config::end']
 
   oslo::policy { 'barbican_config':
     enforce_scope        => $enforce_scope,
@@ -77,5 +81,4 @@ class barbican::policy (
     policy_default_rule  => $policy_default_rule,
     policy_dirs          => $policy_dirs,
   }
-
 }
