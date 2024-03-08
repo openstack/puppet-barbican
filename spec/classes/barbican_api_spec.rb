@@ -59,8 +59,6 @@ describe 'barbican::api' do
         :enabled                                       => true,
         :enabled_secretstore_plugins                   => ['<SERVICE DEFAULT>'],
         :enabled_crypto_plugins                        => ['<SERVICE DEFAULT>'],
-        :enabled_certificate_plugins                   => ['<SERVICE DEFAULT>'],
-        :enabled_certificate_event_plugins             => ['<SERVICE DEFAULT>'],
         :auth_strategy                                 => 'keystone',
         :service_name                                  => platform_params[:service_name],
         :enable_proxy_headers_parsing                  => '<SERVICE DEFAULT>',
@@ -107,8 +105,6 @@ describe 'barbican::api' do
         :kombu_compression                             => 'gzip',
         :enabled_secretstore_plugins                   => ['dogtag_crypto', 'store_crypto', 'kmip'],
         :enabled_crypto_plugins                        => ['simple_crypto'],
-        :enabled_certificate_plugins                   => ['simple_certificate', 'dogtag'],
-        :enabled_certificate_event_plugins             => ['simple_certificate_event', 'foo_event'],
         :max_allowed_secret_in_bytes                   => 20000,
         :max_allowed_request_size_in_bytes             => 2000000,
         :enable_proxy_headers_parsing                  => false,
@@ -195,10 +191,6 @@ describe 'barbican::api' do
             .with_value(param_hash[:enabled_secretstore_plugins])
           is_expected.to contain_barbican_config('crypto/enabled_crypto_plugins') \
             .with_value(param_hash[:enabled_crypto_plugins])
-          is_expected.to contain_barbican_config('certificate/enabled_certificate_plugins') \
-            .with_value(param_hash[:enabled_certificate_plugins])
-          is_expected.to contain_barbican_config('certificate_event/enabled_certificate_event_plugins') \
-            .with_value(param_hash[:enabled_certificate_event_plugins])
         end
 
         it 'configures plugins in multiple plugin config' do
