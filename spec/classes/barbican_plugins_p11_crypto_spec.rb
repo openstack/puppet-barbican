@@ -45,7 +45,7 @@ describe 'barbican::plugins::p11_crypto' do
 
       it 'is_expected.to set p11 parameters' do
         is_expected.to contain_barbican_config('p11_crypto_plugin/login') \
-          .with_value(params[:p11_crypto_plugin_login])
+          .with_value(params[:p11_crypto_plugin_login]).with_secret(true)
         is_expected.to contain_barbican_config('p11_crypto_plugin/mkek_label') \
           .with_value(params[:p11_crypto_plugin_mkek_label])
         is_expected.to contain_barbican_config('p11_crypto_plugin/mkek_length') \
