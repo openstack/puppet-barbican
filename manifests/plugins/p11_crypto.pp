@@ -88,7 +88,7 @@ class barbican::plugins::p11_crypto (
 
   barbican_config {
     'p11_crypto_plugin/library_path':             value => $p11_crypto_plugin_library_path;
-    'p11_crypto_plugin/login':                    value => $p11_crypto_plugin_login;
+    'p11_crypto_plugin/login':                    value => $p11_crypto_plugin_login, secret => true;
     'p11_crypto_plugin/mkek_label':               value => $p11_crypto_plugin_mkek_label;
     'p11_crypto_plugin/mkek_length':              value => $p11_crypto_plugin_mkek_length;
     'p11_crypto_plugin/hmac_label':               value => $p11_crypto_plugin_hmac_label;
