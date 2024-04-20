@@ -79,14 +79,6 @@ class barbican::db (
     mysql_enable_ndb        => $mysql_enable_ndb,
   }
 
-  # TODO(tkajinam): Remove this after 2024.1 release
-  barbican_config {
-    'DEFAULT/sql_connection':        ensure => absent;
-    'DEFAULT/sql_idle_timeout':      ensure => absent;
-    'DEFAULT/sql_pool_size':         ensure => absent;
-    'DEFAULT/sql_pool_max_overflow': ensure => absent;
-  }
-
   # all db settings should be applied and all packages should be installed
   # before dbsync starts
   Oslo::Db['barbican_config'] -> Anchor['barbican::dbsync::begin']
