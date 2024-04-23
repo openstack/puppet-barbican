@@ -15,17 +15,14 @@
 # [*database_max_retries*]
 #   Maximum number of database connection retries during startup.
 #   Setting -1 implies an infinite retry count.
-#   NOTE: This is currently NOT used until barbican correctly leverages oslo.
 #   (Optional) Defaults to $facts['os_service_default']
 #
 # [*database_retry_interval*]
 #   Interval between retries of opening a database connection.
-#   NOTE: This is currently NOT used until barbican correctly leverages oslo.
 #   (Optional) Defaults to $facts['os_service_default']
 #
 # [*database_max_pool_size*]
 #   Maximum number of SQL connections to keep open in a pool.
-#   NOTE: This is currently NOT used until barbican correctly leverages oslo.
 #   (Optional) Defaults to $facts['os_service_default']
 #
 # [*database_max_overflow*]
@@ -34,7 +31,6 @@
 #
 # [*database_pool_size*]
 #   Number of SQL connections to keep open in a pool.
-#   NOTE: This is currently used until barbican correctly leverages oslo and
 #   will be removed during a later release.
 #   (Optional) Defaults to $facts['os_service_default']
 #
