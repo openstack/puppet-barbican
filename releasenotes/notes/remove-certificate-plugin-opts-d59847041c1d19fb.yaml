@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    The following deprecated parameters have been removed.
+
+    - ``barbican::api::enabled_certificate_plugins``
+    - ``barbican::api::enabled_certificate_event_plugins``
+    - ``barbican::plugins::dogtag::dogtag_plugin_simple_cmc_profile``
+    - ``barbican::plugins::dogtag::dogtag_plugin_ca_expiration_time``
+    - ``barbican::plugins::dogtag::dogtag_plugin_plugin_working_dir``

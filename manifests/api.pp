@@ -243,16 +243,6 @@
 #   (Optional) Default page size for the 'limit' paging URL parameter.
 #   Defaults to $facts['os_service_default']
 #
-# DEPRECATED PARAMETERS
-#
-# [*enabled_certificate_plugins*]
-#   (optional) Enabled certificate plugins as a list.
-#   Defaults to undef
-#
-# [*enabled_certificate_event_plugins*]
-#   (optional) Enabled certificate event plugins as a list
-#   Defaults to undef
-#
 class barbican::api (
   $package_ensure                                = 'present',
   $bind_host                                     = '0.0.0.0',
@@ -303,21 +293,12 @@ class barbican::api (
   $max_request_body_size                         = $facts['os_service_default'],
   $max_limit_paging                              = $facts['os_service_default'],
   $default_limit_paging                          = $facts['os_service_default'],
-  # DEPRECATED PARAMETERS
-  $enabled_certificate_plugins                   = undef,
-  $enabled_certificate_event_plugins             = undef,
 ) inherits barbican::params {
 
   include barbican::deps
   include barbican::db
   include barbican::client
   include barbican::policy
-
-  ['enabled_certificate_plugins', 'enabled_certificate_event_plugins'].each |String $opt| {
-    if getvar($opt) != undef {
-      warning("The ${opt} parameter has been deprecated and has no effect.")
-    }
-  }
 
   package { 'barbican-api':
     ensure => $package_ensure,
@@ -395,12 +376,6 @@ class barbican::api (
   barbican_config {
     'secretstore/enabled_secretstore_plugins': value => $enabled_secretstore_plugins;
     'crypto/enabled_crypto_plugins':           value => $enabled_crypto_plugins;
-  }
-
-  # TODO(tkajinam): Remove this after 2024.1 release
-  barbican_config {
-    'certificate/enabled_certificate_plugins':             ensure => absent;
-    'certificate_event/enabled_certificate_event_plugins': ensure => absent;
   }
 
   # enabled plugins when multiple plugins is enabled
