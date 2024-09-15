@@ -57,7 +57,7 @@
 #
 # [*service_description*]
 #   (Optional) Description of the service.
-#   Default to 'Key management Service'
+#   Default to 'OpenStack Key Manager Service'
 #
 # [*public_url*]
 #   (Optional) The endpoint's public url.
@@ -85,7 +85,7 @@ class barbican::keystone::auth (
   Boolean $configure_endpoint             = true,
   Boolean $configure_user                 = true,
   Boolean $configure_user_role            = true,
-  String[1] $service_description          = 'Key management Service',
+  String[1] $service_description          = 'OpenStack Key Manager Service',
   String[1] $service_name                 = 'barbican',
   String[1] $service_type                 = 'key-manager',
   String[1] $region                       = 'RegionOne',
