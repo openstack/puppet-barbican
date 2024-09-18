@@ -113,6 +113,10 @@
 #   will be run through a green thread.
 #   Defaults to $facts['os_service_default']
 #
+# [*rabbit_qos_prefetch_count*]
+#   (Optional) Specifies the number of messages to prefetch.
+#   Defaults to $facts['os_service_default']
+#
 # [*amqp_durable_queues*]
 #   (optional) Define queues as "durable" to rabbitmq.
 #   Defaults to $facts['os_service_default']
@@ -260,6 +264,7 @@ class barbican::api (
   $rabbit_heartbeat_timeout_threshold            = $facts['os_service_default'],
   $rabbit_heartbeat_rate                         = $facts['os_service_default'],
   $rabbit_heartbeat_in_pthread                   = $facts['os_service_default'],
+  $rabbit_qos_prefetch_count                     = $facts['os_service_default'],
   $rabbit_ha_queues                              = $facts['os_service_default'],
   $rabbit_quorum_queue                           = $facts['os_service_default'],
   $rabbit_transient_quorum_queue                 = $facts['os_service_default'],
@@ -322,6 +327,7 @@ class barbican::api (
     heartbeat_timeout_threshold     => $rabbit_heartbeat_timeout_threshold,
     heartbeat_rate                  => $rabbit_heartbeat_rate,
     heartbeat_in_pthread            => $rabbit_heartbeat_in_pthread,
+    rabbit_qos_prefetch_count       => $rabbit_qos_prefetch_count,
     kombu_reconnect_delay           => $kombu_reconnect_delay,
     kombu_failover_strategy         => $kombu_failover_strategy,
     amqp_durable_queues             => $amqp_durable_queues,
