@@ -12,9 +12,10 @@ describe 'barbican::keystone::auth' do
       end
 
       it { is_expected.to contain_keystone__resource__service_identity('barbican').with(
+        :configure_endpoint  => true,
         :configure_user      => true,
         :configure_user_role => true,
-        :configure_endpoint  => true,
+        :configure_service   => true,
         :service_name        => 'barbican',
         :service_type        => 'key-manager',
         :service_description => 'OpenStack Key Manager Service',
@@ -44,6 +45,7 @@ describe 'barbican::keystone::auth' do
           :configure_endpoint  => false,
           :configure_user      => false,
           :configure_user_role => false,
+          :configure_service   => false,
           :service_description => 'Alternative OpenStack Key Manager Service',
           :service_name        => 'alt_service',
           :service_type        => 'alt_key-manager',
@@ -57,6 +59,7 @@ describe 'barbican::keystone::auth' do
         :configure_user      => false,
         :configure_user_role => false,
         :configure_endpoint  => false,
+        :configure_service   => false,
         :service_name        => 'alt_service',
         :service_type        => 'alt_key-manager',
         :service_description => 'Alternative OpenStack Key Manager Service',
