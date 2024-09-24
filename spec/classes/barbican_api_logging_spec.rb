@@ -86,7 +86,6 @@ describe 'barbican::api::logging' do
         :syslog_log_facility => '<SERVICE DEFAULT>',
         :log_dir             => '/var/log/barbican',
         :log_file            => '<SERVICE DEFAULT>',
-        :watch_log_file      => '<SERVICE DEFAULT>',
         :debug               => '<SERVICE DEFAULT>',
       )
     end
@@ -136,7 +135,7 @@ describe 'barbican::api::logging' do
      :log_config_append, :publish_errors,
      :default_log_levels, :fatal_deprecations,
      :instance_format, :instance_uuid_format,
-     :log_date_format, :log_file, :watch_log_file ].each { |param|
+     :log_date_format, :log_file].each { |param|
         it { is_expected.to contain_oslo__log('barbican_config').with("#{param}" => '<SERVICE DEFAULT>') }
     }
   end
