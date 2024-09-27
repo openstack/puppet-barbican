@@ -88,6 +88,11 @@
 #   (Optional) Limit the number of memory bytes used by the quorum queue.
 #   Defaults to $facts['os_service_default']
 #
+# [*rabbit_enable_cancel_on_failover*]
+#   (Optional) Enable x-cancel-on-ha-failover flag so that rabbitmq server will
+#   cancel and notify consumers when queue is down.
+#   Defaults to $facts['os_service_default']
+#
 # [*rabbit_heartbeat_timeout_threshold*]
 #   (optional) Number of seconds after which the RabbitMQ broker is considered
 #   down if the heartbeat keepalive fails.  Any value >0 enables heartbeats.
@@ -271,6 +276,7 @@ class barbican::api (
   $rabbit_quorum_delivery_limit                  = $facts['os_service_default'],
   $rabbit_quorum_max_memory_length               = $facts['os_service_default'],
   $rabbit_quorum_max_memory_bytes                = $facts['os_service_default'],
+  $rabbit_enable_cancel_on_failover              = $facts['os_service_default'],
   $amqp_durable_queues                           = $facts['os_service_default'],
   $enable_queue                                  = $facts['os_service_default'],
   $queue_namespace                               = $facts['os_service_default'],
@@ -342,6 +348,7 @@ class barbican::api (
     rabbit_quorum_delivery_limit    => $rabbit_quorum_delivery_limit,
     rabbit_quorum_max_memory_length => $rabbit_quorum_max_memory_length,
     rabbit_quorum_max_memory_bytes  => $rabbit_quorum_max_memory_bytes,
+    enable_cancel_on_failover       => $rabbit_enable_cancel_on_failover,
   }
 
   oslo::messaging::default { 'barbican_config':

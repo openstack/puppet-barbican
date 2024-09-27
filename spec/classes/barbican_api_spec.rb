@@ -42,6 +42,7 @@ describe 'barbican::api' do
         :rabbit_quorum_delivery_limit                  => '<SERVICE DEFAULT>',
         :rabbit_quorum_max_memory_length               => '<SERVICE DEFAULT>',
         :rabbit_quorum_max_memory_bytes                => '<SERVICE DEFAULT>',
+        :rabbit_enable_cancel_on_failover              => '<SERVICE DEFAULT>',
         :amqp_durable_queues                           => '<SERVICE DEFAULT>',
         :max_allowed_secret_in_bytes                   => '<SERVICE DEFAULT>',
         :max_allowed_request_size_in_bytes             => '<SERVICE DEFAULT>',
@@ -92,6 +93,7 @@ describe 'barbican::api' do
         :rabbit_quorum_delivery_limit                  => 3,
         :rabbit_quorum_max_memory_length               => 5,
         :rabbit_quorum_max_memory_bytes                => 1073741824,
+        :rabbit_enable_cancel_on_failover              => false,
         :amqp_durable_queues                           => true,
         :enable_queue                                  => true,
         :queue_namespace                               => 'barbican1',
@@ -189,6 +191,7 @@ describe 'barbican::api' do
             :rabbit_quorum_delivery_limit    => param_hash[:rabbit_quorum_delivery_limit],
             :rabbit_quorum_max_memory_length => param_hash[:rabbit_quorum_max_memory_length],
             :rabbit_quorum_max_memory_bytes  => param_hash[:rabbit_quorum_max_memory_bytes],
+            :enable_cancel_on_failover       => param_hash[:rabbit_enable_cancel_on_failover],
           )
         end
 
