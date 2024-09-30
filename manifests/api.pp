@@ -58,6 +58,11 @@
 #   (optional) Topics to use for oslo messaging notifications backend.
 #   Defaults to $facts['os_service_default']
 #
+# [*notification_retry*]
+#   (optional) The maximum number of attempts to re-sent a notification
+#   message, which failed to be delivered due to a recoverable error.
+#   Defaults to $facts['os_service_default'].
+#
 # [*rabbit_use_ssl*]
 #   (optional) Connect over SSL for RabbitMQ
 #   Defaults to $facts['os_service_default']
@@ -260,6 +265,7 @@ class barbican::api (
   $notification_transport_url                    = $facts['os_service_default'],
   $notification_driver                           = $facts['os_service_default'],
   $notification_topics                           = $facts['os_service_default'],
+  $notification_retry                            = $facts['os_service_default'],
   $rabbit_use_ssl                                = $facts['os_service_default'],
   $rabbit_heartbeat_timeout_threshold            = $facts['os_service_default'],
   $rabbit_heartbeat_rate                         = $facts['os_service_default'],
@@ -354,6 +360,7 @@ class barbican::api (
     driver        => $notification_driver,
     transport_url => $notification_transport_url,
     topics        => $notification_topics,
+    retry         => $notification_retry,
   }
 
   # queue options

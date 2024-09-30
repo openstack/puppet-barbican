@@ -31,6 +31,7 @@ describe 'barbican::api' do
         :notification_transport_url                    => '<SERVICE DEFAULT>',
         :notification_driver                           => '<SERVICE DEFAULT>',
         :notification_topics                           => '<SERVICE DEFAULT>',
+        :notification_retry                            => '<SERVICE DEFAULT>',
         :rabbit_use_ssl                                => '<SERVICE DEFAULT>',
         :rabbit_heartbeat_timeout_threshold            => '<SERVICE DEFAULT>',
         :rabbit_heartbeat_rate                         => '<SERVICE DEFAULT>',
@@ -81,6 +82,7 @@ describe 'barbican::api' do
         :notification_transport_url                    => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
         :notification_driver                           => 'kombu',
         :notification_topics                           => 'notifications',
+        :notification_retry                            => 10,
         :rabbit_use_ssl                                => true,
         :rabbit_heartbeat_timeout_threshold            => '10',
         :rabbit_heartbeat_rate                         => '10',
@@ -167,7 +169,8 @@ describe 'barbican::api' do
           is_expected.to contain_oslo__messaging__notifications('barbican_config').with(
             :transport_url => param_hash[:notification_transport_url],
             :driver        => param_hash[:notification_driver],
-            :topics        => param_hash[:notification_topics]
+            :topics        => param_hash[:notification_topics],
+            :retry         => param_hash[:notification_retry],
           )
           is_expected.to contain_oslo__messaging__rabbit('barbican_config').with(
             :rabbit_use_ssl                  => param_hash[:rabbit_use_ssl],
