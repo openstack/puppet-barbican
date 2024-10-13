@@ -1,0 +1,6 @@
+---
+deprecations:
+  - |
+    Support for the oslo.messaging options and queue options by
+    the ``barbican::api`` class. Use the parameters of the ``barbican`` class
+    instead.
