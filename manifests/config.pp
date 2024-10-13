@@ -18,7 +18,7 @@
 # === Parameters
 #
 # [*api_config*]
-# (optional) Allow configuration of barbican-api.conf configurations.
+# (optional) Allow configuration of barbican.conf configurations.
 #
 # [*api_paste_ini_config*]
 # (optional) Allow configuration of barbican-api-paste.ini configurations.
