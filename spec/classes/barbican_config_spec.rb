@@ -30,7 +30,7 @@ describe 'barbican::config' do
 
   shared_examples_for 'barbican_config' do
     let :params do
-      { :api_config => config_hash }
+      { :barbican_config => config_hash }
     end
 
     it { is_expected.to contain_class('barbican::deps') }
