@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    The following parameters have been added to
+    the ``barbican::plugins::p11_crypt`` class.
+
+    - ``p11_crypto_plugin_hmac_mechanism``
+    - ``p11_crypto_plugin_key_wrap_mechanism``
+    - ``p11_crypto_plugin_key_wrap_generate_iv``

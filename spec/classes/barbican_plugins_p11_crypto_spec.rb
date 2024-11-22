@@ -36,6 +36,9 @@ describe 'barbican::plugins::p11_crypto' do
           :p11_crypto_plugin_encryption_mechanism      => 'CKM_AES_CBC',
           :p11_crypto_plugin_hmac_key_type             => 'CKK_AES',
           :p11_crypto_plugin_hmac_keygen_mechanism     => 'CKM_AES_KEY_GEN',
+          :p11_crypto_plugin_hmac_mechanism            => 'CKM_SHA256_HMAC',
+          :p11_crypto_plugin_key_wrap_mechanism        => 'CKM_AES_CBC_PAD',
+          :p11_crypto_plugin_key_wrap_generate_iv      => false,
           :p11_crypto_plugin_aes_gcm_generate_iv       => false,
           :p11_crypto_plugin_os_locking_ok             => false,
           :p11_crypto_plugin_always_set_cka_sensitive  => true,
@@ -66,6 +69,12 @@ describe 'barbican::plugins::p11_crypto' do
           .with_value(params[:p11_crypto_plugin_hmac_key_type])
         is_expected.to contain_barbican_config('p11_crypto_plugin/hmac_keygen_mechanism') \
           .with_value(params[:p11_crypto_plugin_hmac_keygen_mechanism])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/hmac_mechanism') \
+          .with_value(params[:p11_crypto_plugin_hmac_mechanism])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/key_wrap_mechanism') \
+          .with_value(params[:p11_crypto_plugin_key_wrap_mechanism])
+        is_expected.to contain_barbican_config('p11_crypto_plugin/key_wrap_generate_iv') \
+          .with_value(params[:p11_crypto_plugin_key_wrap_generate_iv])
         is_expected.to contain_barbican_config('p11_crypto_plugin/aes_gcm_generate_iv') \
           .with_value(params[:p11_crypto_plugin_aes_gcm_generate_iv])
         is_expected.to contain_barbican_config('p11_crypto_plugin/always_set_cka_sensitive') \

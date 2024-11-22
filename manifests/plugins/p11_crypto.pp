@@ -37,12 +37,23 @@
 #   Defaults to $facts['os_service_default']
 #
 # [*p11_crypto_plugin_hmac_key_type*]
-#   (optional) PKCS#11 Key Type for key used in HMAC
-#   operations.
+#   (optional) HMAC Key Type
 #   Defaults to $facts['os_service_default']
 #
 # [*p11_crypto_plugin_hmac_keygen_mechanism*]
-#   (optional) PKCS#11 Mechanism used to generate HMAC Key
+#   (optional) HMAC Key Generation Algorithm used to create the master HMAC Key.
+#   Defaults to $facts['os_service_default']
+#
+# [*p11_crypto_plugin_hmac_mechanism*]
+#   (optional) HMAC algorithm used to sign encrypted data.
+#   Defaults to $facts['os_service_default']
+#
+# [*p11_crypto_plugin_key_wrap_mechanism*]
+#   (optional) Key Wrapping algorithm used to wrap Project KEKs.
+#   Defaults to $facts['os_service_default']
+#
+# [*p11_crypto_plugin_key_wrap_generate_iv*]
+#   (optional) Generate IVs for Key Wrapping mechanism.
 #   Defaults to $facts['os_service_default']
 #
 # [*p11_crypto_plugin_aes_gcm_generate_iv*]
@@ -78,6 +89,9 @@ class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_encryption_mechanism     = $facts['os_service_default'],
   $p11_crypto_plugin_hmac_key_type            = $facts['os_service_default'],
   $p11_crypto_plugin_hmac_keygen_mechanism    = $facts['os_service_default'],
+  $p11_crypto_plugin_hmac_mechanism           = $facts['os_service_default'],
+  $p11_crypto_plugin_key_wrap_mechanism       = $facts['os_service_default'],
+  $p11_crypto_plugin_key_wrap_generate_iv     = $facts['os_service_default'],
   $p11_crypto_plugin_aes_gcm_generate_iv      = $facts['os_service_default'],
   $p11_crypto_plugin_os_locking_ok            = $facts['os_service_default'],
   $p11_crypto_plugin_always_set_cka_sensitive = $facts['os_service_default'],
@@ -98,6 +112,9 @@ class barbican::plugins::p11_crypto (
     'p11_crypto_plugin/encryption_mechanism':     value => $p11_crypto_plugin_encryption_mechanism;
     'p11_crypto_plugin/hmac_key_type':            value => $p11_crypto_plugin_hmac_key_type;
     'p11_crypto_plugin/hmac_keygen_mechanism':    value => $p11_crypto_plugin_hmac_keygen_mechanism;
+    'p11_crypto_plugin/hmac_mechanism':           value => $p11_crypto_plugin_hmac_mechanism;
+    'p11_crypto_plugin/key_wrap_mechanism':       value => $p11_crypto_plugin_key_wrap_mechanism;
+    'p11_crypto_plugin/key_wrap_generate_iv':     value => $p11_crypto_plugin_key_wrap_generate_iv;
     'p11_crypto_plugin/aes_gcm_generate_iv':      value => $p11_crypto_plugin_aes_gcm_generate_iv;
     'p11_crypto_plugin/os_locking_ok':            value => $p11_crypto_plugin_os_locking_ok;
     'p11_crypto_plugin/always_set_cka_sensitive': value => $p11_crypto_plugin_always_set_cka_sensitive;
