@@ -239,7 +239,7 @@ class barbican::keystone::authtoken(
 
   keystone::resource::authtoken {
     'barbican_config':
-      *                              => $params;
+      * => $params;
     default:
       username                       => $username,
       password                       => $password,
