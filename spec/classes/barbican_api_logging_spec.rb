@@ -49,7 +49,6 @@ describe 'barbican::api::logging' do
      :log_facility                   => 'LOG_FOO',
      :log_dir                        => '/var/log',
      :log_file                       => '/var/tmp/barbican_random.log',
-     :watch_log_file                 => true,
      :debug                          => true,
     }
   end
@@ -101,7 +100,6 @@ describe 'barbican::api::logging' do
         :syslog_log_facility => 'LOG_FOO',
         :log_dir             => '/var/log',
         :log_file            => '/var/tmp/barbican_random.log',
-        :watch_log_file      => true,
         :debug               => true,
       )
     end
