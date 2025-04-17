@@ -25,102 +25,38 @@ describe 'barbican::api' do
 
     let :default_params do
       {
-        :default_transport_url                         => '<SERVICE DEFAULT>',
-        :rpc_response_timeout                          => '<SERVICE DEFAULT>',
-        :control_exchange                              => '<SERVICE DEFAULT>',
-        :notification_transport_url                    => '<SERVICE DEFAULT>',
-        :notification_driver                           => '<SERVICE DEFAULT>',
-        :notification_topics                           => '<SERVICE DEFAULT>',
-        :notification_retry                            => '<SERVICE DEFAULT>',
-        :rabbit_use_ssl                                => '<SERVICE DEFAULT>',
-        :rabbit_heartbeat_timeout_threshold            => '<SERVICE DEFAULT>',
-        :rabbit_heartbeat_rate                         => '<SERVICE DEFAULT>',
-        :rabbit_heartbeat_in_pthread                   => '<SERVICE DEFAULT>',
-        :rabbit_qos_prefetch_count                     => '<SERVICE DEFAULT>',
-        :rabbit_ha_queues                              => '<SERVICE DEFAULT>',
-        :rabbit_quorum_queue                           => '<SERVICE DEFAULT>',
-        :rabbit_transient_quorum_queue                 => '<SERVICE DEFAULT>',
-        :rabbit_quorum_delivery_limit                  => '<SERVICE DEFAULT>',
-        :rabbit_quorum_max_memory_length               => '<SERVICE DEFAULT>',
-        :rabbit_quorum_max_memory_bytes                => '<SERVICE DEFAULT>',
-        :rabbit_enable_cancel_on_failover              => '<SERVICE DEFAULT>',
-        :amqp_durable_queues                           => '<SERVICE DEFAULT>',
-        :max_allowed_secret_in_bytes                   => '<SERVICE DEFAULT>',
-        :max_allowed_request_size_in_bytes             => '<SERVICE DEFAULT>',
-        :enable_queue                                  => '<SERVICE DEFAULT>',
-        :queue_namespace                               => '<SERVICE DEFAULT>',
-        :queue_topic                                   => '<SERVICE DEFAULT>',
-        :queue_version                                 => '<SERVICE DEFAULT>',
-        :queue_server_name                             => '<SERVICE DEFAULT>',
-        :kombu_ssl_ca_certs                            => '<SERVICE DEFAULT>',
-        :kombu_ssl_certfile                            => '<SERVICE DEFAULT>',
-        :kombu_ssl_keyfile                             => '<SERVICE DEFAULT>',
-        :kombu_ssl_version                             => '<SERVICE DEFAULT>',
-        :kombu_reconnect_delay                         => '<SERVICE DEFAULT>',
-        :kombu_failover_strategy                       => '<SERVICE DEFAULT>',
-        :kombu_compression                             => '<SERVICE DEFAULT>',
-        :manage_service                                => true,
-        :enabled                                       => true,
-        :enabled_secretstore_plugins                   => ['<SERVICE DEFAULT>'],
-        :enabled_crypto_plugins                        => ['<SERVICE DEFAULT>'],
-        :auth_strategy                                 => 'keystone',
-        :service_name                                  => platform_params[:service_name],
-        :enable_proxy_headers_parsing                  => '<SERVICE DEFAULT>',
-        :max_request_body_size                         => '<SERVICE DEFAULT>',
-        :max_limit_paging                              => '<SERVICE DEFAULT>',
-        :default_limit_paging                          => '<SERVICE DEFAULT>',
-        :multiple_secret_stores_enabled                => false,
-        :enabled_secret_stores                         => 'simple_crypto',
+        :max_allowed_secret_in_bytes       => '<SERVICE DEFAULT>',
+        :max_allowed_request_size_in_bytes => '<SERVICE DEFAULT>',
+        :manage_service                    => true,
+        :enabled                           => true,
+        :enabled_secretstore_plugins       => ['<SERVICE DEFAULT>'],
+        :enabled_crypto_plugins            => ['<SERVICE DEFAULT>'],
+        :auth_strategy                     => 'keystone',
+        :service_name                      => platform_params[:service_name],
+        :enable_proxy_headers_parsing      => '<SERVICE DEFAULT>',
+        :max_request_body_size             => '<SERVICE DEFAULT>',
+        :max_limit_paging                  => '<SERVICE DEFAULT>',
+        :default_limit_paging              => '<SERVICE DEFAULT>',
+        :multiple_secret_stores_enabled    => false,
+        :enabled_secret_stores             => 'simple_crypto',
       }
     end
 
     [
       {},
       {
-        :default_transport_url                         => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
-        :rpc_response_timeout                          => '120',
-        :control_exchange                              => 'barbican',
-        :notification_transport_url                    => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
-        :notification_driver                           => 'kombu',
-        :notification_topics                           => 'notifications',
-        :notification_retry                            => 10,
-        :rabbit_use_ssl                                => true,
-        :rabbit_heartbeat_timeout_threshold            => '10',
-        :rabbit_heartbeat_rate                         => '10',
-        :rabbit_heartbeat_in_pthread                   => true,
-        :rabbit_qos_prefetch_count                     => 0,
-        :rabbit_ha_queues                              => true,
-        :rabbit_quorum_queue                           => true,
-        :rabbit_transient_quorum_queue                 => true,
-        :rabbit_quorum_delivery_limit                  => 3,
-        :rabbit_quorum_max_memory_length               => 5,
-        :rabbit_quorum_max_memory_bytes                => 1073741824,
-        :rabbit_enable_cancel_on_failover              => false,
-        :amqp_durable_queues                           => true,
-        :enable_queue                                  => true,
-        :queue_namespace                               => 'barbican1',
-        :queue_topic                                   => 'barbican1.workers',
-        :queue_version                                 => '1.2',
-        :queue_server_name                             => 'barbican1.queue',
-        :manage_service                                => true,
-        :enabled                                       => false,
-        :kombu_ssl_ca_certs                            => 'path_to_certs',
-        :kombu_ssl_certfile                            => 'path_to_certfile',
-        :kombu_ssl_keyfile                             => 'path_to_keyfile',
-        :kombu_ssl_version                             => '1.2',
-        :kombu_reconnect_delay                         => '10',
-        :kombu_failover_strategy                       => 'shuffle',
-        :kombu_compression                             => 'gzip',
-        :enabled_secretstore_plugins                   => ['dogtag_crypto', 'store_crypto', 'kmip'],
-        :enabled_crypto_plugins                        => ['simple_crypto'],
-        :max_allowed_secret_in_bytes                   => 20000,
-        :max_allowed_request_size_in_bytes             => 2000000,
-        :enable_proxy_headers_parsing                  => false,
-        :max_request_body_size                         => '102400',
-        :max_limit_paging                              => 100,
-        :default_limit_paging                          => 10,
-        :multiple_secret_stores_enabled                => true,
-        :enabled_secret_stores                         => 'simple_crypto,dogtag,kmip',
+        :manage_service                    => true,
+        :enabled                           => false,
+        :enabled_secretstore_plugins       => ['dogtag_crypto', 'store_crypto', 'kmip'],
+        :enabled_crypto_plugins            => ['simple_crypto'],
+        :max_allowed_secret_in_bytes       => 20000,
+        :max_allowed_request_size_in_bytes => 2000000,
+        :enable_proxy_headers_parsing      => false,
+        :max_request_body_size             => '102400',
+        :max_limit_paging                  => 100,
+        :default_limit_paging              => 10,
+        :multiple_secret_stores_enabled    => true,
+        :enabled_secret_stores             => 'simple_crypto,dogtag,kmip',
       }
     ].each do |param_set|
       describe "when #{param_set == {} ? "using default" : "specifying"} class parameters" do
@@ -152,50 +88,6 @@ describe 'barbican::api' do
           ].each do |config|
             is_expected.to contain_barbican_config("DEFAULT/#{config}").with_value(param_hash[config.intern])
           end
-        end
-
-        it 'configures queue' do
-          is_expected.to contain_barbican_config('queue/enable').with_value(param_hash[:enable_queue])
-          is_expected.to contain_barbican_config('queue/namespace').with_value(param_hash[:queue_namespace])
-          is_expected.to contain_barbican_config('queue/topic').with_value(param_hash[:queue_topic])
-          is_expected.to contain_barbican_config('queue/version').with_value(param_hash[:queue_version])
-          is_expected.to contain_barbican_config('queue/server_name').with_value(param_hash[:queue_server_name])
-        end
-
-        it 'configures rabbit' do
-          is_expected.to contain_oslo__messaging__default('barbican_config').with(
-            :transport_url        => param_hash[:default_transport_url],
-            :rpc_response_timeout => param_hash[:rpc_response_timeout],
-            :control_exchange     => param_hash[:control_exchange]
-          )
-          is_expected.to contain_oslo__messaging__notifications('barbican_config').with(
-            :transport_url => param_hash[:notification_transport_url],
-            :driver        => param_hash[:notification_driver],
-            :topics        => param_hash[:notification_topics],
-            :retry         => param_hash[:notification_retry],
-          )
-          is_expected.to contain_oslo__messaging__rabbit('barbican_config').with(
-            :rabbit_use_ssl                  => param_hash[:rabbit_use_ssl],
-            :heartbeat_timeout_threshold     => param_hash[:rabbit_heartbeat_timeout_threshold],
-            :heartbeat_rate                  => param_hash[:rabbit_heartbeat_rate],
-            :heartbeat_in_pthread            => param_hash[:rabbit_heartbeat_in_pthread],
-            :rabbit_qos_prefetch_count       => param_hash[:rabbit_qos_prefetch_count],
-            :kombu_reconnect_delay           => param_hash[:kombu_reconnect_delay],
-            :kombu_failover_strategy         => param_hash[:kombu_failover_strategy],
-            :amqp_durable_queues             => param_hash[:amqp_durable_queues],
-            :kombu_compression               => param_hash[:kombu_compression],
-            :kombu_ssl_ca_certs              => param_hash[:kombu_ssl_ca_certs],
-            :kombu_ssl_certfile              => param_hash[:kombu_ssl_certfile],
-            :kombu_ssl_keyfile               => param_hash[:kombu_ssl_keyfile],
-            :kombu_ssl_version               => param_hash[:kombu_ssl_version],
-            :rabbit_ha_queues                => param_hash[:rabbit_ha_queues],
-            :rabbit_quorum_queue             => param_hash[:rabbit_quorum_queue],
-            :rabbit_transient_quorum_queue   => param_hash[:rabbit_transient_quorum_queue],
-            :rabbit_quorum_delivery_limit    => param_hash[:rabbit_quorum_delivery_limit],
-            :rabbit_quorum_max_memory_length => param_hash[:rabbit_quorum_max_memory_length],
-            :rabbit_quorum_max_memory_bytes  => param_hash[:rabbit_quorum_max_memory_bytes],
-            :enable_cancel_on_failover       => param_hash[:rabbit_enable_cancel_on_failover],
-          )
         end
 
         it 'configures enabled plugins' do

@@ -24,14 +24,6 @@ describe 'barbican' do
           :purge => false
         })
       end
-    end
-
-    context 'with transport_url' do
-      let :params do
-        {
-          :default_transport_url => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
-        }
-      end
 
       it 'configures queue_options' do
         is_expected.to contain_barbican_config('queue/enable').with_value('<SERVICE DEFAULT>')
@@ -43,7 +35,7 @@ describe 'barbican' do
 
       it 'configures rabbitmq parameters' do
         is_expected.to contain_oslo__messaging__default('barbican_config').with(
-          :transport_url        => 'rabbit://bugs:bugs_bunny@localhost:1234/rabbithost',
+          :transport_url        => '<SERVICE DEFAULT>',
           :rpc_response_timeout => '<SERVICE DEFAULT>',
           :control_exchange     => '<SERVICE DEFAULT>',
         )

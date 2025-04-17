@@ -236,52 +236,50 @@ class barbican(
     purge => $purge_config,
   }
 
-  if $default_transport_url {
-    oslo::messaging::rabbit {'barbican_config':
-      rabbit_use_ssl                  => $rabbit_use_ssl,
-      heartbeat_timeout_threshold     => $rabbit_heartbeat_timeout_threshold,
-      heartbeat_rate                  => $rabbit_heartbeat_rate,
-      heartbeat_in_pthread            => $rabbit_heartbeat_in_pthread,
-      rabbit_qos_prefetch_count       => $rabbit_qos_prefetch_count,
-      kombu_reconnect_delay           => $kombu_reconnect_delay,
-      kombu_failover_strategy         => $kombu_failover_strategy,
-      amqp_durable_queues             => $amqp_durable_queues,
-      amqp_auto_delete                => $amqp_auto_delete,
-      kombu_compression               => $kombu_compression,
-      kombu_ssl_ca_certs              => $kombu_ssl_ca_certs,
-      kombu_ssl_certfile              => $kombu_ssl_certfile,
-      kombu_ssl_keyfile               => $kombu_ssl_keyfile,
-      kombu_ssl_version               => $kombu_ssl_version,
-      rabbit_ha_queues                => $rabbit_ha_queues,
-      rabbit_quorum_queue             => $rabbit_quorum_queue,
-      rabbit_transient_quorum_queue   => $rabbit_transient_quorum_queue,
-      rabbit_transient_queues_ttl     => $rabbit_transient_queues_ttl,
-      rabbit_quorum_delivery_limit    => $rabbit_quorum_delivery_limit,
-      rabbit_quorum_max_memory_length => $rabbit_quorum_max_memory_length,
-      rabbit_quorum_max_memory_bytes  => $rabbit_quorum_max_memory_bytes,
-      enable_cancel_on_failover       => $rabbit_enable_cancel_on_failover,
-    }
+  oslo::messaging::rabbit {'barbican_config':
+    rabbit_use_ssl                  => $rabbit_use_ssl,
+    heartbeat_timeout_threshold     => $rabbit_heartbeat_timeout_threshold,
+    heartbeat_rate                  => $rabbit_heartbeat_rate,
+    heartbeat_in_pthread            => $rabbit_heartbeat_in_pthread,
+    rabbit_qos_prefetch_count       => $rabbit_qos_prefetch_count,
+    kombu_reconnect_delay           => $kombu_reconnect_delay,
+    kombu_failover_strategy         => $kombu_failover_strategy,
+    amqp_durable_queues             => $amqp_durable_queues,
+    amqp_auto_delete                => $amqp_auto_delete,
+    kombu_compression               => $kombu_compression,
+    kombu_ssl_ca_certs              => $kombu_ssl_ca_certs,
+    kombu_ssl_certfile              => $kombu_ssl_certfile,
+    kombu_ssl_keyfile               => $kombu_ssl_keyfile,
+    kombu_ssl_version               => $kombu_ssl_version,
+    rabbit_ha_queues                => $rabbit_ha_queues,
+    rabbit_quorum_queue             => $rabbit_quorum_queue,
+    rabbit_transient_quorum_queue   => $rabbit_transient_quorum_queue,
+    rabbit_transient_queues_ttl     => $rabbit_transient_queues_ttl,
+    rabbit_quorum_delivery_limit    => $rabbit_quorum_delivery_limit,
+    rabbit_quorum_max_memory_length => $rabbit_quorum_max_memory_length,
+    rabbit_quorum_max_memory_bytes  => $rabbit_quorum_max_memory_bytes,
+    enable_cancel_on_failover       => $rabbit_enable_cancel_on_failover,
+  }
 
-    oslo::messaging::default { 'barbican_config':
-      transport_url        => $default_transport_url,
-      rpc_response_timeout => $rpc_response_timeout,
-      control_exchange     => $control_exchange,
-    }
+  oslo::messaging::default { 'barbican_config':
+    transport_url        => $default_transport_url,
+    rpc_response_timeout => $rpc_response_timeout,
+    control_exchange     => $control_exchange,
+  }
 
-    oslo::messaging::notifications { 'barbican_config':
-      driver        => $notification_driver,
-      transport_url => $notification_transport_url,
-      topics        => $notification_topics,
-      retry         => $notification_retry,
-    }
+  oslo::messaging::notifications { 'barbican_config':
+    driver        => $notification_driver,
+    transport_url => $notification_transport_url,
+    topics        => $notification_topics,
+    retry         => $notification_retry,
+  }
 
-    # queue options
-    barbican_config {
-      'queue/enable':      value => $queue_enable;
-      'queue/namespace':   value => $queue_namespace;
-      'queue/topic':       value => $queue_topic;
-      'queue/version':     value => $queue_version;
-      'queue/server_name': value => $queue_server_name;
-    }
+  # queue options
+  barbican_config {
+    'queue/enable':      value => $queue_enable;
+    'queue/namespace':   value => $queue_namespace;
+    'queue/topic':       value => $queue_topic;
+    'queue/version':     value => $queue_version;
+    'queue/server_name': value => $queue_server_name;
   }
 }
