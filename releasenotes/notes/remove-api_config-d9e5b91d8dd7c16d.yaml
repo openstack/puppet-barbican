@@ -1,0 +1,4 @@
+---
+upgrade:
+  - |
+    The ``barbican::config::api_config`` parameter has been removed.
