@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The parameters to customize the oslo.messaging library options and queue
+    options have been removed from the ``barbican::api`` class.
+    Use the parameters of the ``barbican`` class instead.
