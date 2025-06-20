@@ -94,6 +94,8 @@ describe 'barbican' do
           :rabbit_quorum_delivery_limit       => 3,
           :rabbit_quorum_max_memory_length    => 5,
           :rabbit_quorum_max_memory_bytes     => 1073741824,
+          :rabbit_use_queue_manager           => true,
+          :rabbit_stream_fanout               => true,
           :rabbit_enable_cancel_on_failover   => false,
           :amqp_durable_queues                => true,
           :amqp_auto_delete                   => true,
@@ -154,6 +156,8 @@ describe 'barbican' do
           :rabbit_quorum_delivery_limit    => params[:rabbit_quorum_delivery_limit],
           :rabbit_quorum_max_memory_length => params[:rabbit_quorum_max_memory_length],
           :rabbit_quorum_max_memory_bytes  => params[:rabbit_quorum_max_memory_bytes],
+          :use_queue_manager               => params[:rabbit_use_queue_manager],
+          :rabbit_stream_fanout            => params[:rabbit_stream_fanout],
           :enable_cancel_on_failover       => params[:rabbit_enable_cancel_on_failover],
         )
       end
