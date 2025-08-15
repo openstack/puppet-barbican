@@ -82,7 +82,7 @@
 #   service, and you must use another class to configure that
 #   web service. For example, use class { 'barbican::wsgi::apache'...}
 #   to make barbican-api be a web app using apache mod_wsgi.
-#   Defaults to $::barbican::params::api_service_name
+#   Defaults to $barbican::params::api_service_name
 #
 # [*enable_proxy_headers_parsing*]
 #   (Optional) Enable paste middleware to handle SSL requests through
@@ -117,7 +117,7 @@ class barbican::api (
   Boolean $enabled                               = true,
   Boolean $sync_db                               = true,
   $db_auto_create                                = $facts['os_service_default'],
-  $service_name                                  = $::barbican::params::api_service_name,
+  $service_name                                  = $barbican::params::api_service_name,
   $enable_proxy_headers_parsing                  = $facts['os_service_default'],
   $max_request_body_size                         = $facts['os_service_default'],
   $max_limit_paging                              = $facts['os_service_default'],
@@ -131,7 +131,7 @@ class barbican::api (
 
   package { 'barbican-api':
     ensure => $package_ensure,
-    name   => $::barbican::params::api_package_name,
+    name   => $barbican::params::api_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
 
@@ -198,7 +198,7 @@ class barbican::api (
       $service_ensure = 'stopped'
     }
 
-    if $service_name == $::barbican::params::api_service_name {
+    if $service_name == $barbican::params::api_service_name {
 
       if $facts['os']['name'] == 'Ubuntu' {
         fail('With Ubuntu packages the service_name must be set to httpd as there is no eventlet init script.')
@@ -206,7 +206,7 @@ class barbican::api (
 
       service { 'barbican-api':
         ensure     => $service_ensure,
-        name       => $::barbican::params::api_service_name,
+        name       => $barbican::params::api_service_name,
         enable     => $enabled,
         hasstatus  => true,
         hasrestart => true,
@@ -236,7 +236,7 @@ class barbican::api (
       if $facts['os']['name'] != 'Ubuntu' {
         service { 'barbican-api':
           ensure => 'stopped',
-          name   => $::barbican::params::api_service_name,
+          name   => $barbican::params::api_service_name,
           enable => false,
           tag    => 'barbican-service',
         }

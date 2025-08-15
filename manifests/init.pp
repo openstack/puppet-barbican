@@ -238,7 +238,7 @@ class barbican(
 
   package { 'barbican':
     ensure => $package_ensure,
-    name   => $::barbican::params::common_package_name,
+    name   => $barbican::params::common_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
 

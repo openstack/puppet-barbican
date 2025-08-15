@@ -55,7 +55,7 @@ class barbican::keystone::notification (
 
   package { 'barbican-keystone-listener':
     ensure => $package_ensure,
-    name   => $::barbican::params::keystone_listener_package_name,
+    name   => $barbican::params::keystone_listener_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
 
@@ -74,7 +74,7 @@ class barbican::keystone::notification (
 
     service { 'barbican-keystone-listener':
       ensure     => $service_ensure,
-      name       => $::barbican::params::keystone_listener_service_name,
+      name       => $barbican::params::keystone_listener_service_name,
       enable     => $service_enabled,
       hasstatus  => true,
       hasrestart => true,

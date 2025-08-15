@@ -48,7 +48,7 @@ class barbican::worker (
 
   package { 'barbican-worker':
     ensure => $package_ensure,
-    name   => $::barbican::params::worker_package_name,
+    name   => $barbican::params::worker_package_name,
     tag    => ['openstack', 'barbican-package'],
   }
 
@@ -65,7 +65,7 @@ class barbican::worker (
 
     service { 'barbican-worker':
       ensure     => $service_ensure,
-      name       => $::barbican::params::worker_service_name,
+      name       => $barbican::params::worker_service_name,
       enable     => $enabled,
       hasstatus  => true,
       hasrestart => true,

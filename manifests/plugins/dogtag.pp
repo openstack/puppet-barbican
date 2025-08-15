@@ -46,8 +46,8 @@ class barbican::plugins::dogtag (
 
   package {'dogtag-client':
     ensure => $dogtag_plugin_ensure_package,
-    name   => $::barbican::params::dogtag_client_package,
-    tag    => ['openstack', 'barbican-package']
+    name   => $barbican::params::dogtag_client_package,
+    tag    => ['openstack', 'barbican-package'],
   }
 
   barbican_config {

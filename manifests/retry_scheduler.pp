@@ -40,15 +40,15 @@ class barbican::retry_scheduler (
     'retry_scheduler/periodic_interval_max_seconds': value => $periodic_interval_max_seconds;
   }
 
-  if $::barbican::params::retry_package_name {
+  if $barbican::params::retry_package_name {
     package { 'barbican-retry':
       ensure => $package_ensure,
-      name   => $::barbican::params::retry_package_name,
+      name   => $barbican::params::retry_package_name,
       tag    => ['openstack', 'barbican-package'],
     }
   }
 
-  if $::barbican::params::retry_service_name {
+  if $barbican::params::retry_service_name {
     if $manage_service {
       if $enabled {
         $service_ensure = 'running'
@@ -58,7 +58,7 @@ class barbican::retry_scheduler (
 
       service { 'barbican-retry':
         ensure     => $service_ensure,
-        name       => $::barbican::params::retry_service_name,
+        name       => $barbican::params::retry_service_name,
         enable     => $enabled,
         hasstatus  => true,
         hasrestart => true,
