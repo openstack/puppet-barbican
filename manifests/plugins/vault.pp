@@ -46,6 +46,7 @@ class barbican::plugins::vault (
   $ssl_ca_crt_file   = $facts['os_service_default'],
   $global_default    = false,
 ) {
+  include barbican::deps
 
   barbican_config {
     'secretstore:vault/secret_store_plugin':  value => 'vault_plugin';

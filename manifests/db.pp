@@ -60,7 +60,6 @@ class barbican::db (
   $database_pool_timeout            = $facts['os_service_default'],
   $mysql_enable_ndb                 = $facts['os_service_default'],
 ) {
-
   include barbican::deps
 
   oslo::db { 'barbican_config':

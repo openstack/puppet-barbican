@@ -97,7 +97,6 @@ class barbican::plugins::p11_crypto (
   $p11_crypto_plugin_always_set_cka_sensitive = $facts['os_service_default'],
   $global_default                             = false,
 ) {
-
   include barbican::deps
 
   barbican_config {

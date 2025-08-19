@@ -16,7 +16,6 @@ class barbican::plugins::simple_crypto (
   $simple_crypto_plugin_kek = $facts['os_service_default'],
   $global_default           = false,
 ) {
-
   include barbican::deps
 
   barbican_config {

@@ -33,7 +33,7 @@
 #   Only used with mysql modules >= 2.2.
 #   Defaults to 'utf8_general_ci'
 #
-class barbican::db::mysql(
+class barbican::db::mysql (
   String[1] $password,
   $dbname        = 'barbican',
   $user          = 'barbican',
@@ -42,7 +42,6 @@ class barbican::db::mysql(
   $collate       = 'utf8_general_ci',
   $allowed_hosts = undef
 ) {
-
   include barbican::deps
 
   openstacklib::db::mysql { 'barbican':

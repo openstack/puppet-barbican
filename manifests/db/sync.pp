@@ -17,18 +17,17 @@
 #   (Optional) Timeout for the execution of the db_sync
 #   Defaults to 300
 #
-class barbican::db::sync(
+class barbican::db::sync (
   $extra_params              = undef,
   $secret_store_extra_params = undef,
   $db_sync_timeout           = 300,
 ) {
-
   include barbican::deps
   include barbican::params
 
   exec { 'barbican-db-manage':
     command     => "barbican-manage db upgrade ${extra_params}",
-    path        => ['/bin', '/usr/bin', ],
+    path        => ['/bin', '/usr/bin',],
     user        => $barbican::params::user,
     refreshonly => true,
     try_sleep   => 5,
@@ -46,7 +45,7 @@ class barbican::db::sync(
 
   exec { 'barbican-db-manage sync secret stores':
     command     => "barbican-manage db sync_secret_stores ${secret_store_extra_params}",
-    path        => ['/bin', '/usr/bin', ],
+    path        => ['/bin', '/usr/bin',],
     user        => $barbican::params::user,
     refreshonly => true,
     try_sleep   => 5,

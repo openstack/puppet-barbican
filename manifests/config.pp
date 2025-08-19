@@ -30,7 +30,6 @@ class barbican::config (
   Hash $barbican_config      = {},
   Hash $api_paste_ini_config = {},
 ) {
-
   include barbican::deps
 
   create_resources('barbican_config', $barbican_config)

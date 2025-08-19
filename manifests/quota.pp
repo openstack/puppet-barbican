@@ -31,7 +31,6 @@ class barbican::quota (
   $quota_consumers  = $facts['os_service_default'],
   $quota_cas        = $facts['os_service_default'],
 ) {
-
   include barbican::deps
 
   barbican_config {

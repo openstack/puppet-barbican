@@ -40,11 +40,10 @@ class barbican::plugins::dogtag (
   $dogtag_plugin_nss_db_path    = $facts['os_service_default'],
   $global_default               = false,
 ) {
-
   include barbican::deps
   include barbican::params
 
-  package {'dogtag-client':
+  package { 'dogtag-client':
     ensure => $dogtag_plugin_ensure_package,
     name   => $barbican::params::dogtag_client_package,
     tag    => ['openstack', 'barbican-package'],

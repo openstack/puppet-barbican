@@ -101,7 +101,7 @@
 #   Defaults to $facts['os_service_default']
 #   Example: 'Y-%m-%d %H:%M:%S'
 #
-class barbican::api::logging(
+class barbican::api::logging (
   $use_syslog                    = $facts['os_service_default'],
   $use_json                      = $facts['os_service_default'],
   $use_journal                   = $facts['os_service_default'],
@@ -122,7 +122,6 @@ class barbican::api::logging(
   $instance_uuid_format          = $facts['os_service_default'],
   $log_date_format               = $facts['os_service_default'],
 ) {
-
   include barbican::deps
 
   oslo::log { 'barbican_config':
@@ -146,5 +145,4 @@ class barbican::api::logging(
     instance_uuid_format          => $instance_uuid_format,
     instance_format               => $instance_format,
   }
-
 }

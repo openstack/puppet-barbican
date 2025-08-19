@@ -43,7 +43,6 @@ class barbican::worker (
   Boolean $enabled        = true,
   $workers                = $facts['os_service_default'],
 ) inherits barbican::params {
-
   include barbican::deps
 
   package { 'barbican-worker':

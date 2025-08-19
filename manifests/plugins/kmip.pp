@@ -49,7 +49,6 @@ class barbican::plugins::kmip (
   $kmip_plugin_ca_certs = $facts['os_service_default'],
   $global_default       = false,
 ) {
-
   include barbican::deps
 
   if !is_service_default($kmip_plugin_username) {
@@ -82,5 +81,4 @@ class barbican::plugins::kmip (
     'secretstore:kmip/secret_store_plugin': value => 'kmip_plugin';
     'secretstore:kmip/global_default':      value => $global_default;
   }
-
 }

@@ -191,7 +191,7 @@
 #   will be run through a green thread.
 #   Defaults to undef
 #
-class barbican(
+class barbican (
   $package_ensure                     = 'present',
   $default_transport_url              = undef,
   $rpc_response_timeout               = $facts['os_service_default'],
@@ -232,7 +232,6 @@ class barbican(
   # DEPRECATED PARAMETERS
   $rabbit_heartbeat_in_pthread        = undef,
 ) {
-
   include barbican::deps
   include barbican::params
 
@@ -246,7 +245,7 @@ class barbican(
     purge => $purge_config,
   }
 
-  oslo::messaging::rabbit {'barbican_config':
+  oslo::messaging::rabbit { 'barbican_config':
     rabbit_use_ssl                  => $rabbit_use_ssl,
     heartbeat_timeout_threshold     => $rabbit_heartbeat_timeout_threshold,
     heartbeat_rate                  => $rabbit_heartbeat_rate,

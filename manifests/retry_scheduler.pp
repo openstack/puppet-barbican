@@ -30,8 +30,7 @@ class barbican::retry_scheduler (
   Boolean $enabled               = true,
   $initial_delay_seconds         = $facts['os_service_default'],
   $periodic_interval_max_seconds = $facts['os_service_default'],
-){
-
+) {
   include barbican::deps
   include barbican::params
 

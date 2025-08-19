@@ -41,7 +41,6 @@ class barbican::keystone::notification (
   $package_ensure                         = 'present',
   Boolean $manage_service                 = true,
 ) {
-
   include barbican::deps
   include barbican::params
 

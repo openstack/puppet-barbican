@@ -11,7 +11,6 @@
 class barbican::client (
   $ensure = 'present',
 ) {
-
   include barbican::deps
   include barbican::params
 

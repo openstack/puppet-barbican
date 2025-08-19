@@ -123,7 +123,6 @@ class barbican::api (
   $max_limit_paging                              = $facts['os_service_default'],
   $default_limit_paging                          = $facts['os_service_default'],
 ) inherits barbican::params {
-
   include barbican::deps
   include barbican::db
   include barbican::client
@@ -199,7 +198,6 @@ class barbican::api (
     }
 
     if $service_name == $barbican::params::api_service_name {
-
       if $facts['os']['name'] == 'Ubuntu' {
         fail('With Ubuntu packages the service_name must be set to httpd as there is no eventlet init script.')
       }
@@ -230,7 +228,6 @@ class barbican::api (
       Barbican_api_paste_ini<||> ~> Service['barbican-api']
       # On any uwsgi config change, we must restart Barbican API.
       Barbican_api_uwsgi_config<||> ~> Service['barbican-api']
-
     } elsif $service_name == 'httpd' {
       # Ubuntu packages does not have a barbican-api service
       if $facts['os']['name'] != 'Ubuntu' {
@@ -244,12 +241,10 @@ class barbican::api (
 
         # we need to make sure barbican-api is stopped before trying to start apache
         Service['barbican-api'] -> Service[$service_name]
-
       }
 
       # On any paste-api.ini config change, we must restart Barbican API.
       Barbican_api_paste_ini<||> ~> Service[$service_name]
-
     } else {
       fail('Invalid service_name.')
     }

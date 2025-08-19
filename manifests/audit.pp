@@ -17,7 +17,6 @@ class barbican::audit (
   $audit_map_file  = $facts['os_service_default'],
   $ignore_req_list = $facts['os_service_default'],
 ) {
-
   include barbican::deps
 
   oslo::audit { 'barbican_config':

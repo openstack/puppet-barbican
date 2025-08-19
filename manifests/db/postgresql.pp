@@ -24,14 +24,13 @@
 #    (Optional) Privileges given to the database user.
 #    Default to 'ALL'
 #
-class barbican::db::postgresql(
+class barbican::db::postgresql (
   $password,
   $dbname     = 'barbican',
   $user       = 'barbican',
   $encoding   = undef,
   $privileges = 'ALL',
 ) {
-
   include barbican::deps
 
   openstacklib::db::postgresql { 'barbican':
@@ -45,5 +44,4 @@ class barbican::db::postgresql(
   Anchor['barbican::db::begin']
   ~> Class['barbican::db::postgresql']
   ~> Anchor['barbican::db::end']
-
 }

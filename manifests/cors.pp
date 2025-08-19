@@ -44,7 +44,6 @@ class barbican::cors (
   $allow_methods     = $facts['os_service_default'],
   $allow_headers     = $facts['os_service_default'],
 ) {
-
   include barbican::deps
 
   oslo::cors { 'barbican_config':
