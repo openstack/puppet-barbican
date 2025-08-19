@@ -1,0 +1,4 @@
+---
+features:
+  - |
+    The new ``barbican::audit`` class has been added.
