@@ -5,6 +5,8 @@
 class barbican::params {
   include openstacklib::defaults
 
+  $pyver3 = $openstacklib::defaults::pyver3
+
   $client_package_name   = 'python3-barbicanclient'
   $user                  = 'barbican'
   $group                 = 'barbican'
@@ -22,7 +24,7 @@ class barbican::params {
       $retry_package_name             = 'openstack-barbican-retry'
       $retry_service_name             = 'openstack-barbican-retry'
       $barbican_wsgi_script_path      = '/var/www/cgi-bin/barbican'
-      $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
+      $barbican_wsgi_script_source    = "/usr/lib/python${pyver3}/site-packages/barbican/wsgi/api.py"
     }
     'Debian': {
       $common_package_name            = 'barbican-common'
