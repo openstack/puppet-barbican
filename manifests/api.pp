@@ -125,7 +125,6 @@ class barbican::api (
 ) inherits barbican::params {
   include barbican::deps
   include barbican::db
-  include barbican::client
   include barbican::policy
 
   package { 'barbican-api':
