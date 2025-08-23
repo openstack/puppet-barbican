@@ -38,7 +38,7 @@ describe 'barbican::wsgi::apache' do
         :wsgi_process_group          => 'barbican-api',
         :wsgi_script_dir             => platform_params[:wsgi_script_path],
         :wsgi_script_file            => 'main',
-        :wsgi_script_source          => '/usr/bin/barbican-wsgi-api',
+        :wsgi_script_source          => platform_params[:wsgi_script_source],
         :headers                     => nil,
         :request_headers             => nil,
         :custom_wsgi_process_options => {},
@@ -173,11 +173,13 @@ describe 'barbican::wsgi::apache' do
       case facts[:os]['family']
       when 'Debian'
         {
-          :wsgi_script_path => '/usr/lib/cgi-bin/barbican',
+          :wsgi_script_path   => '/usr/lib/cgi-bin/barbican',
+          :wsgi_script_source => '/usr/bin/barbican-wsgi-api',
         }
       when 'RedHat'
         {
-          :wsgi_script_path => '/var/www/cgi-bin/barbican',
+          :wsgi_script_path   => '/var/www/cgi-bin/barbican',
+          :wsgi_script_source => '/usr/lib/python3.9/site-packages/barbican/wsgi/api.py',
         }
       end
     end
