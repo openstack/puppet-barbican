@@ -38,7 +38,7 @@ class barbican::keystone::notification (
   $keystone_notification_topic            = $facts['os_service_default'],
   $keystone_notification_allow_requeue    = $facts['os_service_default'],
   $keystone_notification_thread_pool_size = $facts['os_service_default'],
-  $package_ensure                         = 'present',
+  Stdlib::Ensure::Package $package_ensure = 'present',
   Boolean $manage_service                 = true,
 ) {
   include barbican::deps

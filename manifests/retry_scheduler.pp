@@ -25,11 +25,11 @@
 #   Defaults to $facts['os_service_default']
 #
 class barbican::retry_scheduler (
-  $package_ensure                = 'present',
-  Boolean $manage_service        = true,
-  Boolean $enabled               = true,
-  $initial_delay_seconds         = $facts['os_service_default'],
-  $periodic_interval_max_seconds = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = 'present',
+  Boolean $manage_service                 = true,
+  Boolean $enabled                        = true,
+  $initial_delay_seconds                  = $facts['os_service_default'],
+  $periodic_interval_max_seconds          = $facts['os_service_default'],
 ) {
   include barbican::deps
   include barbican::params

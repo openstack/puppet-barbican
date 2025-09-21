@@ -38,10 +38,10 @@
 #   Defaults to $facts['os_service_default']
 #
 class barbican::worker (
-  $package_ensure         = 'present',
-  Boolean $manage_service = true,
-  Boolean $enabled        = true,
-  $workers                = $facts['os_service_default'],
+  Stdlib::Ensure::Package $package_ensure = 'present',
+  Boolean $manage_service                 = true,
+  Boolean $enabled                        = true,
+  $workers                                = $facts['os_service_default'],
 ) inherits barbican::params {
   include barbican::deps
 
