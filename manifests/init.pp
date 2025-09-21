@@ -11,7 +11,7 @@
 # [*default_transport_url*]
 #   (optional) Connection url for oslo messaging backend. An example rabbit url
 #   would be, rabbit://user:pass@host:port/virtual_host
-#   Defaults to undef
+#  Defaults to $facts['os_service_default']
 #
 # [*rpc_response_timeout*]
 #  (Optional) Seconds to wait for a response from a call.
@@ -181,7 +181,7 @@
 #
 class barbican (
   $package_ensure                     = 'present',
-  $default_transport_url              = undef,
+  $default_transport_url              = $facts['os_service_default'],
   $rpc_response_timeout               = $facts['os_service_default'],
   $control_exchange                   = $facts['os_service_default'],
   $notification_transport_url         = $facts['os_service_default'],
