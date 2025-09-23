@@ -9,7 +9,7 @@
 #   Defaults to 'present'.
 #
 class barbican::client (
-  $ensure = 'present',
+  Stdlib::Ensure::Package $ensure = 'present',
 ) {
   include barbican::deps
   include barbican::params

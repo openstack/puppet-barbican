@@ -33,12 +33,12 @@
 #
 class barbican::plugins::dogtag (
   $dogtag_plugin_nss_password,
-  $dogtag_plugin_ensure_package = 'present',
-  $dogtag_plugin_pem_path       = $facts['os_service_default'],
-  $dogtag_plugin_dogtag_host    = $facts['os_service_default'],
-  $dogtag_plugin_dogtag_port    = $facts['os_service_default'],
-  $dogtag_plugin_nss_db_path    = $facts['os_service_default'],
-  $global_default               = false,
+  Stdlib::Ensure::Package $dogtag_plugin_ensure_package = 'present',
+  $dogtag_plugin_pem_path                               = $facts['os_service_default'],
+  $dogtag_plugin_dogtag_host                            = $facts['os_service_default'],
+  $dogtag_plugin_dogtag_port                            = $facts['os_service_default'],
+  $dogtag_plugin_nss_db_path                            = $facts['os_service_default'],
+  $global_default                                       = false,
 ) {
   include barbican::deps
   include barbican::params
