@@ -212,9 +212,11 @@ class barbican::api (
 
       # Debian is using UWSGI, not gunicorn
       if $facts['os']['name'] != 'Debian' {
+        $bind_host_real = normalize_ip_for_uri($bind_host)
+
         file_line { 'Modify bind_port in gunicorn-config.py':
           path    => '/etc/barbican/gunicorn-config.py',
-          line    => "bind = '${bind_host}:${bind_port}'",
+          line    => "bind = '${bind_host_real}:${bind_port}'",
           match   => '^bind = .*',
           tag     => 'modify-bind-port',
           require => Anchor['barbican::config::begin'],
