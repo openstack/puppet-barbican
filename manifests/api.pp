@@ -117,7 +117,7 @@ class barbican::api (
   Boolean $enabled                        = true,
   Boolean $sync_db                        = true,
   $db_auto_create                         = $facts['os_service_default'],
-  $service_name                           = $barbican::params::api_service_name,
+  String[1] $service_name                 = $barbican::params::api_service_name,
   $enable_proxy_headers_parsing           = $facts['os_service_default'],
   $max_request_body_size                  = $facts['os_service_default'],
   $max_limit_paging                       = $facts['os_service_default'],
@@ -190,64 +190,59 @@ class barbican::api (
   }
 
   if $manage_service {
-    if $enabled {
-      $service_ensure = 'running'
-    } else {
-      $service_ensure = 'stopped'
-    }
+    case $service_name {
+      'httpd': {
+        Service <| title == 'httpd' |> { tag +> 'barbican-service' }
 
-    if $service_name == $barbican::params::api_service_name {
-      if $facts['os']['name'] == 'Ubuntu' {
-        fail('With Ubuntu packages the service_name must be set to httpd as there is no eventlet init script.')
-      }
+        if $barbican::params::api_service_name {
+          service { 'barbican-api':
+            ensure => 'stopped',
+            name   => $barbican::params::api_service_name,
+            enable => false,
+            tag    => 'barbican-service',
+          }
 
-      service { 'barbican-api':
-        ensure     => $service_ensure,
-        name       => $barbican::params::api_service_name,
-        enable     => $enabled,
-        hasstatus  => true,
-        hasrestart => true,
-        tag        => 'barbican-service',
-      }
-
-      # Debian is using UWSGI, not gunicorn
-      if $facts['os']['name'] != 'Debian' {
-        $bind_host_real = normalize_ip_for_uri($bind_host)
-
-        file_line { 'Modify bind_port in gunicorn-config.py':
-          path    => '/etc/barbican/gunicorn-config.py',
-          line    => "bind = '${bind_host_real}:${bind_port}'",
-          match   => '^bind = .*',
-          tag     => 'modify-bind-port',
-          require => Anchor['barbican::config::begin'],
-          before  => Anchor['barbican::config::end'],
-          notify  => Service['barbican-api'],
+          # we need to make sure barbican-api is stopped before trying to start apache
+          Service['barbican-api'] -> Service['httpd']
         }
-      }
 
-      # On any paste-api.ini config change, we must restart Barbican API.
-      Barbican_api_paste_ini<||> ~> Service['barbican-api']
-      # On any uwsgi config change, we must restart Barbican API.
-      Barbican_api_uwsgi_config<||> ~> Service['barbican-api']
-    } elsif $service_name == 'httpd' {
-      # Ubuntu packages does not have a barbican-api service
-      if $facts['os']['name'] != 'Ubuntu' {
+        # On any paste-api.ini config change, we must restart Barbican API.
+        Barbican_api_paste_ini<||> ~> Service['httpd']
+      }
+      default: {
+        $service_ensure = $enabled ? {
+          true    => 'running',
+          default => 'stopped',
+        }
+
         service { 'barbican-api':
-          ensure => 'stopped',
-          name   => $barbican::params::api_service_name,
-          enable => false,
-          tag    => 'barbican-service',
+          ensure     => $service_ensure,
+          name       => $service_name,
+          enable     => $enabled,
+          hasstatus  => true,
+          hasrestart => true,
+          tag        => 'barbican-service',
         }
 
-        # we need to make sure barbican-api is stopped before trying to start apache
-        Service['barbican-api'] -> Service[$service_name]
-      }
+        if $facts['os']['family'] == 'RedHat' {
+          $bind_host_real = normalize_ip_for_uri($bind_host)
 
-      Service <| title == 'httpd' |> { tag +> 'barbican-service' }
-      # On any paste-api.ini config change, we must restart Barbican API.
-      Barbican_api_paste_ini<||> ~> Service[$service_name]
-    } else {
-      fail('Invalid service_name.')
+          file_line { 'Modify bind_port in gunicorn-config.py':
+            path    => '/etc/barbican/gunicorn-config.py',
+            line    => "bind = '${bind_host_real}:${bind_port}'",
+            match   => '^bind = .*',
+            tag     => 'modify-bind-port',
+            require => Anchor['barbican::config::begin'],
+            before  => Anchor['barbican::config::end'],
+            notify  => Service['barbican-api'],
+          }
+        }
+
+        # On any paste-api.ini config change, we must restart Barbican API.
+        Barbican_api_paste_ini<||> ~> Service['barbican-api']
+        # On any uwsgi config change, we must restart Barbican API.
+        Barbican_api_uwsgi_config<||> ~> Service['barbican-api']
+      }
     }
   }
 

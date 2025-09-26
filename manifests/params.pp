@@ -28,7 +28,14 @@ class barbican::params {
     }
     'Debian': {
       $common_package_name            = 'barbican-common'
-      $api_service_name               = 'barbican-api'
+      case $facts['os']['name'] {
+        'Ubuntu': {
+          $api_service_name = undef
+        }
+        default: {
+          $api_service_name = 'barbican-api'
+        }
+      }
       $api_package_name               = 'barbican-api'
       $worker_package_name            = 'barbican-worker'
       $worker_service_name            = 'barbican-worker'
