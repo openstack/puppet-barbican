@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``barbican::plugins::simple_crypto::simple_crypto_plugin_kek``
+    parameter is now required.

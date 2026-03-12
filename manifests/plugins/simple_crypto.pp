@@ -5,16 +5,15 @@
 # === Parameters
 #
 # [*simple_crypto_plugin_kek*]
-#   (optional) Key encryption key to be used by Simple Crypto Plugin.
-#   Defaults to $facts['os_service_default']
+#   (required) Key encryption key to be used by Simple Crypto Plugin.
 #
 # [*global_default*]
 #   (optional) set plugin as global default
 #   Defaults to false
 #
 class barbican::plugins::simple_crypto (
-  $simple_crypto_plugin_kek = $facts['os_service_default'],
-  $global_default           = false,
+  String[1] $simple_crypto_plugin_kek,
+  $global_default = false,
 ) {
   include barbican::deps
 
