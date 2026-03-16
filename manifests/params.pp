@@ -5,7 +5,7 @@
 class barbican::params {
   include openstacklib::defaults
 
-  $pyver3 = $openstacklib::defaults::pyver3
+  $pybasedir = $openstacklib::defaults::pybasedir
 
   $client_package_name   = 'python3-barbicanclient'
   $user                  = 'barbican'
@@ -24,7 +24,7 @@ class barbican::params {
       $retry_package_name             = 'openstack-barbican-retry'
       $retry_service_name             = 'openstack-barbican-retry'
       $barbican_wsgi_script_path      = '/var/www/cgi-bin/barbican'
-      $barbican_wsgi_script_source    = "/usr/lib/python${pyver3}/site-packages/barbican/wsgi/api.py"
+      $barbican_wsgi_script_source    = "${pybasedir}/barbican/wsgi/api.py"
     }
     'Debian': {
       $common_package_name            = 'barbican-common'
@@ -44,7 +44,7 @@ class barbican::params {
       $retry_package_name             = undef
       $retry_service_name             = undef
       $barbican_wsgi_script_path      = '/usr/lib/cgi-bin/barbican'
-      $barbican_wsgi_script_source    = '/usr/bin/barbican-wsgi-api'
+      $barbican_wsgi_script_source    = "${pybasedir}/barbican/wsgi/api.py"
     }
     default: {
       fail("Unsupported osfamily: ${facts['os']['family']}")

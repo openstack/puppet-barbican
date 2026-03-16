@@ -86,7 +86,7 @@ describe 'barbican::wsgi::apache' do
         :wsgi_process_group          => 'barbican-api',
         :wsgi_script_dir             => platform_params[:wsgi_script_path],
         :wsgi_script_file            => 'main',
-        :wsgi_script_source          => '/usr/bin/barbican-wsgi-api',
+        :wsgi_script_source          => platform_params[:wsgi_script_source],
         :headers                     => ['set X-XSS-Protection "1; mode=block"'],
         :request_headers             => ['set Content-Type "application/json"'],
         :custom_wsgi_process_options => {
@@ -174,7 +174,7 @@ describe 'barbican::wsgi::apache' do
       when 'Debian'
         {
           :wsgi_script_path   => '/usr/lib/cgi-bin/barbican',
-          :wsgi_script_source => '/usr/bin/barbican-wsgi-api',
+          :wsgi_script_source => '/usr/lib/python3/dist-packages/barbican/wsgi/api.py',
         }
       when 'RedHat'
         {
