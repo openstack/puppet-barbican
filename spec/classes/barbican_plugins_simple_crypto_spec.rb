@@ -25,8 +25,8 @@ describe 'barbican::plugins::simple_crypto' do
     describe 'with parameter passed into pk11 plugin' do
       let :params do
         {
-          :simple_crypto_plugin_kek => 'XXXXXXXXXXXXX',
           :global_default           => true,
+          :simple_crypto_plugin_kek => 'XXXXXXXXXXXXX',
         }
       end
 
@@ -48,12 +48,14 @@ describe 'barbican::plugins::simple_crypto' do
 
     describe 'with no parameter passed into pk11 plugin' do
       let :params do
-        {}
+        {
+          :simple_crypto_plugin_kek => 'XXXXXXXXXXXXX',
+        }
       end
 
       it 'is_expected.to set default simple_crypto parameters' do
         is_expected.to contain_barbican_config('simple_crypto_plugin/kek') \
-          .with_value('<SERVICE DEFAULT>') \
+          .with_value(params[:simple_crypto_plugin_kek]) \
           .with_secret(true)
         is_expected.to contain_barbican_config(
           'secretstore:simple_crypto/secret_store_plugin') \
