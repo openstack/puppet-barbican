@@ -51,8 +51,8 @@ describe 'barbican::db::mysql' do
     describe "overriding allowed_hosts param to array" do
       let :params do
         {
-          :password       => 'barbicanpass',
-          :allowed_hosts  => ['127.0.0.1','%']
+          :password      => 'barbicanpass',
+          :allowed_hosts => ['127.0.0.1','%']
         }
       end
     end
@@ -60,8 +60,8 @@ describe 'barbican::db::mysql' do
     describe "overriding allowed_hosts param to string" do
       let :params do
         {
-	  :password       => 'barbicanpass2',
-	  :allowed_hosts  => '192.168.1.1'
+          :password      => 'barbicanpass2',
+          :allowed_hosts => '192.168.1.1'
         }
       end
     end
