@@ -49,6 +49,7 @@ EOS
        )}
 
       it 'sets default parameters' do
+        is_expected.to contain_barbican_config('DEFAULT/host_href').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('secretstore/enabled_secretstore_plugins').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('crypto/enabled_crypto_plugins').with_value('<SERVICE DEFAULT>')
         is_expected.to contain_barbican_config('secretstore/enable_multiple_secret_stores').with_value(false)
@@ -68,6 +69,7 @@ EOS
     context 'with parameters' do
       let :params do
         {
+          :host_href                         => 'http://127.0.0.1:9311',
           :service_name                      => 'httpd',
           :enabled_secretstore_plugins       => ['dogtag_crypto', 'store_crypto', 'kmip'],
           :enabled_crypto_plugins            => ['simple_crypto'],
@@ -84,6 +86,7 @@ EOS
       end
 
       it 'sets the provided parameters' do
+        is_expected.to contain_barbican_config('DEFAULT/host_href').with_value('http://127.0.0.1:9311')
         is_expected.to contain_barbican_config('secretstore/enabled_secretstore_plugins').with_value(['dogtag_crypto', 'store_crypto', 'kmip'])
         is_expected.to contain_barbican_config('crypto/enabled_crypto_plugins').with_value(['simple_crypto'])
         is_expected.to contain_barbican_config('secretstore/enable_multiple_secret_stores').with_value(true)

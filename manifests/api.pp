@@ -105,7 +105,7 @@ class barbican::api (
   Stdlib::Ensure::Package $package_ensure = 'present',
   $bind_host                              = '0.0.0.0',
   $bind_port                              = '9311',
-  $host_href                              = undef,
+  $host_href                              = $facts['os_service_default'],
   $max_allowed_secret_in_bytes            = $facts['os_service_default'],
   $max_allowed_request_size_in_bytes      = $facts['os_service_default'],
   $enabled_secretstore_plugins            = $facts['os_service_default'],
@@ -133,15 +133,8 @@ class barbican::api (
     tag    => ['openstack', 'barbican-package'],
   }
 
-  # basic service config
-  if $host_href == undef {
-    $host_href_real = "http://${facts['networking']['fqdn']}:${bind_port}"
-  } else {
-    $host_href_real = $host_href
-  }
-
   barbican_config {
-    'DEFAULT/host_href': value => $host_href_real;
+    'DEFAULT/host_href': value => $host_href;
   }
 
   # max allowed secret options
