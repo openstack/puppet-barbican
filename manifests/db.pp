@@ -43,10 +43,12 @@
 #   (Optional) If set, use this value for pool_timeout with SQLAlchemy.
 #   Defaults to $facts['os_service_default']
 #
+# DEPRECATED PARAMETERS
+#
 # [*mysql_enable_ndb*]
 #   (Optional) If True, transparently enables support for handling MySQL
 #   Cluster (NDB).
-#   Defaults to $facts['os_service_default']
+#   Defaults to undef
 #
 class barbican::db (
   $database_connection              = 'sqlite:////var/lib/barbican/barbican.sqlite',
@@ -58,7 +60,8 @@ class barbican::db (
   $database_pool_size               = $facts['os_service_default'],
   $database_db_max_retries          = $facts['os_service_default'],
   $database_pool_timeout            = $facts['os_service_default'],
-  $mysql_enable_ndb                 = $facts['os_service_default'],
+  # DEPRECATED PARAMETERS
+  $mysql_enable_ndb                 = undef,
 ) {
   include barbican::deps
 
