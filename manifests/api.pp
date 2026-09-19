@@ -19,8 +19,7 @@
 #
 # [*host_href*]
 #   (optional) The reference that clients use to point back to the service
-#   Defaults to http://`hostname`:<bind_port>
-#   TODO: needs to be set
+#   Defaults to $facts['os_service_default']
 #
 # [*max_allowed_secret_in_bytes*]
 #   (optional) Maximum allowed secret size to be stored.
